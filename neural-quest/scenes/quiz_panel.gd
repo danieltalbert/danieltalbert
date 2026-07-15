@@ -190,6 +190,7 @@ func _open_common(question: String, options: Array, answer: int) -> void:
 	visible = true
 	get_tree().paused = true
 	Sfx.play("panel_open")
+	_buttons[0].grab_focus()
 	_panel.scale = Vector2(0.7, 0.7)
 	var tw := create_tween()
 	tw.tween_property(_panel, "scale", Vector2.ONE, 0.18) \
@@ -254,6 +255,7 @@ func _handle_correct() -> void:
 		_feedback.text = "Correct!  +%d XP" % gained
 	_feedback.add_theme_color_override("font_color", GREEN)
 	_close_btn.text = "Continue"
+	_close_btn.grab_focus()
 
 
 func _handle_wrong(i: int) -> void:
@@ -270,6 +272,7 @@ func _handle_wrong(i: int) -> void:
 		_feedback.text = "The Glitch escapes! The answer glows green."
 		_feedback.add_theme_color_override("font_color", RED)
 		_close_btn.text = "Continue"
+		_close_btn.grab_focus()
 	else:
 		_buttons[i].disabled = true
 		_buttons[i].modulate = RED

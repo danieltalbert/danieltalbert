@@ -97,6 +97,7 @@ func open(id: int) -> void:
 	visible = true
 	get_tree().paused = true
 	Sfx.play("panel_open")
+	_next_btn.grab_focus()
 	_panel.scale = Vector2(0.7, 0.7)
 	var tw := create_tween()
 	tw.tween_property(_panel, "scale", Vector2.ONE, 0.18) \

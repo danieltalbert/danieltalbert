@@ -104,3 +104,29 @@ func _add_action(action: String, keys: Array) -> void:
 		var ev := InputEventKey.new()
 		ev.physical_keycode = k
 		InputMap.action_add_event(action, ev)
+	_add_gamepad(action)
+
+
+## Gamepad bindings: left stick and dpad move, A confirms, B backs out,
+## X or right shoulder sprints, Y toggles the minimap.
+func _add_gamepad(action: String) -> void:
+	var axes := {
+		"move_up": [JOY_AXIS_LEFT_Y, -1.0], "move_down": [JOY_AXIS_LEFT_Y, 1.0],
+		"move_left": [JOY_AXIS_LEFT_X, -1.0], "move_right": [JOY_AXIS_LEFT_X, 1.0],
+	}
+	var buttons := {
+		"move_up": [JOY_BUTTON_DPAD_UP], "move_down": [JOY_BUTTON_DPAD_DOWN],
+		"move_left": [JOY_BUTTON_DPAD_LEFT], "move_right": [JOY_BUTTON_DPAD_RIGHT],
+		"sprint": [JOY_BUTTON_X, JOY_BUTTON_RIGHT_SHOULDER],
+		"ui_confirm": [JOY_BUTTON_A], "ui_back": [JOY_BUTTON_B],
+		"toggle_map": [JOY_BUTTON_Y],
+	}
+	if axes.has(action):
+		var m := InputEventJoypadMotion.new()
+		m.axis = axes[action][0]
+		m.axis_value = axes[action][1]
+		InputMap.action_add_event(action, m)
+	for b in buttons.get(action, []):
+		var ev := InputEventJoypadButton.new()
+		ev.button_index = b
+		InputMap.action_add_event(action, ev)

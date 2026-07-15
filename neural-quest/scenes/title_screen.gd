@@ -58,6 +58,11 @@ func _ready() -> void:
 	var new_btn := _button("New Game (erase save)" if GameState.has_save() else "New Game")
 	new_btn.pressed.connect(func(): start_game.emit(true))
 	vbox.add_child(new_btn)
+	# Focus the safest default so gamepad and keyboard can navigate.
+	if GameState.has_save():
+		(vbox.get_child(3) as Button).grab_focus()
+	else:
+		new_btn.grab_focus()
 
 	var help := Label.new()
 	help.text = "WASD / arrows to move, Shift to run, M to mute"

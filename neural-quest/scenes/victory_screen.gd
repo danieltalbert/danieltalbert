@@ -59,6 +59,7 @@ func _ready() -> void:
 	btn.add_theme_font_size_override("font_size", 8)
 	btn.pressed.connect(_close)
 	vbox.add_child(btn)
+	btn.grab_focus()
 
 	Sfx.play("fanfare")
 
