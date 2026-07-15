@@ -7,6 +7,7 @@ extends Node2D
 signal boss_triggered(world_id: int)
 signal tutor_triggered(world_id: int)
 signal mini_triggered(world_id: int)
+signal glitch_triggered
 
 const TILE := 16
 
@@ -18,6 +19,8 @@ var _portals: Array = []
 var _tutors: Array = []
 var _minis: Array = []
 var _shards: Array = []
+var _path_tiles: Array = []
+var _glitch_timer := 0.0
 
 
 func _ready() -> void:
@@ -27,6 +30,7 @@ func _ready() -> void:
 	_spawn_portals()
 	_spawn_npcs()
 	_spawn_shards()
+	_glitch_timer = float(ContentDb.constant("glitch_respawn_seconds"))
 
 
 func _build_act_lookup() -> void:
@@ -67,6 +71,7 @@ func _build_terrain() -> void:
 			match ContentDb.tile_at(x, y):
 				"P":
 					col = 2
+					_path_tiles.append(Vector2i(x, y))
 				"#":
 					col = 3
 				_:
@@ -131,9 +136,10 @@ func _on_shard_collected(index: int) -> void:
 	GameState.mark_shard(index)
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player == null:
 		return
+	_update_glitch(delta)
 	for portal in _portals:
 		portal.check_player(player.position)
 	for tutor in _tutors:
@@ -143,6 +149,46 @@ func _physics_process(_delta: float) -> void:
 	for shard in _shards:
 		if is_instance_valid(shard):
 			shard.check_player(player.position)
+	if glitch != null:
+		glitch.check_player(player.position)
+
+
+# ---- Golden Glitch lifecycle ----
+
+func _update_glitch(delta: float) -> void:
+	if glitch == null:
+		# It only appears once the player has engaged with at least one
+		# topic, since its remix question draws from that pool.
+		if GameState.engaged_world_ids().is_empty():
+			return
+		_glitch_timer -= delta
+		if _glitch_timer <= 0.0:
+			_spawn_glitch()
+	else:
+		_glitch_timer -= delta
+		if _glitch_timer <= 0.0:
+			glitch.relocate(_random_path_position())
+			_glitch_timer = float(ContentDb.constant("glitch_relocate_seconds"))
+
+
+func _spawn_glitch() -> void:
+	glitch = GoldenGlitch.new()
+	glitch.position = _random_path_position()
+	glitch.triggered.connect(func(): glitch_triggered.emit())
+	add_child(glitch)
+	_glitch_timer = float(ContentDb.constant("glitch_relocate_seconds"))
+
+
+func despawn_glitch() -> void:
+	if glitch != null:
+		glitch.queue_free()
+		glitch = null
+	_glitch_timer = float(ContentDb.constant("glitch_respawn_seconds"))
+
+
+func _random_path_position() -> Vector2:
+	var t: Vector2i = _path_tiles[randi() % _path_tiles.size()]
+	return tile_center(t.x, t.y)
 
 
 func tile_center(x: int, y: int) -> Vector2:
