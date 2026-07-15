@@ -128,6 +128,6 @@ func _on_level_up(level: int, title: String) -> void:
 	Toasts.show_toast("Level %d: %s" % [level, title], true)
 
 
-func _on_achievement(_id: String, name: String) -> void:
+func _on_achievement(_id: String, ach_name: String) -> void:
 	Sfx.play("fanfare")
-	Toasts.show_toast("Achievement: %s" % name, true)
+	Toasts.show_toast("Achievement: %s" % ach_name, true)

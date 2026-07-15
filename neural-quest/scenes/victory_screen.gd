@@ -37,7 +37,8 @@ func _ready() -> void:
 	vbox.add_child(title)
 
 	var body := Label.new()
-	body.text = "You wear the golden crown of the\nLatent Space. The world is yours to\nroam: shards, reviews, and the\nGolden Glitch await."
+	body.text = ("You wear the golden crown of the\nLatent Space. The world is yours to\n"
+		+ "roam: shards, reviews, and the\nGolden Glitch await.")
 	body.add_theme_font_size_override("font_size", 8)
 	body.add_theme_color_override("font_color", TEXT)
 	body.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

@@ -21,6 +21,8 @@ var _minis: Array = []
 var _shards: Array = []
 var _path_tiles: Array = []
 var _glitch_timer := 0.0
+var _shake_time := 0.0
+var _shake_strength := 0.0
 
 
 func _ready() -> void:
@@ -198,10 +200,6 @@ func _random_path_position() -> Vector2:
 
 
 # ---- Juice ----
-
-var _shake_time := 0.0
-var _shake_strength := 0.0
-
 
 func shake(duration: float, strength: float) -> void:
 	_shake_time = duration

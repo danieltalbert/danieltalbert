@@ -14,6 +14,8 @@ var _busy := false
 
 func _ready() -> void:
 	layer = 100
+	# Toasts keep animating while quiz panels pause the tree.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 
 
 func show_toast(text: String, gold: bool = false) -> void:
