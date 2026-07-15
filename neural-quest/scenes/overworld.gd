@@ -23,6 +23,8 @@ var _path_tiles: Array = []
 var _glitch_timer := 0.0
 var _shake_time := 0.0
 var _shake_strength := 0.0
+var _current_act := 0
+var _banner_cooldown := 0.0
 
 
 func _ready() -> void:
@@ -147,6 +149,7 @@ func _on_shard_collected(index: int) -> void:
 func _physics_process(delta: float) -> void:
 	if player == null:
 		return
+	_update_act(delta)
 	_update_glitch(delta)
 	for portal in _portals:
 		portal.check_player(player.position)
@@ -159,6 +162,21 @@ func _physics_process(delta: float) -> void:
 			shard.check_player(player.position)
 	if glitch != null:
 		glitch.check_player(player.position)
+
+
+func _update_act(delta: float) -> void:
+	_banner_cooldown = maxf(0.0, _banner_cooldown - delta)
+	var row := clampi(player.tile_pos().y, 0, act_of_row.size() - 1)
+	var act := act_of_row[row]
+	if act == _current_act:
+		return
+	var first := _current_act == 0
+	_current_act = act
+	Music.set_act(act)
+	if _banner_cooldown <= 0.0 and not first:
+		var a := ContentDb.act(act)
+		Toasts.show_toast("Entering %s: %s" % [a["label"], a["name"]])
+		_banner_cooldown = 6.0
 
 
 # ---- Golden Glitch lifecycle ----

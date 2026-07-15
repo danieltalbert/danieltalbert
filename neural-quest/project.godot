@@ -15,6 +15,7 @@ config/features=PackedStringArray("4.3")
 ContentDb="*res://autoload/content_db.gd"
 GameState="*res://autoload/game_state.gd"
 Sfx="*res://autoload/sfx.gd"
+Music="*res://autoload/music.gd"
 Toasts="*res://autoload/toasts.gd"
 
 [display]
