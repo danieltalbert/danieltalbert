@@ -61,6 +61,18 @@ func _build_top_bar() -> void:
 	_streak_label.add_theme_color_override("font_color", XP_BLUE)
 	row.add_child(_streak_label)
 
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(spacer)
+
+	var mute_btn := Button.new()
+	mute_btn.text = "SND"
+	mute_btn.add_theme_font_size_override("font_size", 7)
+	mute_btn.custom_minimum_size = Vector2(24, 12)
+	mute_btn.focus_mode = Control.FOCUS_NONE
+	mute_btn.pressed.connect(Sfx.toggle_mute)
+	row.add_child(mute_btn)
+
 	_xp_bar_bg = ColorRect.new()
 	_xp_bar_bg.color = Color(0, 0, 0, 0.5)
 	_xp_bar_bg.custom_minimum_size = Vector2(234, 3)

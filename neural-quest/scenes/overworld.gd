@@ -31,6 +31,12 @@ func _ready() -> void:
 	_spawn_npcs()
 	_spawn_shards()
 	_glitch_timer = float(ContentDb.constant("glitch_respawn_seconds"))
+	GameState.xp_gained.connect(_on_xp_gained)
+
+
+func _on_xp_gained(amount: int, _total: int) -> void:
+	if player != null:
+		FloatText.spawn(self, player.position + Vector2(0, -8), "+%d XP" % amount)
 
 
 func _build_act_lookup() -> void:
@@ -189,6 +195,46 @@ func despawn_glitch() -> void:
 func _random_path_position() -> Vector2:
 	var t: Vector2i = _path_tiles[randi() % _path_tiles.size()]
 	return tile_center(t.x, t.y)
+
+
+# ---- Juice ----
+
+var _shake_time := 0.0
+var _shake_strength := 0.0
+
+
+func shake(duration: float, strength: float) -> void:
+	_shake_time = duration
+	_shake_strength = strength
+
+
+func _process(delta: float) -> void:
+	if player == null or player.camera == null:
+		return
+	if _shake_time > 0.0:
+		_shake_time -= delta
+		player.camera.offset = Vector2(
+			randf_range(-_shake_strength, _shake_strength),
+			randf_range(-_shake_strength, _shake_strength))
+	else:
+		player.camera.offset = Vector2.ZERO
+
+
+func burst_at(pos: Vector2, color: Color) -> void:
+	var p := CPUParticles2D.new()
+	p.position = pos
+	p.texture = PixelArt.dot_texture(color, 2)
+	p.amount = 16
+	p.lifetime = 0.5
+	p.one_shot = true
+	p.explosiveness = 1.0
+	p.spread = 180.0
+	p.initial_velocity_min = 25.0
+	p.initial_velocity_max = 55.0
+	p.gravity = Vector2.ZERO
+	p.emitting = true
+	add_child(p)
+	get_tree().create_timer(0.8).timeout.connect(p.queue_free)
 
 
 func tile_center(x: int, y: int) -> Vector2:
