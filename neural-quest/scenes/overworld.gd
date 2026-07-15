@@ -12,10 +12,12 @@ const TILE := 16
 
 var player: Player
 var act_of_row: PackedInt32Array = []
+var glitch: Node2D = null
 
 var _portals: Array = []
 var _tutors: Array = []
 var _minis: Array = []
+var _shards: Array = []
 
 
 func _ready() -> void:
@@ -24,6 +26,7 @@ func _ready() -> void:
 	_spawn_player()
 	_spawn_portals()
 	_spawn_npcs()
+	_spawn_shards()
 
 
 func _build_act_lookup() -> void:
@@ -110,6 +113,24 @@ func _spawn_npcs() -> void:
 		_minis.append(monster)
 
 
+func _spawn_shards() -> void:
+	var coords: Array = ContentDb.map["shards"]
+	for i in coords.size():
+		if GameState.shard_collected(i):
+			continue
+		var shard := Shard.new()
+		shard.index = i
+		shard.position = tile_center(int(coords[i][0]), int(coords[i][1]))
+		shard.collected.connect(_on_shard_collected)
+		add_child(shard)
+		_shards.append(shard)
+
+
+func _on_shard_collected(index: int) -> void:
+	GameState.grant_xp(int(ContentDb.constant("xp_shard")))
+	GameState.mark_shard(index)
+
+
 func _physics_process(_delta: float) -> void:
 	if player == null:
 		return
@@ -119,6 +140,9 @@ func _physics_process(_delta: float) -> void:
 		tutor.check_player(player.position)
 	for monster in _minis:
 		monster.check_player(player.position)
+	for shard in _shards:
+		if is_instance_valid(shard):
+			shard.check_player(player.position)
 
 
 func tile_center(x: int, y: int) -> Vector2:
