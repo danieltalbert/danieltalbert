@@ -129,7 +129,12 @@ func open_boss(id: int) -> void:
 	_prep.visible = true
 	_definition.text = w["definition"]
 	_definition.visible = true
-	_open_common(w["question"], w["options"], int(w["answer"]))
+	# Reviews ask the remix variant so replays stay a real test.
+	if _review and w.has("remix"):
+		var r: Dictionary = w["remix"]
+		_open_common(r["question"], r["options"], int(r["answer"]))
+	else:
+		_open_common(w["question"], w["options"], int(w["answer"]))
 
 
 func open_mini(id: int) -> void:
@@ -156,7 +161,11 @@ func open_glitch(id: int) -> void:
 	_prep.text = "One shot. Answer wrong and it escapes."
 	_prep.visible = true
 	_definition.visible = false
-	_open_common(w["question"], w["options"], int(w["answer"]))
+	if w.has("remix"):
+		var r: Dictionary = w["remix"]
+		_open_common(r["question"], r["options"], int(r["answer"]))
+	else:
+		_open_common(w["question"], w["options"], int(w["answer"]))
 
 
 func _open_common(question: String, options: Array, answer: int) -> void:

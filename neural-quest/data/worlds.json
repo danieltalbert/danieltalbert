@@ -13,6 +13,15 @@
     ],
     "answer": 0,
     "vocab": "Residual: the vertical gap between a data point and the fitted line. Training tunes the line to keep residuals small.",
+    "remix": {
+      "question": "Training linear regression means finding the line that minimizes what?",
+      "options": [
+        "The sum of squared residuals across the training points",
+        "The total number of data points used",
+        "The steepness of the slope"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Sage Linna",
       "pages": [
@@ -45,6 +54,15 @@
     ],
     "answer": 0,
     "vocab": "Decision threshold: the probability cutoff (often 0.5) above which the model predicts the positive class.",
+    "remix": {
+      "question": "Despite its name, logistic regression is mainly used for what task?",
+      "options": [
+        "Predicting categories, like spam or not spam",
+        "Predicting continuous values, like prices",
+        "Grouping unlabeled data into clusters"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Oracle Logit",
       "pages": [
@@ -77,6 +95,15 @@
     ],
     "answer": 0,
     "vocab": "Lazy learning: KNN does no work at training time. It memorizes the data and does all the effort at prediction time.",
+    "remix": {
+      "question": "What happens to KNN predictions if k is set to 1?",
+      "options": [
+        "They become sensitive to noise, since a single odd neighbor decides everything",
+        "They become perfectly accurate on new data",
+        "They always predict the largest class"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Elder Nearby",
       "pages": [
@@ -109,6 +136,15 @@
     ],
     "answer": 0,
     "vocab": "Leaf node: the end of a branch. Whatever training examples land there decide the prediction for that path.",
+    "remix": {
+      "question": "A decision tree grown very deep with no limits is most at risk of what?",
+      "options": [
+        "Overfitting: memorizing quirks of the training data",
+        "Underfitting: being too simple for the problem",
+        "Losing track of which feature is which"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Keeper Root",
       "pages": [
@@ -141,6 +177,15 @@
     ],
     "answer": 0,
     "vocab": "Generalization: how well a model performs on data it was never trained on. It is the only score that truly matters.",
+    "remix": {
+      "question": "Which change usually REDUCES overfitting?",
+      "options": [
+        "More training data or a simpler model",
+        "Training longer on the exact same data",
+        "Evaluating on the training set instead of a test set"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Warden Split",
       "pages": [
@@ -173,6 +218,15 @@
     ],
     "answer": 0,
     "vocab": "Prior: what you believe about class probabilities before seeing any features, usually taken from class frequencies in the training data.",
+    "remix": {
+      "question": "In Bayes' rule, what does the prior represent?",
+      "options": [
+        "Your belief about each class before seeing any features",
+        "The probability of the features given the class",
+        "The accuracy measured on the test set"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Friar Bayes",
       "pages": [
@@ -205,6 +259,15 @@
     ],
     "answer": 0,
     "vocab": "Kernel trick: a shortcut that lets an SVM act as if the data were mapped into a higher-dimensional space, bending straight boundaries into curves without paying for the mapping.",
+    "remix": {
+      "question": "What is the kernel trick used for?",
+      "options": [
+        "Letting an SVM learn curved boundaries without explicitly computing a high-dimensional mapping",
+        "Compressing the training data to save memory",
+        "Removing the need for any training at all"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Knight Marginal",
       "pages": [
@@ -237,6 +300,15 @@
     ],
     "answer": 0,
     "vocab": "Bootstrap sample: a training set drawn from the original data by sampling WITH replacement, so some rows repeat and others are left out.",
+    "remix": {
+      "question": "At each split, a random forest tree considers only a random subset of features. Why?",
+      "options": [
+        "To make the trees differ from each other so their errors cancel when voting",
+        "Because trees cannot physically read every feature",
+        "To guarantee every tree ends up identical"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Grove Mother Ballot",
       "pages": [
@@ -269,6 +341,15 @@
     ],
     "answer": 0,
     "vocab": "Learning rate: a small factor that shrinks each new tree's contribution, trading more rounds for better generalization.",
+    "remix": {
+      "question": "Why use a small learning rate in gradient boosting?",
+      "options": [
+        "Each tree contributes a small correction, which usually generalizes better",
+        "It reduces the total number of trees needed",
+        "It prevents the model from using any feature twice"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Forgemaster Grad",
       "pages": [
@@ -301,6 +382,15 @@
     ],
     "answer": 0,
     "vocab": "F1 score: the harmonic mean of precision and recall, useful when you need one number that punishes neglecting either.",
+    "remix": {
+      "question": "In 5-fold cross-validation, how many times does each example appear in a test fold?",
+      "options": [
+        "Exactly once, across the five rounds",
+        "Five times, once per round",
+        "Never, test examples stay locked away"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Judge Kfold",
       "pages": [
@@ -333,6 +423,15 @@
     ],
     "answer": 0,
     "vocab": "Centroid: the center of a cluster, computed as the average position of every point currently assigned to it.",
+    "remix": {
+      "question": "The elbow method helps you choose what?",
+      "options": [
+        "The number of clusters k for k-means",
+        "The learning rate for gradient descent",
+        "Which features to delete from the data"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Miner Centroid",
       "pages": [
@@ -365,6 +464,15 @@
     ],
     "answer": 0,
     "vocab": "Linkage: the rule for measuring distance between clusters, such as nearest members (single), farthest members (complete), or average.",
+    "remix": {
+      "question": "Complete linkage measures the distance between two clusters how?",
+      "options": [
+        "By the farthest pair of points, one from each cluster",
+        "By the closest pair of points between them",
+        "By comparing the cluster names alphabetically"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Weaver Linkage",
       "pages": [
@@ -397,6 +505,15 @@
     ],
     "answer": 0,
     "vocab": "Explained variance ratio: the share of the data's total variance that a component captures. It tells you how many components are worth keeping.",
+    "remix": {
+      "question": "You keep the components explaining 95 percent of variance. What did you likely gain?",
+      "options": [
+        "Far fewer dimensions while keeping most of the information",
+        "More features than the original data had",
+        "Ground-truth labels for a classifier"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Archivist Component",
       "pages": [
@@ -429,6 +546,15 @@
     ],
     "answer": 0,
     "vocab": "False positive rate: how often normal cases get wrongly flagged. Set your alarm threshold with this cost in mind.",
+    "remix": {
+      "question": "Lowering an anomaly alarm threshold generally does what?",
+      "options": [
+        "Catches more anomalies but raises more false alarms",
+        "Catches fewer anomalies and raises fewer false alarms",
+        "Changes nothing about what gets flagged"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Sentinel Odd",
       "pages": [
@@ -461,6 +587,15 @@
     ],
     "answer": 0,
     "vocab": "Cold start: the struggle to recommend for a brand-new user or item that has no interaction history yet.",
+    "remix": {
+      "question": "Content-based filtering recommends items by matching what?",
+      "options": [
+        "Item attributes against what the user liked before",
+        "The behavior of users with similar taste",
+        "Whatever is most popular that day"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Merchant Echo",
       "pages": [
@@ -493,6 +628,15 @@
     ],
     "answer": 0,
     "vocab": "ReLU: the activation max(0, x). Brutally simple, cheap, and the default workhorse of deep networks.",
+    "remix": {
+      "question": "In a single neuron, what does training actually adjust?",
+      "options": [
+        "The weights and the bias",
+        "The number of inputs arriving",
+        "The physical size of the data"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Sparkkeeper Wattson",
       "pages": [
@@ -525,6 +669,15 @@
     ],
     "answer": 0,
     "vocab": "Learning rate: the size of each downhill step. Too large overshoots the valley, too small crawls forever.",
+    "remix": {
+      "question": "Gradient descent updates weights by stepping in which direction?",
+      "options": [
+        "Opposite the gradient, downhill on the loss surface",
+        "Along the gradient, uphill on the loss surface",
+        "A random direction every step"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Deepsmith Delve",
       "pages": [
@@ -557,6 +710,15 @@
     ],
     "answer": 0,
     "vocab": "Pooling: shrinking a feature map by keeping a summary such as the max of each small region, adding tolerance to small shifts.",
+    "remix": {
+      "question": "What does pooling contribute to a CNN?",
+      "options": [
+        "Smaller feature maps and tolerance to small shifts",
+        "Many more trainable parameters",
+        "Automatic color correction for images"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Tidecaller Kernel",
       "pages": [
@@ -589,6 +751,15 @@
     ],
     "answer": 0,
     "vocab": "Vanishing gradient: over many time steps the training signal can shrink toward zero, making long-range memories hard to learn. Gates in LSTMs fight this.",
+    "remix": {
+      "question": "LSTMs add gates primarily to solve what problem?",
+      "options": [
+        "Vanishing gradients erasing long-range memory",
+        "Images being too large to store",
+        "Networks reading sequences out of order"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Currentkeeper Eddy",
       "pages": [
@@ -621,6 +792,15 @@
     ],
     "answer": 0,
     "vocab": "Query, key, value: each token asks with its query, is indexed by its key, and shares its value. Attention scores are query-key matches used to blend values.",
+    "remix": {
+      "question": "Why do Transformers train faster than RNNs on long sequences?",
+      "options": [
+        "They process all positions in parallel instead of step by step",
+        "They silently skip most of the input",
+        "They contain no trainable parameters"
+      ],
+      "answer": 0
+    },
     "tutor": {
       "name": "Throne Sage Vekta",
       "pages": [
