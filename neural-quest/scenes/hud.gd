@@ -18,6 +18,7 @@ var _xp_bar_bg: ColorRect
 var _streak_label: Label
 var _progress_label: Label
 var _compass: Polygon2D
+var _minimap: Minimap
 var _touch_input := Vector2.ZERO
 var _touch_sprint := false
 
@@ -26,12 +27,26 @@ func _ready() -> void:
 	layer = 10
 	_build_top_bar()
 	_build_compass()
+	_build_minimap()
 	if DisplayServer.is_touchscreen_available():
 		_build_touch_controls()
 	GameState.xp_gained.connect(func(_a, _t): refresh())
 	GameState.streak_changed.connect(func(_s, _m): refresh())
 	GameState.progress_changed.connect(refresh)
 	refresh()
+
+
+func _build_minimap() -> void:
+	_minimap = Minimap.new()
+	_minimap.overworld = overworld
+	add_child(_minimap)
+	_minimap.position = Vector2(240 - _minimap.size.x - 2, 320 - _minimap.size.y - 4)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_map"):
+		_minimap.visible = not _minimap.visible
+		Sfx.play("page")
 
 
 func _build_top_bar() -> void:
@@ -64,6 +79,16 @@ func _build_top_bar() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(spacer)
+
+	var map_btn := Button.new()
+	map_btn.text = "MAP"
+	map_btn.add_theme_font_size_override("font_size", 7)
+	map_btn.custom_minimum_size = Vector2(24, 12)
+	map_btn.focus_mode = Control.FOCUS_NONE
+	map_btn.pressed.connect(func():
+		_minimap.visible = not _minimap.visible
+		Sfx.play("page"))
+	row.add_child(map_btn)
 
 	var mute_btn := Button.new()
 	mute_btn.text = "SND"
