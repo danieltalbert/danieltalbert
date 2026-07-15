@@ -12,7 +12,7 @@ func _ready() -> void:
 	super()
 	var act: Dictionary = ContentDb.act_for_world(world_id)
 	var body := Color(str(act.get("palette", {}).get("obstacle_b", "#888888")))
-	_textures = PixelArt.monster_textures(body)
+	_textures = PixelArt.monster_textures(body, world_id % 3)
 	sprite.texture = _textures[0]
 	indicator.text = "!"
 	_refresh()

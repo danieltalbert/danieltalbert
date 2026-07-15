@@ -177,6 +177,78 @@ const MONSTER_MAP_1 := [
 	"................",
 	"................"]
 
+const SPIKE_MAP_0 := [
+	"................",
+	"................",
+	"....m...m..m....",
+	"...mmm.mmm.mmm..",
+	"..mmmmmmmmmmmm..",
+	".mmwwmmmmmmwwmm.",
+	".mmwemmmmmmewmm.",
+	".mmmmmmmmmmmmmm.",
+	"m.mmmkkkkkkmmm.m",
+	".mmmmmmmmmmmmmm.",
+	"..mmmmmmmmmmmm..",
+	"...mmm.mm.mmm...",
+	"....m..mm..m....",
+	"................",
+	"................",
+	"................"]
+
+const SPIKE_MAP_1 := [
+	"................",
+	"................",
+	"................",
+	"...m...mm...m...",
+	"..mmm.mmmm.mmm..",
+	".mmmmmmmmmmmmmm.",
+	"mmmwwmmmmmmwwmmm",
+	"mmmwemmmmmmewmmm",
+	".mmmmkkkkkkmmmm.",
+	".mmmmmmmmmmmmmm.",
+	"..mmmmmmmmmmmm..",
+	"..mmm.mmmm.mmm..",
+	"...m...mm...m...",
+	"................",
+	"................",
+	"................"]
+
+const WISP_MAP_0 := [
+	"................",
+	".......mm.......",
+	"......mmmm......",
+	".....mmmmmm.....",
+	"....mmmmmmmm....",
+	"...mmwwmmwwmm...",
+	"...mmwemmewmm...",
+	"...mmmmmmmmmm...",
+	"...mmkkkkkkmm...",
+	"....mmmmmmmm....",
+	".....mmmmmm.....",
+	"....mm.mm.mm....",
+	"...m..m..m..m...",
+	"................",
+	"................",
+	"................"]
+
+const WISP_MAP_1 := [
+	"................",
+	".......mm.......",
+	"......mmmm......",
+	".....mmmmmm.....",
+	"....mmmmmmmm....",
+	"...mmwwmmwwmm...",
+	"...mmwemmewmm...",
+	"...mmmmmmmmmm...",
+	"...mmkkkkkkmm...",
+	"....mmmmmmmm....",
+	"....mmmmmm......",
+	"...mm.mm.mm.....",
+	"..m..m..m..m....",
+	"................",
+	"................",
+	"................"]
+
 const GLITCH_MAP_0 := [
 	"................",
 	".......g........",
@@ -248,7 +320,7 @@ static func tex_from_map(rows: Array, colors: Dictionary) -> ImageTexture:
 	var img := Image.create(w, h, false, Image.FORMAT_RGBA8)
 	for y in h:
 		var row: String = rows[y]
-		for x in w:
+		for x in mini(w, row.length()):
 			var ch := row[x]
 			if colors.has(ch):
 				img.set_pixel(x, y, colors[ch])
@@ -274,12 +346,18 @@ static func tutor_texture(accent: Color) -> ImageTexture:
 	return tex_from_map(TUTOR_MAP, colors)
 
 
-static func monster_textures(body: Color) -> Array:
+static func monster_textures(body: Color, variant: int = 0) -> Array:
 	var colors := {
 		"m": body, "w": Color("#e8e6f0"), "e": Color("#1a1626"),
 		"k": body.darkened(0.35),
 	}
-	return [tex_from_map(MONSTER_MAP_0, colors), tex_from_map(MONSTER_MAP_1, colors)]
+	var maps := [
+		[MONSTER_MAP_0, MONSTER_MAP_1],
+		[SPIKE_MAP_0, SPIKE_MAP_1],
+		[WISP_MAP_0, WISP_MAP_1],
+	]
+	var pair: Array = maps[clampi(variant, 0, maps.size() - 1)]
+	return [tex_from_map(pair[0], colors), tex_from_map(pair[1], colors)]
 
 
 static func glitch_textures() -> Array:
