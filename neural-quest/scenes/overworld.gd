@@ -5,6 +5,8 @@ extends Node2D
 ## minis, shards, glitch) to the panels. Signals let Main own the UI flow.
 
 signal boss_triggered(world_id: int)
+signal tutor_triggered(world_id: int)
+signal mini_triggered(world_id: int)
 
 const TILE := 16
 
@@ -12,6 +14,8 @@ var player: Player
 var act_of_row: PackedInt32Array = []
 
 var _portals: Array = []
+var _tutors: Array = []
+var _minis: Array = []
 
 
 func _ready() -> void:
@@ -19,6 +23,7 @@ func _ready() -> void:
 	_build_terrain()
 	_spawn_player()
 	_spawn_portals()
+	_spawn_npcs()
 
 
 func _build_act_lookup() -> void:
@@ -88,11 +93,32 @@ func _spawn_portals() -> void:
 		_portals.append(portal)
 
 
+func _spawn_npcs() -> void:
+	for t in ContentDb.map["tutors"]:
+		var tutor := Tutor.new()
+		tutor.world_id = int(t["id"])
+		tutor.position = tile_center(int(t["x"]), int(t["y"]))
+		tutor.triggered.connect(func(): tutor_triggered.emit(tutor.world_id))
+		add_child(tutor)
+		_tutors.append(tutor)
+	for m in ContentDb.map["minis"]:
+		var monster := Monster.new()
+		monster.world_id = int(m["id"])
+		monster.position = tile_center(int(m["x"]), int(m["y"]))
+		monster.triggered.connect(func(): mini_triggered.emit(monster.world_id))
+		add_child(monster)
+		_minis.append(monster)
+
+
 func _physics_process(_delta: float) -> void:
 	if player == null:
 		return
 	for portal in _portals:
 		portal.check_player(player.position)
+	for tutor in _tutors:
+		tutor.check_player(player.position)
+	for monster in _minis:
+		monster.check_player(player.position)
 
 
 func tile_center(x: int, y: int) -> Vector2:
