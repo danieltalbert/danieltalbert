@@ -182,7 +182,7 @@ class BoundaryLab extends BaseLab:
 	func render(c: Control) -> void:
 		for i in px.size():
 			var col := LabLibrary.CYAN if cls[i] == 0 else LabLibrary.GOLD
-			var correct := (1 if _f(px[i], py[i]) > 0.0 else 0) == cls[i]
+			var correct: bool = (1 if _f(px[i], py[i]) > 0.0 else 0) == int(cls[i])
 			c.draw_circle(LabLibrary.pt(c, px[i], py[i]), 2.5 if correct else 2.0, col)
 			if not correct:
 				c.draw_circle(LabLibrary.pt(c, px[i], py[i]), 4.0, Color(LabLibrary.RED, 0.6))
@@ -419,7 +419,7 @@ class BayesLab extends BaseLab:
 			"ok":
 				if not applied[cursor]:
 					applied[cursor] = true
-					odds *= CARDS[cursor][1]
+					odds *= float(CARDS[cursor][1])
 				var all_done := true
 				for a in applied:
 					if not a:
@@ -469,7 +469,7 @@ class EnsembleLab extends BaseLab:
 		for s in 40:
 			var votes := 0
 			for t in m:
-				votes += bits[t][s]
+				votes += int(bits[t][s])
 			if votes * 2 > m:
 				correct += 1
 		return correct / 40.0
@@ -604,8 +604,11 @@ class ThresholdLab extends BaseLab:
 
 	func status() -> String:
 		var k := _counts()
-		var precision := 0.0 if k["tp"] + k["fp"] == 0 else float(k["tp"]) / (k["tp"] + k["fp"])
-		var recall := float(k["tp"]) / maxi(1, k["tp"] + k["fn"])
+		var tp := int(k["tp"])
+		var fp := int(k["fp"])
+		var fn := int(k["fn"])
+		var precision := 0.0 if tp + fp == 0 else float(tp) / (tp + fp)
+		var recall := float(tp) / maxi(1, tp + fn)
 		return "P %.2f  R %.2f  F1 %.2f  need 0.85" % [precision, recall, _f1()]
 
 	func hint() -> String:
@@ -907,8 +910,8 @@ class NeuronLab extends BaseLab:
 	func _acc() -> int:
 		var n := 0
 		for i in px.size():
-			var f := w1 * (px[i] - 0.5) + w2 * (py[i] - 0.5)
-			if (1 if f > 0.0 else 0) == cls[i]:
+			var f: float = w1 * (float(px[i]) - 0.5) + w2 * (float(py[i]) - 0.5)
+			if (1 if f > 0.0 else 0) == int(cls[i]):
 				n += 1
 		return n
 
@@ -967,7 +970,7 @@ class DescentLab extends BaseLab:
 				trail.append(x)
 				if trail.size() > 14:
 					trail.pop_front()
-				x = x - RATES[rate_i] * 2.0 * 2.2 * (x - minx)
+				x = x - float(RATES[rate_i]) * 2.0 * 2.2 * (x - minx)
 				x = clampf(x, -0.3, 1.3)
 				if absf(x - minx) < 0.02:
 					done = true
@@ -989,7 +992,7 @@ class DescentLab extends BaseLab:
 			3.5, LabLibrary.GOLD if done else LabLibrary.RED)
 
 	func status() -> String:
-		var s := "lr %.2f  loss %.3f" % [RATES[rate_i], _loss(x)]
+		var s := "lr %.2f  loss %.3f" % [float(RATES[rate_i]), _loss(x)]
 		if absf(x - minx) > 0.6:
 			s += "  DIVERGING"
 		return s
@@ -1030,7 +1033,7 @@ class ConvLab extends BaseLab:
 		for dy in 3:
 			for dx in 3:
 				var is_plus := dx == 1 or dy == 1
-				s += grid[ay + dy][ax + dx] * (2 if is_plus else -2)
+				s += int(grid[ay + dy][ax + dx]) * (2 if is_plus else -2)
 		return s
 
 	func handle(action: String) -> void:
