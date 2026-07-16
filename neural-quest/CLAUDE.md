@@ -1,10 +1,11 @@
 # NEURAL QUEST
 
 A retro pixel-art educational RPG that teaches 20 machine learning topics.
-Built in Godot 4.x with GDScript. Current version: v0.3.0. History:
+Built in Godot 4.x with GDScript. Current version: v0.4.0. History:
 v0.1.0 feature parity, v0.2.0 remix bank plus music plus minimap plus
 gamepad, v0.3.0 the depth update (interactive ML labs, quest journal,
-databot pet). See "Beyond parity" below.
+databot pet), v0.4.0 card-battle boss rematches. See "Beyond parity"
+below.
 
 ## Provenance note
 
@@ -223,6 +224,22 @@ crown #ffd45e.
 - Databot pet: hatches after the first boss clear and follows the player
   on a 14-frame delay trail. Cosmetic.
 
+## Beyond parity (v0.4.0, card battles)
+
+- Boss rematch card duels (scenes/battle_panel.gd): stepping on a CLEARED
+  boss portal opens a turn-based battle instead of the old remix review
+  quiz (deviation from parity rule 3's review mode, deliberate: the remix
+  questions now appear inside battles, and lessons stay re-readable at
+  tutors). Both sides have battle_hp (3) hearts. Each turn deals a hand of
+  3 concept cards from the engaged-topic pool (always including the
+  current world). A card is named by the head of its world's vocab line
+  and its power is [1, 2, 2, 3] by act. Playing it asks a random question
+  from that world's boss/remix/mini pool, one-shot: correct deals the
+  card's power to the boss and extends the streak, wrong costs one heart
+  and resets the streak. Winning pays xp_battle (35, streak scaled) once
+  per world and feeds achievements battle_first and battles_all (14
+  achievements total). Losing costs nothing. Journal rows show an R mark.
+
 ## Verification
 
 No Godot binary was available in the build environment. What was verified
@@ -236,12 +253,11 @@ playback. Verify locally with:
 
 ## BACKLOG (ideas beyond current version, do not build yet)
 
-- Boss rematch par-time medal (remix questions shipped in v0.2.0; the
-  timed medal layer did not).
 - Second lab per topic (each lab family has an obvious harder variant,
   for example noisy PCA or 2-feature trees with three stakes).
-- Card-battle boss mode: turn-based fights where answering concept
-  questions charges ML-themed spell cards (the Wizard101 combat homage).
+- Battle depth: status effects (a Regularization card that blocks one
+  counterattack), boss decks that ask harder questions at low HP, and a
+  par-turns medal per rematch.
 - NG+ mode: shuffled question pools and 5-option questions.
 - Accessibility: text size toggle, reduced-flash mode, screen-reader dump of
   lesson text to OS clipboard.
