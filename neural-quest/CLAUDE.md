@@ -1,9 +1,10 @@
 # NEURAL QUEST
 
 A retro pixel-art educational RPG that teaches 20 machine learning topics.
-Built in Godot 4.x with GDScript. Current version: v0.2.0 (v0.1.0 was
-feature parity; v0.2.0 added the post-parity items listed under
-"Beyond parity" below).
+Built in Godot 4.x with GDScript. Current version: v0.3.0. History:
+v0.1.0 feature parity, v0.2.0 remix bank plus music plus minimap plus
+gamepad, v0.3.0 the depth update (interactive ML labs, quest journal,
+databot pet). See "Beyond parity" below.
 
 ## Provenance note
 
@@ -203,6 +204,25 @@ crown #ffd45e.
 - Monster variety: three body types (blob, spiked, wisp) cycled by
   world id modulo 3, tinted by act palette.
 
+## Beyond parity (v0.3.0, the depth update)
+
+- Interactive ML labs: every zone has a LabStation terminal that opens a
+  small visual simulation of that zone's topic (scenes/labs.gd, hosted by
+  scenes/lab_panel.gd). 17 lab classes cover the 20 topics: FitLine,
+  Boundary (+Margin subclass for SVM), Knn, Tree, Degree, Bayes, Ensemble,
+  Boost, Threshold (+Anomaly subclass), Kmeans, Hierarchy, Pca, Matrix,
+  Neuron, Descent, Conv, Gate, Attention. Labs are deterministic per world
+  (seed 977000 + id), driven by four directions plus OK from keyboard,
+  gamepad, or on-screen buttons, and pay xp_lab (30) once. Lab names and
+  goals live in worlds.json under "lab"; stations live in map.json under
+  "labs" (validated, reachable). Labs count toward the Glitch topic pool
+  and two achievements (First Experiment, Lab Director; 12 total now).
+- Quest journal: J key, or the LOG button, lists all 20 zones with
+  tutor/mini/lab/boss marks, per-zone shard counts, gold stars for fully
+  cleared zones, and running totals.
+- Databot pet: hatches after the first boss clear and follows the player
+  on a 14-frame delay trail. Cosmetic.
+
 ## Verification
 
 No Godot binary was available in the build environment. What was verified
@@ -216,10 +236,12 @@ playback. Verify locally with:
 
 ## BACKLOG (ideas beyond current version, do not build yet)
 
-- Per-world minigames (for example: drag points onto a regression line,
-  sort samples into clusters, route a signal through a tiny network).
 - Boss rematch par-time medal (remix questions shipped in v0.2.0; the
   timed medal layer did not).
+- Second lab per topic (each lab family has an obvious harder variant,
+  for example noisy PCA or 2-feature trees with three stakes).
+- Card-battle boss mode: turn-based fights where answering concept
+  questions charges ML-themed spell cards (the Wizard101 combat homage).
 - NG+ mode: shuffled question pools and 5-option questions.
 - Accessibility: text size toggle, reduced-flash mode, screen-reader dump of
   lesson text to OS clipboard.
