@@ -38,6 +38,9 @@ for i, w in enumerate(worlds):
     check(bool(str(remix.get("question", "")).strip()), f"world {wid}: remix missing question")
     check(len(remix.get("options", [])) == 3, f"world {wid}: remix needs exactly 3 options")
     check(remix.get("answer") in (0, 1, 2), f"world {wid}: remix answer out of range")
+    lab = w.get("lab", {})
+    check(bool(str(lab.get("name", "")).strip()), f"world {wid}: lab missing name")
+    check(bool(str(lab.get("goal", "")).strip()), f"world {wid}: lab missing goal")
     tut = w.get("tutor", {})
     check(bool(str(tut.get("name", "")).strip()), f"world {wid}: tutor missing name")
     pages = tut.get("pages", [])
@@ -57,7 +60,7 @@ for act in meta.get("acts", []):
         v = pal.get(key, "")
         check(len(v) == 7 and v.startswith("#"), f"act {act.get('id')}: bad palette color {key}={v}")
 check(len(meta.get("titles", [])) >= 5, "titles ladder too short")
-check(len(meta.get("achievements", {})) == 10, "expected exactly 10 achievements")
+check(len(meta.get("achievements", {})) == 12, "expected exactly 12 achievements")
 for aid, a in meta.get("achievements", {}).items():
     check(bool(a.get("name")) and bool(a.get("desc")), f"achievement {aid}: missing name or desc")
 consts = meta.get("constants", {})
@@ -79,6 +82,7 @@ def tile(x, y):
 check(len(map_data["portals"]) == 20, "expected 20 portals")
 check(len(map_data["tutors"]) == 20, "expected 20 tutor homes")
 check(len(map_data["minis"]) == 20, "expected 20 mini homes")
+check(len(map_data["labs"]) == 20, "expected 20 lab stations")
 shards = map_data["shards"]
 check(len(shards) == 60, f"expected exactly 60 shards, got {len(shards)}")
 check(len({tuple(s) for s in shards}) == 60, "duplicate shard placements")
@@ -86,7 +90,7 @@ for x, y in shards:
     check(tile(x, y) == "P", f"shard at ({x},{y}) is not on a path tile")
 for p in map_data["portals"]:
     check(tile(p["x"], p["y"]) == "P", f"portal {p['id']} not on path")
-for e in map_data["tutors"] + map_data["minis"]:
+for e in map_data["tutors"] + map_data["minis"] + map_data["labs"]:
     check(tile(e["x"], e["y"]) != "#", f"entity {e['id']} home at ({e['x']},{e['y']}) is solid")
 
 # Connectivity: BFS from spawn over walkable tiles must reach everything.
@@ -103,7 +107,8 @@ while queue:
             queue.append((nx, ny))
 for p in map_data["portals"]:
     check((p["x"], p["y"]) in seen, f"portal {p['id']} unreachable from spawn")
-for label, ents in (("tutor", map_data["tutors"]), ("mini", map_data["minis"])):
+for label, ents in (("tutor", map_data["tutors"]), ("mini", map_data["minis"]),
+                    ("lab", map_data["labs"])):
     for e in ents:
         check((e["x"], e["y"]) in seen, f"{label} {e['id']} unreachable from spawn")
 for x, y in shards:

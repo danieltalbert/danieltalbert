@@ -60,6 +60,7 @@ for y in range(HEIGHT):
 portals = []
 tutors = []
 minis = []
+labs = []
 zones = []
 
 x = WIDTH // 2
@@ -102,6 +103,12 @@ for i in range(ZONES):
     mini_home = [max(2, min(WIDTH - 3, tx2 + m_off)), min(zone_y1 - 3, mid2 + 2)]
     minis.append({"id": i + 1, "x": mini_home[0], "y": mini_home[1]})
 
+    # Lab station: a static terminal beside the second sweep, opposite the
+    # mini monster so each zone reads as tutor, lab, monster, boss.
+    l_off = 2 if m_off < 0 else -2
+    lab_home = [max(2, min(WIDTH - 3, tx2 + l_off)), max(zone_y0 + 2, mid2 - 2)]
+    labs.append({"id": i + 1, "x": lab_home[0], "y": lab_home[1]})
+
     x, y = tx2, portal_y
 
 # A short tail below the last portal.
@@ -122,7 +129,7 @@ for yy in range(1, HEIGHT - 1):
             grid[yy][xx] = "#"
 
 # Keep a wander pocket clear around every entity home.
-for e in tutors + minis:
+for e in tutors + minis + labs:
     clear_area(e["x"], e["y"], 2)
     grid[e["y"]][e["x"]] = "."
 
@@ -149,10 +156,12 @@ out = {
     "portals": portals,
     "tutors": tutors,
     "minis": minis,
+    "labs": labs,
     "shards": shards,
 }
 
 dest = Path(__file__).resolve().parent.parent / "data" / "map.json"
 dest.write_text(json.dumps(out, indent=1) + "\n")
 print(f"wrote {dest}: {WIDTH}x{HEIGHT}, {len(portals)} portals, "
-      f"{len(tutors)} tutors, {len(minis)} minis, {len(shards)} shards")
+      f"{len(tutors)} tutors, {len(minis)} minis, {len(labs)} labs, "
+      f"{len(shards)} shards")

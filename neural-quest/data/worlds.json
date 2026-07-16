@@ -22,6 +22,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Residual Range",
+      "goal": "Tilt and raise the line until the total squared miss drops below the target."
+    },
     "tutor": {
       "name": "Sage Linna",
       "pages": [
@@ -62,6 +66,10 @@
         "Grouping unlabeled data into clusters"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Threshold Ford",
+      "goal": "Slide and turn the boundary until at least 14 of 16 travelers sort correctly."
     },
     "tutor": {
       "name": "Oracle Logit",
@@ -104,6 +112,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Vote Circle",
+      "goal": "Grow k until the neighbor vote correctly names the mystery creature, then confirm."
+    },
     "tutor": {
       "name": "Elder Nearby",
       "pages": [
@@ -144,6 +156,10 @@
         "Losing track of which feature is which"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Split Stakes",
+      "goal": "Drive the two fence stakes so each pen holds almost only one herd."
     },
     "tutor": {
       "name": "Keeper Root",
@@ -186,6 +202,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Degree Dial",
+      "goal": "Turn the polynomial dial and confirm the degree where TEST error bottoms out."
+    },
     "tutor": {
       "name": "Warden Split",
       "pages": [
@@ -226,6 +246,10 @@
         "The accuracy measured on the test set"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Evidence Scales",
+      "goal": "Weigh each word clue in turn and watch the spam odds update."
     },
     "tutor": {
       "name": "Friar Bayes",
@@ -268,6 +292,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Margin Wall",
+      "goal": "Place the wall so every soldier is sorted AND the clear ground is widest."
+    },
     "tutor": {
       "name": "Knight Marginal",
       "pages": [
@@ -308,6 +336,10 @@
         "To guarantee every tree ends up identical"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Chorus of Trees",
+      "goal": "Add voting trees until the chorus steadies above the accuracy target."
     },
     "tutor": {
       "name": "Grove Mother Ballot",
@@ -350,6 +382,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Forge Rounds",
+      "goal": "Hammer correction rounds until the error glow fades into the target band."
+    },
     "tutor": {
       "name": "Forgemaster Grad",
       "pages": [
@@ -390,6 +426,10 @@
         "Never, test examples stay locked away"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Alarm Dial",
+      "goal": "Set the alarm threshold so precision and recall balance at the target F1."
     },
     "tutor": {
       "name": "Judge Kfold",
@@ -432,6 +472,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Torch Drop",
+      "goal": "Step the torches: assign gems, move torches, repeat until nothing changes."
+    },
     "tutor": {
       "name": "Miner Centroid",
       "pages": [
@@ -472,6 +516,10 @@
         "By comparing the cluster names alphabetically"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Root Weave",
+      "goal": "Merge the nearest clusters upward until exactly three families remain."
     },
     "tutor": {
       "name": "Weaver Linkage",
@@ -514,6 +562,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Axis Wheel",
+      "goal": "Spin the axis until it captures nearly all the variance the cloud offers."
+    },
     "tutor": {
       "name": "Archivist Component",
       "pages": [
@@ -554,6 +606,10 @@
         "Changes nothing about what gets flagged"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Lantern Line",
+      "goal": "Set the lantern so it catches the smugglers without harassing merchants."
     },
     "tutor": {
       "name": "Sentinel Odd",
@@ -596,6 +652,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Echo Ledger",
+      "goal": "Read the kindred shopper's row and fill the missing rating to match."
+    },
     "tutor": {
       "name": "Merchant Echo",
       "pages": [
@@ -636,6 +696,10 @@
         "The physical size of the data"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Spark Bench",
+      "goal": "Tune the two weights until the spark's boundary sorts every signal."
     },
     "tutor": {
       "name": "Sparkkeeper Wattson",
@@ -678,6 +742,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Descent Drum",
+      "goal": "Choose a step size and drum the ball down into the loss valley."
+    },
     "tutor": {
       "name": "Deepsmith Delve",
       "pages": [
@@ -718,6 +786,10 @@
         "Automatic color correction for images"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Filter Sweep",
+      "goal": "Sweep the 3x3 filter across the reef and confirm where it lights brightest."
     },
     "tutor": {
       "name": "Tidecaller Kernel",
@@ -760,6 +832,10 @@
       ],
       "answer": 0
     },
+    "lab": {
+      "name": "Gate Current",
+      "goal": "Keep the gate closed against distractors, then open it at the end to deliver."
+    },
     "tutor": {
       "name": "Currentkeeper Eddy",
       "pages": [
@@ -800,6 +876,10 @@
         "They contain no trainable parameters"
       ],
       "answer": 0
+    },
+    "lab": {
+      "name": "Court of Glances",
+      "goal": "Aim the pronoun's attention at the one word that gives it meaning."
     },
     "tutor": {
       "name": "Throne Sage Vekta",

@@ -71,16 +71,54 @@
     "Legend of the Latent Space"
   ],
   "achievements": {
-    "boss_first": { "name": "First Victory", "desc": "Clear your first boss portal." },
-    "boss_ten": { "name": "Halfway Hero", "desc": "Clear 10 boss portals." },
-    "boss_all": { "name": "Grandmaster of the Depths", "desc": "Clear all 20 boss portals." },
-    "tutors_all": { "name": "Lore Keeper", "desc": "Read every page of all 20 tutors." },
-    "minis_all": { "name": "Monster Scholar", "desc": "Defeat all 20 mini monsters." },
-    "shards_all": { "name": "Shard Harvester", "desc": "Collect all 60 data shards." },
-    "streak_five": { "name": "Hot Streak", "desc": "Reach a streak of 5 first-try answers." },
-    "first_try_ten": { "name": "No Second Guesses", "desc": "Clear 10 bosses on the first try." },
-    "glitch_first": { "name": "Glitch Catcher", "desc": "Catch the Golden Glitch." },
-    "glitch_five": { "name": "Glitch Whisperer", "desc": "Catch the Golden Glitch 5 times." }
+    "boss_first": {
+      "name": "First Victory",
+      "desc": "Clear your first boss portal."
+    },
+    "boss_ten": {
+      "name": "Halfway Hero",
+      "desc": "Clear 10 boss portals."
+    },
+    "boss_all": {
+      "name": "Grandmaster of the Depths",
+      "desc": "Clear all 20 boss portals."
+    },
+    "tutors_all": {
+      "name": "Lore Keeper",
+      "desc": "Read every page of all 20 tutors."
+    },
+    "minis_all": {
+      "name": "Monster Scholar",
+      "desc": "Defeat all 20 mini monsters."
+    },
+    "shards_all": {
+      "name": "Shard Harvester",
+      "desc": "Collect all 60 data shards."
+    },
+    "streak_five": {
+      "name": "Hot Streak",
+      "desc": "Reach a streak of 5 first-try answers."
+    },
+    "first_try_ten": {
+      "name": "No Second Guesses",
+      "desc": "Clear 10 bosses on the first try."
+    },
+    "glitch_first": {
+      "name": "Glitch Catcher",
+      "desc": "Catch the Golden Glitch."
+    },
+    "glitch_five": {
+      "name": "Glitch Whisperer",
+      "desc": "Catch the Golden Glitch 5 times."
+    },
+    "labs_first": {
+      "name": "First Experiment",
+      "desc": "Complete your first ML lab."
+    },
+    "labs_all": {
+      "name": "Lab Director",
+      "desc": "Complete all 20 ML labs."
+    }
   },
   "constants": {
     "xp_boss_first_try": 50,
@@ -89,7 +127,13 @@
     "xp_shard": 2,
     "xp_glitch": 40,
     "xp_per_level": 150,
-    "streak_multipliers": [1.0, 1.25, 1.5, 1.75, 2.0],
+    "streak_multipliers": [
+      1.0,
+      1.25,
+      1.5,
+      1.75,
+      2.0
+    ],
     "shard_count": 60,
     "glitch_respawn_seconds": 40.0,
     "glitch_relocate_seconds": 40.0,
@@ -97,6 +141,7 @@
     "sprint_factor": 1.6,
     "npc_speed": 18.0,
     "glitch_speed": 34.0,
-    "npc_leash_tiles": 3
+    "npc_leash_tiles": 3,
+    "xp_lab": 30
   }
 }
