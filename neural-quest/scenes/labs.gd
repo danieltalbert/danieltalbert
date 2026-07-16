@@ -214,7 +214,7 @@ class MarginLab extends BoundaryLab:
 		var n := Vector2(cos(theta), sin(theta))
 		var d := Vector2(-n.y, n.x)
 		var m := _min_margin()
-		for side in [-1.0, 1.0]:
+		for side: float in [-1.0, 1.0]:
 			var mid := Vector2(0.5, 0.5) + n * (offset + side * m)
 			var e0 := mid + d * 0.9
 			var e1 := mid - d * 0.9
