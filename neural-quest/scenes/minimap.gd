@@ -84,6 +84,9 @@ func _draw() -> void:
 			elif t is Monster and not GameState.mini_beaten(t.world_id):
 				var p := _spot(t.position.x / 16.0, t.position.y / 16.0)
 				draw_rect(Rect2(p, Vector2(2, 2)), ORANGE)
+			elif t is LabStation and not GameState.lab_done(t.world_id):
+				var p := _spot(t.position.x / 16.0, t.position.y / 16.0)
+				draw_rect(Rect2(p, Vector2(2, 2)), Color("#b57ee0"))
 
 	for portal in ContentDb.map["portals"]:
 		var color := GOLD if GameState.boss_cleared(int(portal["id"])) else RED

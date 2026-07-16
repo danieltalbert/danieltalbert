@@ -16,6 +16,7 @@ var xp: int = 0
 var bosses: Dictionary = {}        # id (int) -> {"first_try": bool}
 var minis: Dictionary = {}         # id (int) -> true
 var tutors: Dictionary = {}        # id (int) -> true
+var labs: Dictionary = {}          # id (int) -> true
 var shards: Dictionary = {}        # shard index (int) -> true
 var achievements: Dictionary = {}  # ach id (String) -> true
 var glitch_catches: int = 0
@@ -34,6 +35,7 @@ func reset() -> void:
 	bosses = {}
 	minis = {}
 	tutors = {}
+	labs = {}
 	shards = {}
 	achievements = {}
 	glitch_catches = 0
@@ -49,6 +51,7 @@ func save() -> void:
 		"bosses": _keys_to_str(bosses),
 		"minis": _keys_to_str(minis),
 		"tutors": _keys_to_str(tutors),
+		"labs": _keys_to_str(labs),
 		"shards": _keys_to_str(shards),
 		"achievements": achievements,
 		"glitch_catches": glitch_catches,
@@ -75,6 +78,7 @@ func load_save() -> void:
 	bosses = _keys_to_int(data.get("bosses", {}))
 	minis = _keys_to_int(data.get("minis", {}))
 	tutors = _keys_to_int(data.get("tutors", {}))
+	labs = _keys_to_int(data.get("labs", {}))
 	shards = _keys_to_int(data.get("shards", {}))
 	achievements = data.get("achievements", {})
 	glitch_catches = int(data.get("glitch_catches", 0))
@@ -159,6 +163,19 @@ func mini_beaten(id: int) -> bool:
 	return minis.has(id)
 
 
+func mark_lab_done(id: int) -> void:
+	labs[id] = true
+	unlock("labs_first")
+	if labs.size() >= 20:
+		unlock("labs_all")
+	progress_changed.emit()
+	save()
+
+
+func lab_done(id: int) -> bool:
+	return labs.has(id)
+
+
 func mark_tutor_read(id: int) -> void:
 	tutors[id] = true
 	if tutors.size() >= 20:
@@ -199,6 +216,8 @@ func engaged_world_ids() -> Array:
 	for id in minis:
 		ids[id] = true
 	for id in tutors:
+		ids[id] = true
+	for id in labs:
 		ids[id] = true
 	var out: Array = ids.keys()
 	out.sort()

@@ -7,6 +7,7 @@ extends Node2D
 signal boss_triggered(world_id: int)
 signal tutor_triggered(world_id: int)
 signal mini_triggered(world_id: int)
+signal lab_triggered(world_id: int)
 signal glitch_triggered
 
 const TILE := 16
@@ -18,6 +19,7 @@ var glitch: Node2D = null
 var _portals: Array = []
 var _tutors: Array = []
 var _minis: Array = []
+var _labs: Array = []
 var _shards: Array = []
 var _path_tiles: Array = []
 var _glitch_timer := 0.0
@@ -126,6 +128,13 @@ func _spawn_npcs() -> void:
 		monster.triggered.connect(func(): mini_triggered.emit(monster.world_id))
 		add_child(monster)
 		_minis.append(monster)
+	for l in ContentDb.map["labs"]:
+		var station := LabStation.new()
+		station.world_id = int(l["id"])
+		station.position = tile_center(int(l["x"]), int(l["y"]))
+		station.triggered.connect(func(): lab_triggered.emit(station.world_id))
+		add_child(station)
+		_labs.append(station)
 
 
 func _spawn_shards() -> void:
@@ -157,6 +166,8 @@ func _physics_process(delta: float) -> void:
 		tutor.check_player(player.position)
 	for monster in _minis:
 		monster.check_player(player.position)
+	for station in _labs:
+		station.check_player(player.position)
 	for shard in _shards:
 		if is_instance_valid(shard):
 			shard.check_player(player.position)

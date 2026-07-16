@@ -134,9 +134,10 @@ func refresh() -> void:
 			GameState.streak, GameState.streak_multiplier()]
 	else:
 		_streak_label.text = ""
-	_progress_label.text = "Bosses %d/20  Minis %d/20  Tutors %d/20  Shards %d/60  XP %d" % [
+	_progress_label.text = "B %d/20  M %d/20  T %d/20  L %d/20  S %d/60  XP %d" % [
 		GameState.bosses_cleared_count(), GameState.minis.size(),
-		GameState.tutors.size(), GameState.shards.size(), GameState.xp]
+		GameState.tutors.size(), GameState.labs.size(),
+		GameState.shards.size(), GameState.xp]
 
 
 func _process(_delta: float) -> void:

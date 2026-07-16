@@ -9,6 +9,7 @@ const SCANLINES := true
 var overworld: Overworld
 var quiz_panel: QuizPanel
 var tutor_panel: TutorPanel
+var lab_panel: LabPanel
 var hud: Hud
 
 var _title: TitleScreen
@@ -53,6 +54,7 @@ func _build_world() -> void:
 	overworld.boss_triggered.connect(_on_boss_triggered)
 	overworld.tutor_triggered.connect(_on_tutor_triggered)
 	overworld.mini_triggered.connect(_on_mini_triggered)
+	overworld.lab_triggered.connect(_on_lab_triggered)
 	overworld.glitch_triggered.connect(_on_glitch_triggered)
 	add_child(overworld)
 
@@ -63,6 +65,9 @@ func _build_world() -> void:
 	tutor_panel = TutorPanel.new()
 	add_child(tutor_panel)
 
+	lab_panel = LabPanel.new()
+	add_child(lab_panel)
+
 	hud = Hud.new()
 	hud.overworld = overworld
 	add_child(hud)
@@ -72,7 +77,13 @@ func _build_world() -> void:
 
 
 func _any_panel_open() -> bool:
-	return quiz_panel.visible or tutor_panel.visible
+	return quiz_panel.visible or tutor_panel.visible or lab_panel.visible
+
+
+func _on_lab_triggered(world_id: int) -> void:
+	if _any_panel_open():
+		return
+	lab_panel.open(world_id)
 
 
 func _on_boss_triggered(world_id: int) -> void:

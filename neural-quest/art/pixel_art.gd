@@ -285,6 +285,24 @@ const GLITCH_MAP_1 := [
 	"................",
 	"................"]
 
+const LAB_MAP := [
+	"................",
+	"................",
+	"...kkkkkkkkkk...",
+	"..kssssssssssk..",
+	"..ksccccccccsk..",
+	"..kscwccccwcsk..",
+	"..ksccccccccsk..",
+	"..kssssssssssk..",
+	"...kkkkkkkkkk...",
+	".....kkkk.......",
+	"....kkkkkk......",
+	"...kkkkkkkkkk...",
+	"...kkkkkkkkkk...",
+	"................",
+	"................",
+	"................"]
+
 const SHARD_MAP := [
 	"...x....",
 	"..xxx...",
@@ -363,6 +381,14 @@ static func monster_textures(body: Color, variant: int = 0) -> Array:
 static func glitch_textures() -> Array:
 	var colors := {"g": Color("#ffd45e"), "w": Color("#fff6d8")}
 	return [tex_from_map(GLITCH_MAP_0, colors), tex_from_map(GLITCH_MAP_1, colors)]
+
+
+static func lab_texture(accent: Color) -> ImageTexture:
+	var colors := {
+		"k": Color("#2a2a3a"), "s": accent.darkened(0.5),
+		"c": accent.darkened(0.15), "w": Color("#f5f5ff"),
+	}
+	return tex_from_map(LAB_MAP, colors)
 
 
 static func shard_texture() -> ImageTexture:
