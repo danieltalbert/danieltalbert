@@ -285,6 +285,24 @@ const GLITCH_MAP_1 := [
 	"................",
 	"................"]
 
+const PET_MAP := [
+	"................",
+	"......g..g......",
+	".......gg.......",
+	".....gggggg.....",
+	"....gcccccg.....",
+	"....gcwcwccg....",
+	"....gcccccg.....",
+	".....gggggg.....",
+	"......g..g......",
+	"................",
+	"................",
+	"................",
+	"................",
+	"................",
+	"................",
+	"................"]
+
 const LAB_MAP := [
 	"................",
 	"................",
@@ -381,6 +399,13 @@ static func monster_textures(body: Color, variant: int = 0) -> Array:
 static func glitch_textures() -> Array:
 	var colors := {"g": Color("#ffd45e"), "w": Color("#fff6d8")}
 	return [tex_from_map(GLITCH_MAP_0, colors), tex_from_map(GLITCH_MAP_1, colors)]
+
+
+static func pet_texture() -> ImageTexture:
+	var colors := {
+		"g": Color("#4de3d1"), "c": Color("#141728"), "w": Color("#f5f5ff"),
+	}
+	return tex_from_map(PET_MAP, colors)
 
 
 static func lab_texture(accent: Color) -> ImageTexture:

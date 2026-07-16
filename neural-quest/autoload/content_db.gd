@@ -94,6 +94,7 @@ func _register_inputs() -> void:
 	_add_action("answer_3", [KEY_3])
 	_add_action("toggle_mute", [KEY_M])
 	_add_action("toggle_map", [KEY_TAB])
+	_add_action("toggle_journal", [KEY_J])
 
 
 func _add_action(action: String, keys: Array) -> void:

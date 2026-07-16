@@ -19,6 +19,7 @@ var _streak_label: Label
 var _progress_label: Label
 var _compass: Polygon2D
 var _minimap: Minimap
+var _journal: Journal
 var _touch_input := Vector2.ZERO
 var _touch_sprint := false
 
@@ -41,11 +42,16 @@ func _build_minimap() -> void:
 	_minimap.overworld = overworld
 	add_child(_minimap)
 	_minimap.position = Vector2(240 - _minimap.size.x - 2, 320 - _minimap.size.y - 4)
+	_journal = Journal.new()
+	add_child(_journal)
 
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_map"):
 		_minimap.visible = not _minimap.visible
+		Sfx.play("page")
+	elif event.is_action_pressed("toggle_journal"):
+		_journal.toggle()
 		Sfx.play("page")
 
 
@@ -79,6 +85,16 @@ func _build_top_bar() -> void:
 	var spacer := Control.new()
 	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(spacer)
+
+	var log_btn := Button.new()
+	log_btn.text = "LOG"
+	log_btn.add_theme_font_size_override("font_size", 7)
+	log_btn.custom_minimum_size = Vector2(24, 12)
+	log_btn.focus_mode = Control.FOCUS_NONE
+	log_btn.pressed.connect(func():
+		_journal.toggle()
+		Sfx.play("page"))
+	row.add_child(log_btn)
 
 	var map_btn := Button.new()
 	map_btn.text = "MAP"

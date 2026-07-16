@@ -15,6 +15,7 @@ const TILE := 16
 var player: Player
 var act_of_row: PackedInt32Array = []
 var glitch: Node2D = null
+var pet: Pet = null
 
 var _portals: Array = []
 var _tutors: Array = []
@@ -38,6 +39,19 @@ func _ready() -> void:
 	_spawn_shards()
 	_glitch_timer = float(ContentDb.constant("glitch_respawn_seconds"))
 	GameState.xp_gained.connect(_on_xp_gained)
+	_maybe_spawn_pet(false)
+	GameState.progress_changed.connect(func(): _maybe_spawn_pet(true))
+
+
+func _maybe_spawn_pet(announce: bool) -> void:
+	if pet != null or GameState.bosses_cleared_count() < 1:
+		return
+	pet = Pet.new()
+	pet.target_node = player
+	pet.position = player.position + Vector2(-7, -11)
+	add_child(pet)
+	if announce:
+		Toasts.show_toast("Your databot hatches and follows you!", true)
 
 
 func _on_xp_gained(amount: int, _total: int) -> void:
