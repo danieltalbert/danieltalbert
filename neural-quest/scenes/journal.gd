@@ -27,7 +27,7 @@ func _ready() -> void:
 	add_child(vbox)
 
 	var header := Label.new()
-	header.text = "QUEST JOURNAL   [T]utor [M]ini [L]ab [B]oss"
+	header.text = "QUEST JOURNAL  [T]utor [M]ini [L]ab [B]oss [R]ematch"
 	header.add_theme_font_size_override("font_size", 7)
 	header.add_theme_color_override("font_color", GOLD)
 	vbox.add_child(header)
@@ -74,9 +74,10 @@ func refresh() -> void:
 		var complete := t and m and l and b and s == 3
 		if complete:
 			per_zone += 1
-		var marks := "%s%s%s%s S%d/3" % [
+		var marks := "%s%s%s%s%s S%d/3" % [
 			"T" if t else "-", "M" if m else "-",
-			"L" if l else "-", "B" if b else "-", s]
+			"L" if l else "-", "B" if b else "-",
+			"R" if GameState.battle_won(id) else "-", s]
 		var row: Label = _rows[id - 1]
 		row.text = "%s%2d %s  %s" % ["* " if complete else "  ", id, w["world"], marks]
 		row.add_theme_color_override("font_color", GOLD if complete else TEXT)

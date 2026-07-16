@@ -118,6 +118,14 @@
     "labs_all": {
       "name": "Lab Director",
       "desc": "Complete all 20 ML labs."
+    },
+    "battle_first": {
+      "name": "First Duel",
+      "desc": "Win your first boss rematch battle."
+    },
+    "battles_all": {
+      "name": "Rematch Champion",
+      "desc": "Win a rematch battle in all 20 worlds."
     }
   },
   "constants": {
@@ -142,6 +150,8 @@
     "npc_speed": 18.0,
     "glitch_speed": 34.0,
     "npc_leash_tiles": 3,
-    "xp_lab": 30
+    "xp_lab": 30,
+    "xp_battle": 35,
+    "battle_hp": 3
   }
 }

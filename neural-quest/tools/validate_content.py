@@ -60,7 +60,7 @@ for act in meta.get("acts", []):
         v = pal.get(key, "")
         check(len(v) == 7 and v.startswith("#"), f"act {act.get('id')}: bad palette color {key}={v}")
 check(len(meta.get("titles", [])) >= 5, "titles ladder too short")
-check(len(meta.get("achievements", {})) == 12, "expected exactly 12 achievements")
+check(len(meta.get("achievements", {})) == 14, "expected exactly 14 achievements")
 for aid, a in meta.get("achievements", {}).items():
     check(bool(a.get("name")) and bool(a.get("desc")), f"achievement {aid}: missing name or desc")
 consts = meta.get("constants", {})

@@ -10,6 +10,7 @@ var overworld: Overworld
 var quiz_panel: QuizPanel
 var tutor_panel: TutorPanel
 var lab_panel: LabPanel
+var battle_panel: BattlePanel
 var hud: Hud
 
 var _title: TitleScreen
@@ -68,6 +69,9 @@ func _build_world() -> void:
 	lab_panel = LabPanel.new()
 	add_child(lab_panel)
 
+	battle_panel = BattlePanel.new()
+	add_child(battle_panel)
+
 	hud = Hud.new()
 	hud.overworld = overworld
 	add_child(hud)
@@ -77,7 +81,8 @@ func _build_world() -> void:
 
 
 func _any_panel_open() -> bool:
-	return quiz_panel.visible or tutor_panel.visible or lab_panel.visible
+	return quiz_panel.visible or tutor_panel.visible or lab_panel.visible \
+		or battle_panel.visible
 
 
 func _on_lab_triggered(world_id: int) -> void:
@@ -95,7 +100,13 @@ func _on_boss_triggered(world_id: int) -> void:
 	overworld.shake(0.22, 2.5)
 	await get_tree().create_timer(0.24).timeout
 	_boss_opening = false
-	if not _any_panel_open():
+	if _any_panel_open():
+		return
+	# First encounters are the classic quiz; cleared bosses offer the
+	# card-battle rematch instead.
+	if _boss_was_cleared:
+		battle_panel.open(world_id)
+	else:
 		quiz_panel.open_boss(world_id)
 
 
