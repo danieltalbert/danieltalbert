@@ -99,7 +99,7 @@ func _height_raw(x: float, z: float) -> float:
 	return h
 
 
-func _vertex_color(x: float, z: float, h: float, normal: Vector3) -> Color:
+func _vertex_color(x: float, z: float, _h: float, normal: Vector3) -> Color:
 	var meadow_light: Color = Color(0.43, 0.6, 0.22)
 	var meadow_deep: Color = Color(0.31, 0.52, 0.18)
 	var dry_gold: Color = Color(0.7, 0.62, 0.33)
@@ -118,6 +118,17 @@ func _vertex_color(x: float, z: float, h: float, normal: Vector3) -> Color:
 	col = col.lerp(sand, 1.0 - smoothstep(POND_RADIUS * 0.85, POND_RADIUS * 1.25, pond_dist))
 	# Bake soft sun-side variation so the ground never reads flat.
 	col = col * (0.94 + 0.06 * t)
+	# North alpine blend (richness pass 4): the band climbing toward the
+	# Gradient Peaks trades lush meadow green for desaturated alpine sage,
+	# then scree at the very rim — kills the neon-lime stripe the grazing
+	# morning light used to ignite at the mountain feet, and reads as real
+	# altitude zonation against the foothills behind it.
+	var alpine_sage: Color = Color(0.398, 0.398, 0.242)
+	var scree: Color = Color(0.398, 0.362, 0.312)
+	var alpine: float = smoothstep(90.0, 205.0, -z)
+	col = col.lerp(alpine_sage, alpine * 0.72)
+	col = col.lerp(scree, smoothstep(190.0, 240.0, -z) * 0.45)
+	col = col * (1.0 - alpine * 0.1)
 	return col
 
 
