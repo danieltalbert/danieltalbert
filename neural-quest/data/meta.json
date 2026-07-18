@@ -1,0 +1,157 @@
+{
+  "acts": [
+    {
+      "id": 1,
+      "name": "Prediction Plains",
+      "label": "ACT I",
+      "palette": {
+        "ground": "#3fa34d",
+        "ground_dark": "#2d7d46",
+        "path": "#d9c27e",
+        "path_dark": "#c4ad6a",
+        "obstacle_a": "#6b4a2b",
+        "obstacle_b": "#1f6b38",
+        "accent": "#8fe08a"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Guild of Ensembles",
+      "label": "ACT II",
+      "palette": {
+        "ground": "#b0722e",
+        "ground_dark": "#8f5722",
+        "path": "#e0b268",
+        "path_dark": "#caa055",
+        "obstacle_a": "#c9a15f",
+        "obstacle_b": "#d1512d",
+        "accent": "#f0c060"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Unsupervised Underworld",
+      "label": "ACT III",
+      "palette": {
+        "ground": "#4a2e63",
+        "ground_dark": "#3b2352",
+        "path": "#8a6fae",
+        "path_dark": "#79609b",
+        "obstacle_a": "#b57ee0",
+        "obstacle_b": "#7c4dbb",
+        "accent": "#e0c2ff"
+      }
+    },
+    {
+      "id": 4,
+      "name": "Deep Learning Depths",
+      "label": "ACT IV",
+      "palette": {
+        "ground": "#1c3a5e",
+        "ground_dark": "#16324f",
+        "path": "#3f6c96",
+        "path_dark": "#345d83",
+        "obstacle_a": "#2fa3c7",
+        "obstacle_b": "#1b6f9e",
+        "accent": "#7fe3ff"
+      }
+    }
+  ],
+  "titles": [
+    "Data Novice",
+    "Pattern Apprentice",
+    "Feature Scout",
+    "Model Wrangler",
+    "Gradient Rider",
+    "Ensemble Captain",
+    "Cluster Sage",
+    "Deep Delver",
+    "Neural Knight",
+    "Attention Archmage",
+    "Legend of the Latent Space"
+  ],
+  "achievements": {
+    "boss_first": {
+      "name": "First Victory",
+      "desc": "Clear your first boss portal."
+    },
+    "boss_ten": {
+      "name": "Halfway Hero",
+      "desc": "Clear 10 boss portals."
+    },
+    "boss_all": {
+      "name": "Grandmaster of the Depths",
+      "desc": "Clear all 20 boss portals."
+    },
+    "tutors_all": {
+      "name": "Lore Keeper",
+      "desc": "Read every page of all 20 tutors."
+    },
+    "minis_all": {
+      "name": "Monster Scholar",
+      "desc": "Defeat all 20 mini monsters."
+    },
+    "shards_all": {
+      "name": "Shard Harvester",
+      "desc": "Collect all 60 data shards."
+    },
+    "streak_five": {
+      "name": "Hot Streak",
+      "desc": "Reach a streak of 5 first-try answers."
+    },
+    "first_try_ten": {
+      "name": "No Second Guesses",
+      "desc": "Clear 10 bosses on the first try."
+    },
+    "glitch_first": {
+      "name": "Glitch Catcher",
+      "desc": "Catch the Golden Glitch."
+    },
+    "glitch_five": {
+      "name": "Glitch Whisperer",
+      "desc": "Catch the Golden Glitch 5 times."
+    },
+    "labs_first": {
+      "name": "First Experiment",
+      "desc": "Complete your first ML lab."
+    },
+    "labs_all": {
+      "name": "Lab Director",
+      "desc": "Complete all 20 ML labs."
+    },
+    "battle_first": {
+      "name": "First Duel",
+      "desc": "Win your first boss rematch battle."
+    },
+    "battles_all": {
+      "name": "Rematch Champion",
+      "desc": "Win a rematch battle in all 20 worlds."
+    }
+  },
+  "constants": {
+    "xp_boss_first_try": 50,
+    "xp_boss_retry": 25,
+    "xp_mini": 15,
+    "xp_shard": 2,
+    "xp_glitch": 40,
+    "xp_per_level": 150,
+    "streak_multipliers": [
+      1.0,
+      1.25,
+      1.5,
+      1.75,
+      2.0
+    ],
+    "shard_count": 60,
+    "glitch_respawn_seconds": 40.0,
+    "glitch_relocate_seconds": 40.0,
+    "player_speed": 60.0,
+    "sprint_factor": 1.6,
+    "npc_speed": 18.0,
+    "glitch_speed": 34.0,
+    "npc_leash_tiles": 3,
+    "xp_lab": 30,
+    "xp_battle": 35,
+    "battle_hp": 3
+  }
+}

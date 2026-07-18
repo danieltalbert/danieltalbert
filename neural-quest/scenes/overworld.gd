@@ -1,0 +1,289 @@
+class_name Overworld
+extends Node2D
+## Overworld: builds the terrain TileMapLayer from data/map.json, spawns the
+## player and all entities, and routes touch triggers (portals, tutors,
+## minis, shards, glitch) to the panels. Signals let Main own the UI flow.
+
+signal boss_triggered(world_id: int)
+signal tutor_triggered(world_id: int)
+signal mini_triggered(world_id: int)
+signal lab_triggered(world_id: int)
+signal glitch_triggered
+
+const TILE := 16
+
+var player: Player
+var act_of_row: PackedInt32Array = []
+var glitch: Node2D = null
+var pet: Pet = null
+
+var _portals: Array = []
+var _tutors: Array = []
+var _minis: Array = []
+var _labs: Array = []
+var _shards: Array = []
+var _path_tiles: Array = []
+var _glitch_timer := 0.0
+var _shake_time := 0.0
+var _shake_strength := 0.0
+var _current_act := 0
+var _banner_cooldown := 0.0
+
+
+func _ready() -> void:
+	_build_act_lookup()
+	_build_terrain()
+	_spawn_player()
+	_spawn_portals()
+	_spawn_npcs()
+	_spawn_shards()
+	_glitch_timer = float(ContentDb.constant("glitch_respawn_seconds"))
+	GameState.xp_gained.connect(_on_xp_gained)
+	_maybe_spawn_pet(false)
+	GameState.progress_changed.connect(func(): _maybe_spawn_pet(true))
+
+
+func _maybe_spawn_pet(announce: bool) -> void:
+	if pet != null or GameState.bosses_cleared_count() < 1:
+		return
+	pet = Pet.new()
+	pet.target_node = player
+	pet.position = player.position + Vector2(-7, -11)
+	add_child(pet)
+	if announce:
+		Toasts.show_toast("Your databot hatches and follows you!", true)
+
+
+func _on_xp_gained(amount: int, _total: int) -> void:
+	if player != null:
+		FloatText.spawn(self, player.position + Vector2(0, -8), "+%d XP" % amount)
+
+
+func _build_act_lookup() -> void:
+	var height := int(ContentDb.map["height"])
+	act_of_row.resize(height)
+	for y in height:
+		act_of_row[y] = 1
+	for z in ContentDb.map["zones"]:
+		for y in range(int(z["y0"]), int(z["y1"]) + 1):
+			act_of_row[y] = int(z["act"])
+	var last_zone: Dictionary = ContentDb.map["zones"][-1]
+	for y in range(int(last_zone["y1"]) + 1, height):
+		act_of_row[y] = int(last_zone["act"])
+
+
+func _build_terrain() -> void:
+	var atlas := PixelArt.build_terrain_atlas(ContentDb.meta["acts"])
+	var src := TileSetAtlasSource.new()
+	src.texture = atlas
+	src.texture_region_size = Vector2i(TILE, TILE)
+	for x in 4:
+		for y in ContentDb.meta["acts"].size():
+			src.create_tile(Vector2i(x, y))
+	var tile_set := TileSet.new()
+	tile_set.tile_size = Vector2i(TILE, TILE)
+	tile_set.add_source(src, 0)
+
+	var layer := TileMapLayer.new()
+	layer.tile_set = tile_set
+	add_child(layer)
+
+	var width := int(ContentDb.map["width"])
+	var height := int(ContentDb.map["height"])
+	for y in height:
+		var act_row := act_of_row[y] - 1
+		for x in width:
+			var col := 0
+			match ContentDb.tile_at(x, y):
+				"P":
+					col = 2
+					_path_tiles.append(Vector2i(x, y))
+				"#":
+					col = 3
+				_:
+					col = 1 if (x * 7 + y * 13) % 7 == 0 else 0
+			layer.set_cell(Vector2i(x, y), 0, Vector2i(col, act_row))
+
+
+func _spawn_player() -> void:
+	player = Player.new()
+	var spawn: Array = ContentDb.map["spawn"]
+	player.position = tile_center(int(spawn[0]), int(spawn[1]))
+	add_child(player)
+	var cam := player.camera
+	cam.limit_left = 0
+	cam.limit_right = int(ContentDb.map["width"]) * TILE
+	cam.limit_top = 0
+	cam.limit_bottom = int(ContentDb.map["height"]) * TILE
+
+
+func _spawn_portals() -> void:
+	for p in ContentDb.map["portals"]:
+		var portal := Portal.new()
+		portal.world_id = int(p["id"])
+		portal.position = tile_center(int(p["x"]), int(p["y"]))
+		portal.triggered.connect(func(): boss_triggered.emit(portal.world_id))
+		add_child(portal)
+		_portals.append(portal)
+
+
+func _spawn_npcs() -> void:
+	for t in ContentDb.map["tutors"]:
+		var tutor := Tutor.new()
+		tutor.world_id = int(t["id"])
+		tutor.position = tile_center(int(t["x"]), int(t["y"]))
+		tutor.triggered.connect(func(): tutor_triggered.emit(tutor.world_id))
+		add_child(tutor)
+		_tutors.append(tutor)
+	for m in ContentDb.map["minis"]:
+		var monster := Monster.new()
+		monster.world_id = int(m["id"])
+		monster.position = tile_center(int(m["x"]), int(m["y"]))
+		monster.triggered.connect(func(): mini_triggered.emit(monster.world_id))
+		add_child(monster)
+		_minis.append(monster)
+	for l in ContentDb.map["labs"]:
+		var station := LabStation.new()
+		station.world_id = int(l["id"])
+		station.position = tile_center(int(l["x"]), int(l["y"]))
+		station.triggered.connect(func(): lab_triggered.emit(station.world_id))
+		add_child(station)
+		_labs.append(station)
+
+
+func _spawn_shards() -> void:
+	var coords: Array = ContentDb.map["shards"]
+	for i in coords.size():
+		if GameState.shard_collected(i):
+			continue
+		var shard := Shard.new()
+		shard.index = i
+		shard.position = tile_center(int(coords[i][0]), int(coords[i][1]))
+		shard.collected.connect(_on_shard_collected)
+		add_child(shard)
+		_shards.append(shard)
+
+
+func _on_shard_collected(index: int) -> void:
+	GameState.grant_xp(int(ContentDb.constant("xp_shard")))
+	GameState.mark_shard(index)
+
+
+func _physics_process(delta: float) -> void:
+	if player == null:
+		return
+	_update_act(delta)
+	_update_glitch(delta)
+	for portal in _portals:
+		portal.check_player(player.position)
+	for tutor in _tutors:
+		tutor.check_player(player.position)
+	for monster in _minis:
+		monster.check_player(player.position)
+	for station in _labs:
+		station.check_player(player.position)
+	for shard in _shards:
+		if is_instance_valid(shard):
+			shard.check_player(player.position)
+	if glitch != null:
+		glitch.check_player(player.position)
+
+
+func _update_act(delta: float) -> void:
+	_banner_cooldown = maxf(0.0, _banner_cooldown - delta)
+	var row := clampi(player.tile_pos().y, 0, act_of_row.size() - 1)
+	var act := act_of_row[row]
+	if act == _current_act:
+		return
+	var first := _current_act == 0
+	_current_act = act
+	Music.set_act(act)
+	if _banner_cooldown <= 0.0 and not first:
+		var a := ContentDb.act(act)
+		Toasts.show_toast("Entering %s: %s" % [a["label"], a["name"]])
+		_banner_cooldown = 6.0
+
+
+# ---- Golden Glitch lifecycle ----
+
+func _update_glitch(delta: float) -> void:
+	if glitch == null:
+		# It only appears once the player has engaged with at least one
+		# topic, since its remix question draws from that pool.
+		if GameState.engaged_world_ids().is_empty():
+			return
+		_glitch_timer -= delta
+		if _glitch_timer <= 0.0:
+			_spawn_glitch()
+	else:
+		_glitch_timer -= delta
+		if _glitch_timer <= 0.0:
+			glitch.relocate(_random_path_position())
+			_glitch_timer = float(ContentDb.constant("glitch_relocate_seconds"))
+
+
+func _spawn_glitch() -> void:
+	glitch = GoldenGlitch.new()
+	glitch.position = _random_path_position()
+	glitch.triggered.connect(func(): glitch_triggered.emit())
+	add_child(glitch)
+	_glitch_timer = float(ContentDb.constant("glitch_relocate_seconds"))
+
+
+func despawn_glitch() -> void:
+	if glitch != null:
+		glitch.queue_free()
+		glitch = null
+	_glitch_timer = float(ContentDb.constant("glitch_respawn_seconds"))
+
+
+func _random_path_position() -> Vector2:
+	var t: Vector2i = _path_tiles[randi() % _path_tiles.size()]
+	return tile_center(t.x, t.y)
+
+
+# ---- Juice ----
+
+func shake(duration: float, strength: float) -> void:
+	_shake_time = duration
+	_shake_strength = strength
+
+
+func _process(delta: float) -> void:
+	if player == null or player.camera == null:
+		return
+	if _shake_time > 0.0:
+		_shake_time -= delta
+		player.camera.offset = Vector2(
+			randf_range(-_shake_strength, _shake_strength),
+			randf_range(-_shake_strength, _shake_strength))
+	else:
+		player.camera.offset = Vector2.ZERO
+
+
+func burst_at(pos: Vector2, color: Color) -> void:
+	var p := CPUParticles2D.new()
+	p.position = pos
+	p.texture = PixelArt.dot_texture(color, 2)
+	p.amount = 16
+	p.lifetime = 0.5
+	p.one_shot = true
+	p.explosiveness = 1.0
+	p.spread = 180.0
+	p.initial_velocity_min = 25.0
+	p.initial_velocity_max = 55.0
+	p.gravity = Vector2.ZERO
+	p.emitting = true
+	add_child(p)
+	get_tree().create_timer(0.8).timeout.connect(p.queue_free)
+
+
+func tile_center(x: int, y: int) -> Vector2:
+	return Vector2(x * TILE + TILE / 2.0, y * TILE + TILE / 2.0)
+
+
+func world_position_of_portal(world_id: int) -> Vector2:
+	for p in ContentDb.map["portals"]:
+		if int(p["id"]) == world_id:
+			return tile_center(int(p["x"]), int(p["y"]))
+	return Vector2.ZERO
