@@ -4,7 +4,7 @@ I'm a Computer Science major with a focus in AI Engineering. Ever since middle s
 
 I love working on projects involving machine learning, data science, and complex algorithms. Once I've got some solid fundamentals down, I'm excited to start learning more about Kubernetes.
 
-🔭 **Currently working on:** building a neural network from scratch in NumPy (MNIST)
+🔭 **Currently working on:** Fine tuning LLMs from scratch and experimenting with RSI: it's not all sci-fi ;)
 
 📫 **Reach me:** danieltalbertdev@gmail.com
 
