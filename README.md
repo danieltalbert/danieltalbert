@@ -83,7 +83,7 @@ I am interested in every layer—and especially the handoffs between them. A met
         <img src="https://raw.githubusercontent.com/danieltalbert/emvera/main/docs/assets/social-preview.png" alt="Emvera secure personal-finance application overview" width="100%">
       </a>
       <br>
-      <strong>Emvera · the software around future intelligence</strong>
+      <strong>Emvera · secure application systems</strong>
       <br>
       <sub>Django · Plaid Sandbox · PostgreSQL · TOTP · Docker · 205 tests</sub>
       <p>Builds the kind of secure, owner-scoped, observable application foundation that future data and model capabilities should inherit rather than work around.</p>
