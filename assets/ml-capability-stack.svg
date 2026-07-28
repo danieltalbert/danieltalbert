@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="620" viewBox="0 0 1600 620" role="img" aria-labelledby="title desc">
+  <title id="title">The machine learning engineering stack that fascinates me</title>
+  <desc id="desc">A four-stage flow from data and representations, through architectures and weights, into inference and orchestration, and finally product capabilities.</desc>
+
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#090a19"/>
+      <stop offset="0.52" stop-color="#151029"/>
+      <stop offset="1" stop-color="#081827"/>
+    </linearGradient>
+    <linearGradient id="flow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#78c7d7"/>
+      <stop offset="0.5" stop-color="#c58be2"/>
+      <stop offset="1" stop-color="#f2aa7d"/>
+    </linearGradient>
+    <linearGradient id="cardStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#78c7d7" stop-opacity="0.85"/>
+      <stop offset="0.5" stop-color="#b98ad5" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#f2aa7d" stop-opacity="0.85"/>
+    </linearGradient>
+    <radialGradient id="coralGlow">
+      <stop offset="0" stop-color="#f2aa7d" stop-opacity="0.3"/>
+      <stop offset="1" stop-color="#f2aa7d" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cyanGlow">
+      <stop offset="0" stop-color="#78c7d7" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#78c7d7" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c58be2"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="620" rx="28" fill="url(#background)"/>
+  <ellipse cx="124" cy="128" rx="250" ry="220" fill="url(#cyanGlow)"/>
+  <ellipse cx="1480" cy="500" rx="310" ry="250" fill="url(#coralGlow)"/>
+
+  <g fill="#f8f4ff">
+    <circle cx="79" cy="91" r="2.5" opacity="0.9"/>
+    <circle cx="147" cy="52" r="1.7" opacity="0.75"/>
+    <circle cx="261" cy="109" r="2" opacity="0.7"/>
+    <circle cx="374" cy="58" r="1.4" opacity="0.65"/>
+    <circle cx="506" cy="94" r="2.2" opacity="0.75"/>
+    <circle cx="694" cy="46" r="1.6" opacity="0.8"/>
+    <circle cx="824" cy="115" r="2.1" opacity="0.7"/>
+    <circle cx="1004" cy="64" r="1.5" opacity="0.65"/>
+    <circle cx="1147" cy="113" r="2.4" opacity="0.8"/>
+    <circle cx="1320" cy="55" r="1.7" opacity="0.65"/>
+    <circle cx="1513" cy="105" r="2.3" opacity="0.75"/>
+    <circle cx="89" cy="536" r="1.6" opacity="0.65"/>
+    <circle cx="318" cy="568" r="2.1" opacity="0.75"/>
+    <circle cx="562" cy="529" r="1.4" opacity="0.55"/>
+    <circle cx="777" cy="572" r="2.3" opacity="0.7"/>
+    <circle cx="1046" cy="534" r="1.7" opacity="0.65"/>
+    <circle cx="1289" cy="574" r="2.2" opacity="0.7"/>
+    <circle cx="1517" cy="529" r="1.5" opacity="0.65"/>
+  </g>
+
+  <text x="70" y="70" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="38" font-weight="700">
+    The MLE stack that fascinates me
+  </text>
+  <text x="70" y="110" fill="#c8c2d8" font-family="Segoe UI, Inter, sans-serif" font-size="21">
+    Not just a trained model—the complete path from raw signal to a useful capability.
+  </text>
+
+  <path d="M 370 322 C 402 284, 420 284, 452 322" fill="none" stroke="url(#flow)" stroke-width="4" opacity="0.82" marker-end="url(#arrow)"/>
+  <path d="M 750 322 C 782 284, 800 284, 832 322" fill="none" stroke="url(#flow)" stroke-width="4" opacity="0.82" marker-end="url(#arrow)"/>
+  <path d="M 1130 322 C 1162 284, 1180 284, 1212 322" fill="none" stroke="url(#flow)" stroke-width="4" opacity="0.82" marker-end="url(#arrow)"/>
+
+  <g>
+    <rect x="55" y="155" width="315" height="330" rx="24" fill="#11152a" fill-opacity="0.94" stroke="url(#cardStroke)" stroke-width="2"/>
+    <circle cx="105" cy="211" r="28" fill="#78c7d7" fill-opacity="0.14" stroke="#78c7d7" stroke-width="2"/>
+    <circle cx="96" cy="211" r="5" fill="#78c7d7"/>
+    <circle cx="112" cy="200" r="5" fill="#9ee8ef"/>
+    <circle cx="116" cy="221" r="5" fill="#78c7d7"/>
+    <path d="M100 208 L108 203 M101 214 L111 219" stroke="#bdf4f8" stroke-width="2"/>
+    <text x="145" y="202" fill="#9ee8ef" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700" letter-spacing="2">01</text>
+    <text x="145" y="227" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">DATA &amp;</text>
+    <text x="145" y="255" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">REPRESENTATIONS</text>
+    <line x1="85" y1="282" x2="340" y2="282" stroke="#78c7d7" stroke-opacity="0.35"/>
+    <text x="85" y="320" fill="#d8d3e4" font-family="Segoe UI, Inter, sans-serif" font-size="18">datasets · features · embeddings</text>
+    <text x="85" y="363" fill="#a9a3b9" font-family="Segoe UI, Inter, sans-serif" font-size="17">
+      <tspan x="85" dy="0">What signal exists?</tspan>
+      <tspan x="85" dy="28">How should it be encoded?</tspan>
+    </text>
+    <text x="85" y="449" fill="#78c7d7" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2">INPUT</text>
+  </g>
+
+  <g>
+    <rect x="435" y="155" width="315" height="330" rx="24" fill="#141329" fill-opacity="0.94" stroke="url(#cardStroke)" stroke-width="2"/>
+    <circle cx="485" cy="211" r="28" fill="#c58be2" fill-opacity="0.14" stroke="#c58be2" stroke-width="2"/>
+    <circle cx="475" cy="200" r="4.5" fill="#d9b4ea"/>
+    <circle cx="475" cy="222" r="4.5" fill="#d9b4ea"/>
+    <circle cx="495" cy="211" r="5" fill="#c58be2"/>
+    <path d="M479 201 L491 209 M479 221 L491 213" stroke="#efd8fa" stroke-width="2"/>
+    <text x="525" y="202" fill="#d9b4ea" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700" letter-spacing="2">02</text>
+    <text x="525" y="227" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">ARCHITECTURES</text>
+    <text x="525" y="255" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">&amp; WEIGHTS</text>
+    <line x1="465" y1="282" x2="720" y2="282" stroke="#c58be2" stroke-opacity="0.35"/>
+    <text x="465" y="320" fill="#d8d3e4" font-family="Segoe UI, Inter, sans-serif" font-size="18">neural nets · training · fine-tuning</text>
+    <text x="465" y="363" fill="#a9a3b9" font-family="Segoe UI, Inter, sans-serif" font-size="17">
+      <tspan x="465" dy="0">What did the model learn?</tspan>
+      <tspan x="465" dy="28">How does that shape behavior?</tspan>
+    </text>
+    <text x="465" y="449" fill="#c58be2" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2">LEARNING</text>
+  </g>
+
+  <g>
+    <rect x="815" y="155" width="315" height="330" rx="24" fill="#121429" fill-opacity="0.94" stroke="url(#cardStroke)" stroke-width="2"/>
+    <circle cx="865" cy="211" r="28" fill="#9b9de4" fill-opacity="0.14" stroke="#9b9de4" stroke-width="2"/>
+    <rect x="850" y="199" width="12" height="12" rx="2" fill="none" stroke="#c7c8f5" stroke-width="2"/>
+    <rect x="869" y="215" width="12" height="12" rx="2" fill="none" stroke="#c7c8f5" stroke-width="2"/>
+    <path d="M862 205 H875 V214" fill="none" stroke="#9b9de4" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="905" y="202" fill="#c7c8f5" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700" letter-spacing="2">03</text>
+    <text x="905" y="227" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">INFERENCE &amp;</text>
+    <text x="905" y="255" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">ORCHESTRATION</text>
+    <line x1="845" y1="282" x2="1100" y2="282" stroke="#9b9de4" stroke-opacity="0.35"/>
+    <text x="845" y="320" fill="#d8d3e4" font-family="Segoe UI, Inter, sans-serif" font-size="18">local models · pipelines · services</text>
+    <text x="845" y="363" fill="#a9a3b9" font-family="Segoe UI, Inter, sans-serif" font-size="17">
+      <tspan x="845" dy="0">How does a model run reliably</tspan>
+      <tspan x="845" dy="28">with tools, code, and feedback?</tspan>
+    </text>
+    <text x="845" y="449" fill="#aeb0ef" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2">SYSTEM</text>
+  </g>
+
+  <g>
+    <rect x="1195" y="155" width="350" height="330" rx="24" fill="#171229" fill-opacity="0.94" stroke="url(#cardStroke)" stroke-width="2"/>
+    <circle cx="1245" cy="211" r="28" fill="#f2aa7d" fill-opacity="0.14" stroke="#f2aa7d" stroke-width="2"/>
+    <path d="M1245 193 L1249 205 L1262 211 L1249 216 L1245 229 L1240 216 L1228 211 L1240 205 Z" fill="#f2aa7d"/>
+    <text x="1285" y="202" fill="#f7c5a6" font-family="Segoe UI, Inter, sans-serif" font-size="15" font-weight="700" letter-spacing="2">04</text>
+    <text x="1285" y="227" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">PRODUCT</text>
+    <text x="1285" y="255" fill="#f8f4ff" font-family="Segoe UI, Inter, sans-serif" font-size="24" font-weight="700">CAPABILITIES</text>
+    <line x1="1225" y1="282" x2="1515" y2="282" stroke="#f2aa7d" stroke-opacity="0.35"/>
+    <text x="1225" y="320" fill="#d8d3e4" font-family="Segoe UI, Inter, sans-serif" font-size="18">vision · intelligent tools · interactive ML</text>
+    <text x="1225" y="363" fill="#a9a3b9" font-family="Segoe UI, Inter, sans-serif" font-size="17">
+      <tspan x="1225" dy="0">What can the system now do</tspan>
+      <tspan x="1225" dy="28">that it could not do before?</tspan>
+    </text>
+    <text x="1225" y="449" fill="#f2aa7d" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="700" letter-spacing="1.2">IMPACT</text>
+  </g>
+
+  <rect x="404" y="529" width="792" height="54" rx="27" fill="#ffffff" fill-opacity="0.055" stroke="#ffffff" stroke-opacity="0.1"/>
+  <circle cx="443" cy="556" r="5" fill="#78c7d7" filter="url(#softGlow)"/>
+  <circle cx="1157" cy="556" r="5" fill="#f2aa7d" filter="url(#softGlow)"/>
+  <text x="800" y="564" text-anchor="middle" fill="#d8d3e4" font-family="Segoe UI, Inter, sans-serif" font-size="19">
+    The handoffs between these layers are where machine learning engineering gets interesting.
+  </text>
+</svg>
