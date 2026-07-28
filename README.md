@@ -36,7 +36,7 @@ I am interested in every layer—and especially the handoffs between them. A met
   <tr>
     <td width="50%" valign="top">
       <a href="https://github.com/danieltalbert/traffic-sign-resnet50">
-        <img src="https://raw.githubusercontent.com/danieltalbert/traffic-sign-resnet50/main/docs/assets/social-preview.png" alt="Traffic Sign ResNet50 evaluation overview" width="100%">
+        <img src="https://raw.githubusercontent.com/danieltalbert/traffic-sign-resnet50/main/docs/assets/grouped-generalization-hero.jpg" alt="Correlated traffic-sign frames flow through a ResNet before evaluation on an unseen physical sign" width="100%">
       </a>
       <br>
       <strong>Traffic Sign ResNet50 · modeling + inference</strong>
@@ -46,7 +46,7 @@ I am interested in every layer—and especially the handoffs between them. A met
     </td>
     <td width="50%" valign="top">
       <a href="https://github.com/danieltalbert/data-science-portfolio">
-        <img src="https://raw.githubusercontent.com/danieltalbert/data-science-portfolio/main/docs/assets/social-preview.png" alt="Data Science Portfolio property-age model overview" width="100%">
+        <img src="https://raw.githubusercontent.com/danieltalbert/data-science-portfolio/main/docs/assets/property-feature-landscape-hero.jpg" alt="Property structures become model features and resolve into two age-group regions" width="100%">
       </a>
       <br>
       <strong>Data Science Portfolio · data + evaluation</strong>
@@ -90,7 +90,7 @@ I am interested in every layer—and especially the handoffs between them. A met
     </td>
     <td width="50%" valign="top">
       <a href="https://github.com/danieltalbert/pizza-sales-performance-analysis">
-        <img src="https://raw.githubusercontent.com/danieltalbert/pizza-sales-performance-analysis/main/reports/figures/social-preview.png" alt="Pizza sales performance dashboard and findings" width="100%">
+        <img src="https://raw.githubusercontent.com/danieltalbert/pizza-sales-performance-analysis/main/reports/figures/transaction-signals-hero.jpg" alt="Pizza order tickets resolve into demand waves and product signals" width="100%">
       </a>
       <br>
       <strong>Pizza Sales Analysis · data into decisions</strong>
