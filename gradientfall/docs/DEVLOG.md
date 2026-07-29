@@ -116,22 +116,24 @@ executed once. This session executed it.*
   up. Kindness on a wrong answer is your design and I left it exactly as
   specified; a short vulnerable recovery after a fizzle would restore the stakes
   without punishing. Your call at the phase-gate playtest.
-- ⚠️ **BLOCKED ON DANNY — which repo is live?** Two committed docs contradict
-  each other and I did not guess. `gradientfall/CLAUDE.md` says this folder is
-  its own checkout of `danieltalbert/gradientfall`; the parent repo's root
-  `CLAUDE.md` says the parent `danieltalbert/danieltalbert` is canonical and
-  that `danieltalbert/gradientfall` is the WRONG remote which split the project
-  once already. Both are on disk, both are real Git repos, and this whole tree
-  is tracked twice.
-  - Evidence favours **`danieltalbert/gradientfall`** (this folder): the parent
-    carries a `pre-push` hook that refuses every push — *"retired parent
-    monorepo… run Git inside gradientfall or neural-quest instead"* — and this
-    folder has a real upstream, PR-based history, and was 1 commit behind
-    `origin/main` at session start.
-  - I first "fixed" this file toward the parent, then found the hook and
-    reverted that edit. The session's work is committed in **both** local repos
-    and pushed to **neither**. Push it from whichever is live, then delete the
-    losing claim from the other `CLAUDE.md` so no session re-derives this.
+**RESOLVED THIS SESSION — the two-repo trap, settled by Danny**
+- The push failed: the parent carries a `pre-push` hook refusing every push as a
+  *"retired parent monorepo — run Git inside gradientfall or neural-quest
+  instead"*, which is the exact opposite of what the root `CLAUDE.md` says.
+  Both are real Git repos and this whole tree is tracked **twice**:
+  `gradientfall/` has its own nested `.git` on `danieltalbert/gradientfall`
+  with a diverged `origin/main`.
+- **The real mechanism of the old project split, now understood:** it was never
+  a naming mistake. Running `git` from *inside* `gradientfall/` silently
+  targets the standalone repo. Any session that `cd`s in and commits lands its
+  work in the wrong place and cannot tell from the file paths.
+- **Danny's call: `danieltalbert/danieltalbert` (the parent) is canonical.**
+  The hook was stale and is now disabled (kept as `.git/hooks/pre-push.disabled`
+  rather than deleted). Both `CLAUDE.md` files now say the same thing and both
+  warn about the nested `.git`. A stray copy of this session's commit also
+  exists in the nested repo's local history — unpushed, harmless, ignorable.
+- **Rule for every future session:** `git rev-parse --show-toplevel` before
+  committing. It must be `C:/Users/danny/danieltalbert`.
 
 ---
 

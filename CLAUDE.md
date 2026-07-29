@@ -17,6 +17,15 @@ docs to read first.
   appeared to lose its photoreal grass because that repo is frozen on the old
   lineage. Its unique milestones (Town of Bootstrap, Inventory) have since been
   ported here. **Do not clone, push to, or judge the game from it.**
+- ⚠️ **The trap, in detail (settled 2026-07-29):** `gradientfall/` and
+  `neural-quest/` each still contain a nested `.git` pointing at their
+  standalone remotes. Git run from *inside* those folders silently targets the
+  wrong repo — that is the mechanism that split the project, not a naming
+  mistake. **Always `cd` to this root, or check `git rev-parse
+  --show-toplevel`, before committing.** A `pre-push` hook here used to refuse
+  every push ("retired parent monorepo — run Git inside gradientfall or
+  neural-quest instead"); Danny confirmed that hook was stale and it is now
+  disabled (`.git/hooks/pre-push.disabled`).
 - Stale on-disk copies under `Documents/Codex/.../gradientfall/` are frozen
   2026-07-20 snapshots, each marked `STALE_DO_NOT_USE.md`. Never open them.
 
