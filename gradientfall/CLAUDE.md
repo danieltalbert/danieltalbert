@@ -16,17 +16,22 @@ choose between shipping more and shipping better, it ships better, and says so
 in the devlog.
 
 ## The one canonical workspace (check this before touching anything)
-- **Work here and nowhere else:** `C:\Users\danny\danieltalbert\gradientfall`,
-  a subdirectory of the **`danieltalbert/danieltalbert`** checkout, branch
-  `main`. One tree, one branch. `main == origin/main` is the real, playable
-  state.
-- ⚠️ **`danieltalbert/gradientfall` is the WRONG remote — do not clone, push
-  to, or judge the game from it.** It is a standalone repo left behind by a
-  one-off portfolio publish. Cloud sessions cloned it by mistake, split the
-  project in two, and cost real time; it is frozen on the old lineage, so the
-  game *appears* to have lost its photoreal grass there. Its unique milestones
-  (Town of Bootstrap, Inventory) are already ported here. The repo-root
-  `CLAUDE.md` is authoritative on this.
+- **Work here and nowhere else:** `C:\Users\danny\danieltalbert\gradientfall`.
+  This folder is its own Git checkout of
+  `https://github.com/danieltalbert/gradientfall.git`; verify that exact
+  top-level path and remote before editing. `main == origin/main` is the
+  canonical playable state after a change is reviewed and merged.
+- ⚠️ **UNRESOLVED, needs Danny (noticed 2026-07-29).** The parent folder
+  `C:\Users\danny\danieltalbert` is *also* a Git repo
+  (`danieltalbert/danieltalbert`) that still tracks a copy of this whole tree,
+  and its `CLAUDE.md` says the exact opposite of this file: that the parent is
+  canonical and `danieltalbert/gradientfall` is the WRONG remote that once
+  split the project. The evidence on disk favours THIS file — the parent has a
+  `pre-push` hook that refuses every push with "retired parent monorepo… run
+  Git inside gradientfall or neural-quest instead", and this folder has a real
+  upstream and PR-based history. **Do not guess.** Confirm with Danny before
+  pushing anything, and when it is settled, delete the losing claim from
+  whichever `CLAUDE.md` is wrong so no future session has to re-derive this.
 - **Other clones are review or recovery workspaces, not the live game.**
   In particular, paths under `C:\Users\danny\Documents\Codex\...` may be
   temporary clean checkouts. They are useful for integration and CI
@@ -39,7 +44,7 @@ in the devlog.
   git branch --show-current
   git log --oneline -1
   ```
-  Expect `danieltalbert/danieltalbert` and the canonical path above. Normally expect
+  Expect the canonical path and Gradientfall remote above. Normally expect
   `main`; a short-lived review/recovery branch is acceptable only when it has
   an upstream and a visible pull request.
 

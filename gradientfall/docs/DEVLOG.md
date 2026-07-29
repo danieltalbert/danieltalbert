@@ -116,10 +116,22 @@ executed once. This session executed it.*
   up. Kindness on a wrong answer is your design and I left it exactly as
   specified; a short vulnerable recovery after a fizzle would restore the stakes
   without punishing. Your call at the phase-gate playtest.
-- **Doc contradiction fixed:** `gradientfall/CLAUDE.md` still named
-  `danieltalbert/gradientfall` as the canonical remote, which the root
-  `CLAUDE.md` explicitly flags as the WRONG one (it split the project once
-  already). Corrected to `danieltalbert/danieltalbert`.
+- ⚠️ **BLOCKED ON DANNY — which repo is live?** Two committed docs contradict
+  each other and I did not guess. `gradientfall/CLAUDE.md` says this folder is
+  its own checkout of `danieltalbert/gradientfall`; the parent repo's root
+  `CLAUDE.md` says the parent `danieltalbert/danieltalbert` is canonical and
+  that `danieltalbert/gradientfall` is the WRONG remote which split the project
+  once already. Both are on disk, both are real Git repos, and this whole tree
+  is tracked twice.
+  - Evidence favours **`danieltalbert/gradientfall`** (this folder): the parent
+    carries a `pre-push` hook that refuses every push — *"retired parent
+    monorepo… run Git inside gradientfall or neural-quest instead"* — and this
+    folder has a real upstream, PR-based history, and was 1 commit behind
+    `origin/main` at session start.
+  - I first "fixed" this file toward the parent, then found the hook and
+    reverted that edit. The session's work is committed in **both** local repos
+    and pushed to **neither**. Push it from whichever is live, then delete the
+    losing claim from the other `CLAUDE.md` so no session re-derives this.
 
 ---
 
