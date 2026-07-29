@@ -32,6 +32,12 @@ signal knowledge_charge_changed(fraction: float)
 signal knowledge_channel_requested()
 signal knowledge_channel_started()
 signal knowledge_channel_ended(completed: bool)
+## The player pressed the special key again while the card was up. PlayerCombat
+## is the ONLY reader of that key — it owns it on the physics clock and forwards
+## the intent here, so the card never polls it on the process clock. Two readers
+## on two clocks re-opened the channel one tick after every break-off; this
+## signal is the fix, not a workaround.
+signal knowledge_channel_break_requested()
 
 # Combat
 ## An enemy came apart. monster_id is "" for non-content sparring rigs.

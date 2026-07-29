@@ -53,3 +53,10 @@ Useful dev flags (after a `--` separator):
 - `--no-grass` — boot without the carpets, to attribute frame cost honestly.
 - `--kern-base` — opt in to the imported Blender body for Kern (see
   `gradientfall/docs/DEVLOG.md` for why it is still gated).
+- `--test-channel` — run milestone 7's knowledge-channel probe: drives the quiz
+  card through all 13 branches with synthetic input, prints a PASS/FAIL tally,
+  and **exits non-zero on any failure**. Works headless; takes ~40 s. Run it
+  after touching combat, the card, the picker, or any modal UI.
+- `--shot-channel=/abs/dir` — photograph the quiz card in each of its states.
+  Needs a real renderer (no `--headless`); pair with `--grass=0.2` to keep it
+  quick.

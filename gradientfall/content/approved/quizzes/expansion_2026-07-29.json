@@ -1,0 +1,506 @@
+[
+  {
+    "id": "quiz_models_b08_01",
+    "topic": "models",
+    "difficulty": 1,
+    "question": "What is a trained model, in plain terms?",
+    "choices": [
+      "A set of learned settings that turn an input into a prediction",
+      "A copy of the training data kept for lookup",
+      "A list of rules a programmer wrote by hand",
+      "The person who chose the dataset"
+    ],
+    "answer_index": 0,
+    "explanation": "Training adjusts a model's internal numbers until its outputs match the examples. What you keep afterwards is those settings, not the data itself."
+  },
+  {
+    "id": "quiz_models_b08_02",
+    "topic": "models",
+    "difficulty": 2,
+    "question": "A gardener sets how many branches a decision tree may grow BEFORE training starts. What is that setting called?",
+    "choices": [
+      "A parameter",
+      "A hyperparameter",
+      "A label",
+      "A prediction"
+    ],
+    "answer_index": 1,
+    "explanation": "Parameters are learned during training. Hyperparameters are choices you make beforehand that shape how the learning happens, like tree depth or learning rate."
+  },
+  {
+    "id": "quiz_models_b08_03",
+    "topic": "models",
+    "difficulty": 1,
+    "question": "A decision tree makes a prediction by doing what?",
+    "choices": [
+      "Measuring distance to the nearest example",
+      "Asking a chain of yes/no questions about the input",
+      "Averaging every example in the dataset",
+      "Drawing one straight line through the data"
+    ],
+    "answer_index": 1,
+    "explanation": "A decision tree splits on one feature at a time. You follow the answers down the branches until you reach a leaf, and the leaf holds the prediction."
+  },
+  {
+    "id": "quiz_models_b08_04",
+    "topic": "models",
+    "difficulty": 2,
+    "question": "A k-nearest-neighbours classifier is shown a new iris. How does it decide the family?",
+    "choices": [
+      "It votes among the k most similar flowers it has already seen",
+      "It always answers with the most common family",
+      "It looks up the flower in a table it memorised",
+      "It draws a straight line and checks which side the flower falls on"
+    ],
+    "answer_index": 0,
+    "explanation": "Nearest-neighbour methods answer by comparison: find the k closest examples by measurement, and let them vote. Nothing is learned in advance beyond storing the examples."
+  },
+  {
+    "id": "quiz_models_b08_05",
+    "topic": "models",
+    "difficulty": 1,
+    "question": "What does it mean to 'fit' a model to data?",
+    "choices": [
+      "Choose which columns to delete",
+      "Adjust its settings until its predictions match the examples well",
+      "Copy the answers into the model",
+      "Shrink the dataset until it fits in memory"
+    ],
+    "answer_index": 1,
+    "explanation": "Fitting is the search for settings that make the model's outputs line up with the known answers in the training data."
+  },
+  {
+    "id": "quiz_models_b08_06",
+    "topic": "models",
+    "difficulty": 2,
+    "question": "Why might someone combine the predictions of many small models instead of trusting one big one?",
+    "choices": [
+      "It removes the need for test data",
+      "Their individual mistakes tend to cancel out",
+      "It always trains faster",
+      "It guarantees perfect accuracy"
+    ],
+    "answer_index": 1,
+    "explanation": "Different models err in different places. Averaging or voting across several of them cancels much of that scattered error, which usually beats any single one."
+  },
+  {
+    "id": "quiz_training_b08_01",
+    "topic": "training",
+    "difficulty": 1,
+    "question": "Why is some data held back from training and saved for testing?",
+    "choices": [
+      "Because the extra rows are usually faulty",
+      "To check the model on examples it has never seen",
+      "To make training run faster",
+      "To give the model a second chance to learn them"
+    ],
+    "answer_index": 1,
+    "explanation": "A model can look perfect on data it has already studied. Held-back data is the only honest test of whether it learned the pattern or just the examples."
+  },
+  {
+    "id": "quiz_training_b08_02",
+    "topic": "training",
+    "difficulty": 1,
+    "question": "What does a loss function measure?",
+    "choices": [
+      "How many features were chosen",
+      "How long training takes",
+      "How wrong the model's predictions currently are",
+      "How many rows the dataset has"
+    ],
+    "answer_index": 2,
+    "explanation": "Loss is a score for badness. Training is the work of pushing that number down, so the loss function defines what 'better' even means."
+  },
+  {
+    "id": "quiz_training_b08_03",
+    "topic": "training",
+    "difficulty": 2,
+    "question": "Gradient descent improves a model by repeatedly doing what?",
+    "choices": [
+      "Removing the worst example from the dataset",
+      "Restarting from new random settings",
+      "Adding another feature column",
+      "Taking a small step in the direction that reduces the loss"
+    ],
+    "answer_index": 3,
+    "explanation": "The gradient points uphill on the loss. Stepping the opposite way lowers the error a little, and thousands of small steps walk the model down into a good fit."
+  },
+  {
+    "id": "quiz_training_b08_04",
+    "topic": "training",
+    "difficulty": 2,
+    "question": "The learning rate is set far too high. What usually happens?",
+    "choices": [
+      "Training becomes slower but more precise",
+      "The model quietly ignores it",
+      "The dataset is reshuffled each round",
+      "The steps overshoot and the loss bounces around instead of settling"
+    ],
+    "answer_index": 3,
+    "explanation": "The learning rate is the size of each step downhill. Too large and every step leaps past the bottom; too small and the walk takes forever."
+  },
+  {
+    "id": "quiz_training_b08_05",
+    "topic": "training",
+    "difficulty": 1,
+    "question": "What is one epoch of training?",
+    "choices": [
+      "One layer of the model being updated",
+      "One hour of computing time",
+      "One single example being shown to the model",
+      "One complete pass through the whole training set"
+    ],
+    "answer_index": 3,
+    "explanation": "An epoch is one full sweep through every training example. Models usually need many epochs, seeing the same data again and again."
+  },
+  {
+    "id": "quiz_training_b08_06",
+    "topic": "training",
+    "difficulty": 2,
+    "question": "Why do many methods update the model from small batches rather than the entire dataset at once?",
+    "choices": [
+      "Because the data must be sorted first",
+      "Small batches are always more accurate",
+      "It gives frequent, cheap updates instead of one slow, expensive one",
+      "It avoids needing a loss function"
+    ],
+    "answer_index": 2,
+    "explanation": "Each batch gives a rough but quick estimate of which way is downhill. Many rough steps make progress far sooner than waiting to measure the whole set perfectly."
+  },
+  {
+    "id": "quiz_evaluation_b08_01",
+    "topic": "evaluation",
+    "difficulty": 1,
+    "question": "A model gets 90 of 100 test predictions right. What is its accuracy?",
+    "choices": [
+      "10%",
+      "9%",
+      "90%",
+      "It cannot be worked out from this"
+    ],
+    "answer_index": 2,
+    "explanation": "Accuracy is simply the share of predictions that were correct: 90 out of 100 is 90%."
+  },
+  {
+    "id": "quiz_evaluation_b08_02",
+    "topic": "evaluation",
+    "difficulty": 2,
+    "question": "Only 1 in 100 messages is spam. A model marks everything 'not spam' and scores 99% accuracy. What is wrong?",
+    "choices": [
+      "The test set was too large",
+      "Accuracy was calculated incorrectly",
+      "It never catches a single spam message, so accuracy is hiding total failure",
+      "Nothing — 99% is excellent"
+    ],
+    "answer_index": 2,
+    "explanation": "When one class is rare, guessing the common one scores well while being useless. This is why imbalanced problems are judged on the rare class, not on accuracy."
+  },
+  {
+    "id": "quiz_evaluation_b08_03",
+    "topic": "evaluation",
+    "difficulty": 2,
+    "question": "A model flags 40 messages as spam and 30 of them really are. Which measure is 30 out of 40?",
+    "choices": [
+      "Recall",
+      "Precision",
+      "Loss",
+      "Accuracy"
+    ],
+    "answer_index": 1,
+    "explanation": "Precision asks: of everything I flagged, how much was right? Recall asks the other question: of everything I should have flagged, how much did I catch?"
+  },
+  {
+    "id": "quiz_evaluation_b08_04",
+    "topic": "evaluation",
+    "difficulty": 1,
+    "question": "What is a baseline, when judging a model?",
+    "choices": [
+      "The first row of the dataset",
+      "The simplest sensible guess, used for comparison",
+      "The time the first version was trained",
+      "The lowest score the model is allowed to have"
+    ],
+    "answer_index": 1,
+    "explanation": "A baseline is something trivial, like always predicting the average. If a clever model cannot beat it, the cleverness is not earning its keep."
+  },
+  {
+    "id": "quiz_evaluation_b08_05",
+    "topic": "evaluation",
+    "difficulty": 2,
+    "question": "Cross-validation splits the data into several parts and trains several times. What does that buy you?",
+    "choices": [
+      "A guarantee against overfitting",
+      "A smaller dataset to store",
+      "A faster single training run",
+      "A steadier score, because every example gets a turn at being tested"
+    ],
+    "answer_index": 3,
+    "explanation": "One lucky or unlucky split can flatter or spoil a score. Rotating which part is held out and averaging the results gives a far more trustworthy number."
+  },
+  {
+    "id": "quiz_evaluation_b08_06",
+    "topic": "evaluation",
+    "difficulty": 1,
+    "question": "A model predicts house prices. Which measure suits it best?",
+    "choices": [
+      "The average size of the error, in pounds",
+      "The count of features used",
+      "The number of houses in the dataset",
+      "The share of predictions that were exactly right"
+    ],
+    "answer_index": 0,
+    "explanation": "When the answer is a number rather than a category, exact matches are hopeless. What matters is how far off the predictions are on average."
+  },
+  {
+    "id": "quiz_overfitting_b08_01",
+    "topic": "overfitting",
+    "difficulty": 1,
+    "question": "A model scores 99% on its training data and 61% on new data. What has happened?",
+    "choices": [
+      "The test data is mislabelled",
+      "It has underfit",
+      "It has not trained long enough",
+      "It has overfit"
+    ],
+    "answer_index": 3,
+    "explanation": "Overfitting is learning the training examples themselves, quirks and all, rather than the pattern behind them. The gap between the two scores is the giveaway."
+  },
+  {
+    "id": "quiz_overfitting_b08_02",
+    "topic": "overfitting",
+    "difficulty": 1,
+    "question": "A model does poorly on its training data AND on new data. What is this called?",
+    "choices": [
+      "Underfitting",
+      "Perfect generalisation",
+      "Data leakage",
+      "Overfitting"
+    ],
+    "answer_index": 0,
+    "explanation": "Underfitting means the model is too simple, or trained too little, to capture the pattern at all. It has not even learned what it was shown."
+  },
+  {
+    "id": "quiz_overfitting_b08_03",
+    "topic": "overfitting",
+    "difficulty": 2,
+    "question": "Which of these is most likely to REDUCE overfitting?",
+    "choices": [
+      "Adding more branches to the tree",
+      "Training for many more epochs",
+      "Adding more training examples",
+      "Removing the test set"
+    ],
+    "answer_index": 2,
+    "explanation": "More examples make memorising harder and the real pattern clearer. Extra complexity and longer training usually push the other way."
+  },
+  {
+    "id": "quiz_overfitting_b08_04",
+    "topic": "overfitting",
+    "difficulty": 2,
+    "question": "What is generalisation?",
+    "choices": [
+      "Training on the largest possible dataset",
+      "Getting the training examples exactly right",
+      "Performing well on data the model has never seen",
+      "Using every available feature"
+    ],
+    "answer_index": 2,
+    "explanation": "Generalisation is the only thing that matters at the end. A model that cannot handle new cases has memorised a past that will never repeat."
+  },
+  {
+    "id": "quiz_overfitting_b08_05",
+    "topic": "overfitting",
+    "difficulty": 2,
+    "question": "During training, the training loss keeps falling but the validation loss starts climbing. What is the usual response?",
+    "choices": [
+      "Stop around the point where validation loss turned",
+      "Delete the validation set",
+      "Keep training — the training loss is what counts",
+      "Raise the learning rate"
+    ],
+    "answer_index": 0,
+    "explanation": "That turn is overfitting beginning. Stopping near the lowest validation loss keeps the pattern the model learned and discards the memorising that follows."
+  },
+  {
+    "id": "quiz_overfitting_b08_06",
+    "topic": "overfitting",
+    "difficulty": 1,
+    "question": "Why is a very deep, very branchy decision tree prone to overfitting?",
+    "choices": [
+      "It runs out of memory",
+      "It ignores most of the features",
+      "It can only answer yes or no",
+      "It can grow a separate branch for almost every single example"
+    ],
+    "answer_index": 3,
+    "explanation": "Given enough branches, a tree can carve out one leaf per training row and be right every time on that data, having learned nothing general at all."
+  },
+  {
+    "id": "quiz_data_b08_01",
+    "topic": "data",
+    "difficulty": 1,
+    "question": "One house in a price dataset is listed at fifty million pounds; the rest are under a million. What is that row?",
+    "choices": [
+      "An outlier",
+      "A label",
+      "A feature",
+      "A duplicate"
+    ],
+    "answer_index": 0,
+    "explanation": "An outlier sits far outside the usual range. It may be a genuine mansion or a typing error, and it is worth finding out which before training on it."
+  },
+  {
+    "id": "quiz_data_b08_02",
+    "topic": "data",
+    "difficulty": 2,
+    "question": "One column is measured in metres (0–2) and another in grams (0–50000). Why rescale them to a similar range?",
+    "choices": [
+      "To turn them into categories",
+      "So the large-numbered column does not dominate distance comparisons",
+      "To save storage space",
+      "To remove missing values"
+    ],
+    "answer_index": 1,
+    "explanation": "Methods that compare examples by distance treat a difference of 1000 grams as far bigger than 1 metre. Rescaling lets each column speak at the same volume."
+  },
+  {
+    "id": "quiz_data_b08_03",
+    "topic": "data",
+    "difficulty": 1,
+    "question": "A column holds the values 'red', 'green' and 'blue'. What kind of feature is it?",
+    "choices": [
+      "Categorical",
+      "An outlier",
+      "A label",
+      "Numerical"
+    ],
+    "answer_index": 0,
+    "explanation": "Categorical features name a group rather than measure a quantity. There is no sense in which green is 'more' than red, so they need encoding before most maths works."
+  },
+  {
+    "id": "quiz_data_b08_04",
+    "topic": "data",
+    "difficulty": 2,
+    "question": "A dataset for predicting illness accidentally includes a column recording which ward the patient was sent to afterwards. Why is that a problem?",
+    "choices": [
+      "It contains missing values",
+      "It makes the dataset larger",
+      "The column is categorical",
+      "It gives away the answer, which will not be available when predicting for real"
+    ],
+    "answer_index": 3,
+    "explanation": "This is data leakage: a feature that quietly encodes the answer. Scores look wonderful in testing and collapse in use, because that column will not exist yet."
+  },
+  {
+    "id": "quiz_data_b08_05",
+    "topic": "data",
+    "difficulty": 1,
+    "question": "The same customer record appears in a dataset four times. What should you check?",
+    "choices": [
+      "Whether the file is too small",
+      "Whether to add four more copies for balance",
+      "Whether the label column is numerical",
+      "Whether they are duplicates that should be removed"
+    ],
+    "answer_index": 3,
+    "explanation": "Duplicated rows quietly give one example four votes, tugging the model toward it. Genuine repeats can be legitimate, so they are worth checking rather than deleting blindly."
+  },
+  {
+    "id": "quiz_data_b08_06",
+    "topic": "data",
+    "difficulty": 2,
+    "question": "In a set of 10000 transactions only 12 are fraudulent. What is this dataset called?",
+    "choices": [
+      "Normalised",
+      "Unlabelled",
+      "Imbalanced",
+      "Overfitted"
+    ],
+    "answer_index": 2,
+    "explanation": "An imbalanced dataset has one class far rarer than another. The rare class is usually the interesting one, so it needs careful handling and careful scoring."
+  },
+  {
+    "id": "quiz_ml_basics_b08_01",
+    "topic": "ml_basics",
+    "difficulty": 1,
+    "question": "What makes a task 'supervised' learning?",
+    "choices": [
+      "The training examples come with the correct answers attached",
+      "The data was collected by hand",
+      "The model is checked after every step",
+      "A person watches the training run"
+    ],
+    "answer_index": 0,
+    "explanation": "Supervision means labelled examples: each input arrives with the answer it should produce, so the model has something to be measured against."
+  },
+  {
+    "id": "quiz_ml_basics_b08_02",
+    "topic": "ml_basics",
+    "difficulty": 2,
+    "question": "You have thousands of flower measurements and NO family names for any of them, but you want to see if they fall into natural groups. What kind of task is that?",
+    "choices": [
+      "Clustering",
+      "Supervised learning",
+      "Classification",
+      "Regression"
+    ],
+    "answer_index": 0,
+    "explanation": "With no labels there is nothing to predict, only structure to find. Clustering gathers examples that resemble each other and lets the groups speak for themselves."
+  },
+  {
+    "id": "quiz_ml_basics_b08_03",
+    "topic": "ml_basics",
+    "difficulty": 1,
+    "question": "Predicting tomorrow's temperature in degrees is which kind of task?",
+    "choices": [
+      "Labelling",
+      "Classification",
+      "Regression",
+      "Clustering"
+    ],
+    "answer_index": 2,
+    "explanation": "Regression predicts a number on a continuous scale. Classification would instead choose between set categories, like 'frost' or 'no frost'."
+  },
+  {
+    "id": "quiz_ml_basics_b08_04",
+    "topic": "ml_basics",
+    "difficulty": 1,
+    "question": "What is a feature?",
+    "choices": [
+      "The answer the model must produce",
+      "A mistake in the data",
+      "An input the model is allowed to look at",
+      "The name of the model"
+    ],
+    "answer_index": 2,
+    "explanation": "Features are what you show the model: petal width, floor area, hour of day. The label is what you ask it to work out from them."
+  },
+  {
+    "id": "quiz_ml_basics_b08_05",
+    "topic": "ml_basics",
+    "difficulty": 2,
+    "question": "Sorting irises into setosa, versicolor and virginica from their measurements is best described as what?",
+    "choices": [
+      "Binary classification",
+      "Multi-class classification",
+      "Regression",
+      "Clustering"
+    ],
+    "answer_index": 1,
+    "explanation": "The answer is one of three fixed categories, so it is classification — and multi-class, because there are more than two families to choose between."
+  },
+  {
+    "id": "quiz_ml_basics_b08_06",
+    "topic": "ml_basics",
+    "difficulty": 2,
+    "question": "Why can a model trained only on summer weather struggle in December?",
+    "choices": [
+      "Its learning rate was too low",
+      "It has too many features",
+      "December has fewer days of data",
+      "The new conditions lie outside anything it was trained on"
+    ],
+    "answer_index": 3,
+    "explanation": "A model only knows the range it has seen. Asked about conditions with no counterpart in its training data, it is extrapolating, and its confidence is not to be trusted."
+  }
+]

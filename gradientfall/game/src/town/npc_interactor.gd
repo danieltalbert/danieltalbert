@@ -32,6 +32,14 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if _player == null:
 		return
+	# A full-screen surface (the knowledge-channel card, the pack, the notebook)
+	# owns the screen — hide the talk prompt and swallow `interact` rather than
+	# starting a conversation behind it. Conversations themselves claim modality
+	# in `_start`/`_end`, so this also stops a second villager interrupting.
+	if UiModality.any_open(get_tree(), self):
+		if _target != null:
+			_refresh_target(true)
+		return
 	if _talking != null:
 		if _player.global_position.distance_to(_talking.global_position) > BREAK_RANGE:
 			_end()
@@ -95,6 +103,7 @@ func _press() -> void:
 
 func _start(npc: NpcActor) -> void:
 	_talking = npc
+	UiModality.claim(self)
 	_lines = npc.conversation()
 	_index = 0
 	npc.begin_talk()
@@ -118,6 +127,7 @@ func _speak() -> void:
 
 func _end() -> void:
 	var npc: NpcActor = _talking
+	UiModality.release(self)
 	_talking = null
 	_lines = PackedStringArray()
 	_index = 0

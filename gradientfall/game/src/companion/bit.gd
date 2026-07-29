@@ -270,6 +270,10 @@ func _on_quiz_answered(_quiz_id: String, correct: bool) -> void:
 
 func _on_channel_started() -> void:
 	_channeling = true
+	# Drop whatever she was already saying: her label hovers over Kern's head,
+	# dead centre behind the quiz card, where a half-faded line ghosts through
+	# the panel. `_start_line` keeps it down for the rest of the cast.
+	_fade_label(0.0, 0.12)
 	_say(BitLines.any(BitLines.CHANNEL_START), PRIO_URGENT, "channel")
 
 
@@ -314,7 +318,12 @@ func _start_line(text: String, kind: String) -> void:
 	_speak_left = SPEAK_MIN + float(text.length()) * SPEAK_PER_CHAR
 	if _label != null:
 		_label.text = text
-		_fade_label(1.0, 0.18)
+		# While the cast is up, Bit hovers over Kern's head — dead centre behind
+		# the quiz card, where her floating label is unreadable. The card prints
+		# her line itself (KnowledgePrompt._on_bit_spoke), so the world label
+		# stays down until the channel ends.
+		if not _channeling:
+			_fade_label(1.0, 0.18)
 	print("[Bit] ", text)
 	EventBus.bit_spoke.emit(text, kind)
 

@@ -98,6 +98,11 @@ func _toggle() -> void:
 func open() -> void:
 	if _open:
 		return
+	# Declines under another full-screen surface — opening over the knowledge
+	# channel would pause the tree and kill its live countdown (see UiModality).
+	if UiModality.any_open(get_tree(), self):
+		return
+	UiModality.claim(self)
 	_open = true
 	_category = TAB_ALL
 	_rebuild()
@@ -109,6 +114,7 @@ func open() -> void:
 func close() -> void:
 	if not _open:
 		return
+	UiModality.release(self)
 	_open = false
 	_root.visible = false
 	get_tree().paused = false

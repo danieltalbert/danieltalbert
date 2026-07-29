@@ -285,7 +285,13 @@ func _set_state(next: int) -> void:
 func _begin_strike() -> void:
 	_hit_ids.clear()
 	if _melee_hitbox != null:
-		_melee_hitbox.monitoring = true
+		# Deferred, not direct: these toggles can be reached from inside an
+		# area/body callback (a blow that downs this enemy resolves mid-flush),
+		# and Godot refuses a live `monitoring` write there — it spammed
+		# "Function blocked during in/out signal" through every real fight. The
+		# one-frame delay is harmless because `_on_melee_body_entered` already
+		# rejects anything arriving outside State.STRIKE.
+		_melee_hitbox.set_deferred(&"monitoring", true)
 	if _visual != null:
 		_visual.flash()  # brief pop on the swing start
 	_set_state(State.STRIKE)
@@ -293,7 +299,7 @@ func _begin_strike() -> void:
 
 func _end_strike() -> void:
 	if _melee_hitbox != null:
-		_melee_hitbox.monitoring = false
+		_melee_hitbox.set_deferred(&"monitoring", false)  # see _begin_strike
 
 
 func _on_melee_body_entered(body: Node) -> void:
@@ -346,7 +352,7 @@ func _on_died() -> void:
 	_state = State.DEAD
 	collision_layer = 0
 	if _melee_hitbox != null:
-		_melee_hitbox.monitoring = false
+		_melee_hitbox.set_deferred(&"monitoring", false)  # see _begin_strike
 	var center: Vector3 = global_position + Vector3(0.0, (_visual.height * 0.55) if _visual != null else 0.6, 0.0)
 	DamageShards.burst(get_tree().current_scene, center, _base_color(), 22, 5.5, 2.6, 1.3)
 	EventBus.enemy_defeated.emit(monster_id, global_position)

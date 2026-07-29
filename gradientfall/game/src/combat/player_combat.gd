@@ -374,7 +374,14 @@ func _read_special() -> void:
 	if Input.is_action_just_pressed(&"debug_charge"):
 		add_charge(1.0)  # dev-only: verify the special without the quiz system
 	if _channeling:
-		return  # the KnowledgePrompt owns the special key until the card closes
+		# This file is the SINGLE reader of the special key, on the physics
+		# clock. It forwards the break-off intent instead of letting the card
+		# poll the key on the process clock: when both read it, the card closed
+		# on the render frame and this function re-opened the channel on the
+		# next physics step, so a break-off was impossible.
+		if Input.is_action_just_pressed(&"special"):
+			EventBus.knowledge_channel_break_requested.emit()
+		return
 	if Input.is_action_just_pressed(&"special"):
 		if _charge >= 1.0:
 			_try_special()
@@ -405,6 +412,16 @@ func _try_special() -> void:
 func add_charge(amount: float) -> void:
 	_charge = clampf(_charge + amount, 0.0, 1.0)
 	_emit_charge()
+
+
+## The focus meter, 0..1. Read-only view for the HUD and the dev probe.
+func charge() -> float:
+	return _charge
+
+
+## True while the knowledge channel is up (Kern braced, world crawling).
+func is_channeling() -> bool:
+	return _channeling
 
 
 func _on_quiz_answered(_quiz_id: String, correct: bool) -> void:

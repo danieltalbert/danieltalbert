@@ -427,7 +427,10 @@ written to fill the largest gaps first for whatever phase is active.
 | **Totals** | **84** | **141** | **80** | **275** | **275** | **38** |
 
 *Side quests include chain parts. Main quests (~25) are Claude-authored
-directly (campaign canon). Quiz bank target: 400 (41✅ — seed 1, ml_basics 20, data 20; daily batches running).
+directly (campaign canon). Quiz bank target: 400 (77✅ — seed 1, ml_basics 20, data 20, D1-2 expansion 36;
+daily batches running). Of those, **53 sit in the D1-2 band Phase 1 can actually
+ask** across 6 topics — that band is what milestone 7's knowledge channel draws
+from, so briefs aimed at Phase 1 must target D1-2 specifically.
 
 Quiz difficulty gating: D1–2 anywhere; D3 appears after Shrine 3; D4 after
 Shrine 6; D5 in Citadel/endgame + optional trials.

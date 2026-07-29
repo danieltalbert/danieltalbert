@@ -4,6 +4,162 @@
 
 ---
 
+## 2026-07-29 (live session, milestone 7) — KNOWLEDGE CHARGE v1: SEEN, DRIVEN, FIXED
+
+*Danny's directive: a long, deliberate pass on Phase 1 milestone 7 — "I'd rather
+have maxed out usage and not be done than a crappy finished job." Milestone 7
+was ticked but carried an **UNSEEN** flag: it was built across three sessions
+that had no Godot at all, so every branch of it had shipped without ever being
+executed once. This session executed it.*
+
+**DONE — the harness that made an unrunnable milestone testable**
+- New `src/dev/channel_probe.gd` (`ChannelProbe`). Drives the channel through
+  the REAL input path (`Input.parse_input_event`, the route the OS takes), not
+  by poking private state, and asserts on the result. 13 scenarios: open,
+  correct answer, wrong answer, timeout, break-off, fill-and-fire, death,
+  empty bank, double-open, invulnerability release, modal exclusion, mastery
+  ordering, bank health. **54 passed / 0 failed**, exit code 0 on Godot 4.7.1.
+  - `godot --path game --headless -- --test-channel`
+- `-- --shot-channel=C:/abs/dir` photographs the card in each state at SHIPPING
+  timings. Four frames inspected and committed to `docs/progress/`.
+- Small public read API added where the probe needed it, rather than reaching
+  into privates: `KnowledgePrompt.is_open/state_name/current_question/
+  seconds_left`, `PlayerCombat.charge/is_channeling`, `QuizPicker.eligible_count`.
+
+**DONE — the bug that made the feature impossible to use**
+- **The cast could not be broken off.** `KnowledgePrompt` polled `special` in
+  `_process` and `PlayerCombat` polled the same key in `_physics_process`.
+  `Input.is_action_just_pressed()` is true for the process frame AND the next
+  physics step, so pressing Q closed the card and re-opened the channel one
+  tick later, every time. Bit's own barks show it in the first probe log:
+  "Combining power!" then "The spark slipped." then "Combining power!" again.
+- Structural fix, not a guard: **one key, one reader.** `PlayerCombat` owns
+  `special` on the physics clock and forwards the intent as
+  `EventBus.knowledge_channel_break_requested`. The `OPEN_GRACE_MS` hack that
+  had been papering over the same class of race is deleted. Written up in
+  `docs/ARCHITECTURE.md` ("Input read on two clocks").
+
+**DONE — `UiModality`: four milestones' worth of UI that never met**
+- The card (m7), a conversation (m8), the pack (m10) and the notebook (m13)
+  could all be open at once. Worst case: the pack sets `get_tree().paused`,
+  which stops the card's `_process` — so the countdown froze on screen while
+  wall-clock kept running it down, and the cast was already dead when the
+  player closed the pack.
+- New `src/ui/ui_modality.gd`: claim / release / `any_open`, membership in a
+  scene-tree group so it cannot go stale across a reload. All four surfaces
+  wired; `NpcInteractor` also stops offering the talk prompt under a surface.
+  The probe covers both directions.
+
+**DONE — content: the bank could not sustain the feature**
+- The WORLDBOOK gate means Phase 1 draws **D1–2 only**, and the bank held just
+  **17** eligible questions across **2** topics. A cast spends up to three, so a
+  player saw everything the game could ask in about five casts.
+- Wrote `batch_08_quiz_d12_expansion.md` (now in `briefs/done/`) and authored
+  the batch in-house — `CONTENT_PIPELINE.md` sanctions Claude as a generator.
+  36 entries: inbox, validator, review, then merged to
+  `approved/quizzes/expansion_2026-07-29.json`. **D1–2: 17 → 53. Topics: 2 → 6**
+  (models, training, evaluation, overfitting, data, ml_basics). ~17 full casts.
+- **Fix-and-note, per the pipeline rule:** my own first draft put 26 of 36
+  answer keys at index 1 — a player would have learned "press 2 and win". The
+  existing ChatGPT batches are clean 5/5/5/5, so mine was the outlier;
+  rebalanced to 9/9/9/9 before merge. Validator: **147 approved, 0 errors.**
+
+**DONE — mastery-weighted selection (the teaching pillar, GDD 3)**
+- `QuizPicker`'s shuffle bag is now ordered by what Kern still needs: unseen
+  first, then previously missed, then already answered. A correct answer clears
+  the debt. Rides in `GameState.flags` — already serialized, so **no save-shape
+  change and no SAVE_VERSION bump** (milestone 13's iris trick).
+
+**DONE — the visual pass (GDD §10: it has now been looked at)**
+- World **scrim** behind the card: the channel drops time to 0.15, but a bright
+  meadow behind a floating panel read as "the game is running and something is
+  in the way". Now it reads as a stop.
+- **The card no longer jumps.** The explanation appearing grew the panel and the
+  CenterContainer re-centred it, punching the whole card ~70 px up the screen on
+  every single answer. Space is reserved instead.
+- **In-card focus meter** plus plain language: "3 more answers to forge the
+  strike" / "the strike is forged". Nothing on the card had told the player what
+  they were building.
+- **Bit is on the card.** Her opening line was being dropped outright (the card
+  guarded on `_state`, which `_show_question` had not yet advanced when she
+  spoke), and her world label hovers over Kern's head — dead centre behind the
+  panel — where it ghosted through it. She now speaks on the card and her world
+  label stays down for the cast.
+- Countdown lifted to the card's top edge; beside the focus meter, two blue bars
+  of similar weight read as one broken widget. Entrance fade/pop on wall-clock,
+  because `_process`'s delta is scaled by the channel's own 0.15 time scale.
+
+**DONE — a fight-long error spam, fixed in passing**
+- Every real fight printed "Function blocked during in/out signal" repeatedly:
+  `Enemy` wrote `Area3D.monitoring` from inside an area callback. Now
+  `set_deferred`; the `State.STRIKE` guard already made late callbacks
+  harmless. Phase 1's definition of done requires a clean output panel.
+
+**VERIFIED**
+- `godot --path game --import --headless` clean; runtime boot clean.
+- Channel probe **54/54**, exit 0.
+- `python tools/validate_content.py` — **147 approved entries, 0 errors.**
+- Four card frames captured at 1280x720 and inspected:
+  `docs/progress/milestone7_channel_{question,correct,wrong,strike_ready}.png`.
+
+**HALF-FORMED / NEXT UP**
+- **The combined strike itself is still a shard burst.** `_try_special()` fires
+  `DamageShards.burst` plus shake and hitstop. For the climax of a Kern+Bit
+  combined cast that is thin — it wants its own VFX (a beam, a nova ring, Bit
+  spiralling in). Deliberately left: it is a bigger visual build than this pass
+  had room for, and it is the first thing to do next in this lane.
+- **No audio anywhere in the project**, so the card is silent. Not milestone 7's
+  to invent.
+- **Balance question for Danny (a call I did NOT make on my own):** the channel
+  is free, safe and repeatable — slow-mo, invulnerable, focus kept on a fizzle.
+  Nothing stops a player re-opening it immediately until an easy question comes
+  up. Kindness on a wrong answer is your design and I left it exactly as
+  specified; a short vulnerable recovery after a fizzle would restore the stakes
+  without punishing. Your call at the phase-gate playtest.
+- **Doc contradiction fixed:** `gradientfall/CLAUDE.md` still named
+  `danieltalbert/gradientfall` as the canonical remote, which the root
+  `CLAUDE.md` explicitly flags as the WRONG one (it split the project once
+  already). Corrected to `danieltalbert/danieltalbert`.
+
+---
+
+## 2026-07-27 (repository recovery) — Vault and Iris branches integrated
+
+**DONE**
+- Recovered the previously stranded milestone-12 branch onto the current
+  post-split `main` without replacing newer Kern, town, inventory, sky, or
+  meadow work.
+- Integrated the 2-3-1 walkable network dungeon, Gatekeeper encounter,
+  threshold/fount/weight-stone interactions, approved vault content, rune
+  shader, and five dungeon screenshot angles.
+- Reconciled screenshot positioning so existing terrain-relative, posed-Kern,
+  and new absolute-height interior shots share one capture path.
+- Recovered the milestone-13 Iris field and compendium without reverting the
+  newer photoreal multi-carpet grass system: 700 blooms now carry generated
+  Fisher-statistic specimens, proximity collection, boundary-bloom markings,
+  and a J/Start field notebook.
+- Restored the six missing milestone-8 Bootstrap progress frames (square,
+  market, inn, hall, night, and dialogue) from their completed remote branch.
+- Resolved the pre-existing controller collision between the pack and field
+  notebook: Back/Select remains the pack; Start/Menu now opens the compendium.
+
+**VERIFIED**
+- `validate_content.py --inbox` and `--all` pass (111 approved entries).
+- Godot 4.7.1 completed a clean editor parse/import and registered all 56
+  script classes, including every recovered vault and Iris class.
+- A 25-second clean runtime smoke boot built the 2-3-1 vault and generated 700
+  Iris blooms over 150 specimens (15 boundary blooms) with zero script or
+  runtime errors.
+- The restored Bootstrap square and dialogue frames were opened and inspected;
+  the six PNGs are valid progress evidence.
+
+**NEXT UP**
+- A future live visual session should still capture and inspect the recovered
+  vault interiors and hands-on Iris collection/compendium interaction under
+  the shipping Forward+ renderer, per the project's visual-quality rule.
+
+---
+
 ## 2026-07-24 (live session, Kern/character lane) — BASE MESH GENERATED; FITTING GATED ON AN ENGINE BUG
 
 *Commits `613652f` → `8aaca35` (branch fast-forwarded to `main`). Danny gave
