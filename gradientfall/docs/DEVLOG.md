@@ -102,12 +102,28 @@ executed once. This session executed it.*
 - Four card frames captured at 1280x720 and inspected:
   `docs/progress/milestone7_channel_{question,correct,wrong,strike_ready}.png`.
 
+**DONE (addendum, same session) — the combined strike is no longer a shard burst**
+- New `src/combat/focus_strike.gd` (`FocusStrike`), fire-and-forget like
+  `DamageShards`. It reads as two forces meeting rather than one explosion:
+  **Bit's motes spiral IN** and collapse to the strike point, a **narrow blade
+  of light** goes up, and **two shockwave ribbons** (Kern's gold, Bit's blue)
+  race OUT along the ground to exactly `SPECIAL_RADIUS` — so the ring *teaches*
+  the real damage reach instead of decorating it. A brief `OmniLight3D` flash
+  lights the actual grass, which is what stops it reading as a decal pasted
+  over the meadow. All primitives + additive unshaded materials, no assets.
+- Timing runs on SCALED delta deliberately: `_try_special` fires its hitstop at
+  the same moment, so the nova blooms in slow motion exactly as the hit lands.
+- Two things the capture pass caught that a code review would not have:
+  the ring was expanding **inside the photoreal sward** (it sat at ankle height;
+  the blades are taller), and the probe's own shot loop slept out the full 6.5 s
+  reveal *after* the strike fired, photographing an empty meadow long after a
+  0.55 s effect had gone. Both fixed; the probe now returns the instant the card
+  closes. Tuned from the frames: the blade was a fat fog-pipe and the ribbons
+  were chunky hoops (the band width multiplies by the expansion scale).
+- Probe now asserts the VFX actually spawned, not just that the meter emptied:
+  **55 passed / 0 failed**. Evidence: `docs/progress/milestone7_strike.png`.
+
 **HALF-FORMED / NEXT UP**
-- **The combined strike itself is still a shard burst.** `_try_special()` fires
-  `DamageShards.burst` plus shake and hitstop. For the climax of a Kern+Bit
-  combined cast that is thin — it wants its own VFX (a beam, a nova ring, Bit
-  spiralling in). Deliberately left: it is a bigger visual build than this pass
-  had room for, and it is the first thing to do next in this lane.
 - **No audio anywhere in the project**, so the card is silent. Not milestone 7's
   to invent.
 - **Balance question for Danny (a call I did NOT make on my own):** the channel

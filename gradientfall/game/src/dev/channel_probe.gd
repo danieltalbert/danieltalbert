@@ -102,14 +102,21 @@ func _run_shots(dir: String) -> void:
 			await _settle(8)
 			if _prompt.is_open() and _combat.charge() >= 0.99:
 				await _shoot(dir, "channel_strike_ready")
-			await _wait_real(KnowledgePrompt.REVEAL_TIME + 0.4)
+			# Return the instant the card closes: the strike fires on close and
+			# lives well under a second, so sleeping out the full reveal here
+			# photographed an empty meadow long after the nova had gone.
+			await _wait_until_closed(KnowledgePrompt.REVEAL_TIME + 0.6)
 		else:
 			# Sit out the explanation on ITS clock, not on a frame count: the
 			# shots run at shipping timings, so a reveal lasts REVEAL_TIME.
 			await _wait_real(0.25)
-	await _settle(2)
+	# The strike rides PlayerCombat's 0.05-scale hitstop, so the nova blooms in
+	# slow motion for ~90 ms of wall clock. Catch it early and again as it opens.
+	await _settle(3)
 	await _shoot(dir, "channel_strike")
-	await _settle(30)
+	await _settle(9)
+	await _shoot(dir, "channel_strike_bloom")
+	await _settle(40)
 	await _shoot(dir, "channel_after")
 	get_tree().quit()
 
@@ -266,6 +273,14 @@ func _scenario_fill_and_fire() -> void:
 		_channel_ends.size() > 0 and _channel_ends[-1] == true)
 	_check("fill/strike spent the charge (%.3f)" % _combat.charge(),
 		_combat.charge() < 0.001)
+	# The combined strike is a visible surface — assert it actually spawned,
+	# not merely that the meter emptied.
+	var struck: bool = false
+	for node: Node in get_tree().current_scene.get_children():
+		if node is FocusStrike:
+			struck = true
+			break
+	_check("fill/combined strike VFX spawned", struck)
 	_check("fill/needed %d correct answers" % casts, casts == 3)
 	await _wait_real(0.25)  # the strike's hitstop owns the clock briefly
 	_check("fill/time is restored (%.3f)" % Engine.time_scale,
@@ -483,6 +498,14 @@ func _wrong_index() -> int:
 ## probe counts FRAMES, never in-game seconds.
 func _settle(frames: int) -> void:
 	for i: int in frames:
+		await get_tree().process_frame
+
+
+## Waits up to `seconds`, returning early the moment the card closes. The strike
+## spawns on close and is short-lived, so a fixed sleep misses it entirely.
+func _wait_until_closed(seconds: float) -> void:
+	var until: int = Time.get_ticks_msec() + int(seconds * 1000.0)
+	while Time.get_ticks_msec() < until and _prompt.is_open():
 		await get_tree().process_frame
 
 

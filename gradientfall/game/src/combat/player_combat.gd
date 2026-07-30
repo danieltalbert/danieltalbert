@@ -397,6 +397,11 @@ func _try_special() -> void:
 	_charge = 0.0
 	_emit_charge()
 	var origin: Vector3 = _player.global_position
+	# The combined Kern+Bit strike gets its own effect rather than a bigger
+	# shard burst: this is the climax of a cast the player earned by answering,
+	# and its shockwave ring is drawn at SPECIAL_RADIUS so the visual teaches
+	# the actual reach. Shards still fly — the two read as one family.
+	FocusStrike.fire(get_tree().current_scene, origin, SPECIAL_RADIUS)
 	DamageShards.burst(get_tree().current_scene, origin + Vector3(0.0, 0.9, 0.0),
 		Color(1.0, 0.85, 0.35), 34, 7.5, 3.0, 1.6)
 	EventBus.combat_shake.emit(0.4)
