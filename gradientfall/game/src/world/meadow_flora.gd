@@ -367,14 +367,26 @@ func _plant_copses() -> void:
 	var trunk_shape: CylinderShape3D = CylinderShape3D.new()
 	trunk_shape.radius = 0.46
 	trunk_shape.height = 5.2
-	var copses: Array[Vector2] = [
-		Vector2(-160.0, -140.0), Vector2(60.0, -120.0), Vector2(160.0, -60.0),
-		Vector2(170.0, 90.0), Vector2(60.0, 160.0), Vector2(-60.0, 170.0),
-		Vector2(-170.0, 130.0), Vector2(-40.0, -170.0), Vector2(150.0, 170.0),
-		Vector2(-190.0, 40.0), Vector2(120.0, 40.0), Vector2(30.0, -60.0),
-		Vector2(-205.0, -65.0), Vector2(-115.0, -185.0), Vector2(205.0, -155.0),
-		Vector2(205.0, 35.0), Vector2(5.0, 205.0), Vector2(-130.0, 205.0),
-	]
+	# Copse sites are scattered across the whole region rather than listed by
+	# hand: the meadow grew from 480 m to 2.4 km, and a fixed list left the outer
+	# 80% of the map treeless. Density is per-area (one copse per ~110 m cell,
+	# jittered), so the count follows whatever SIZE is. A blue-noise-ish jitter
+	# keeps them clustered-but-uneven, like real hedgerow groves.
+	const COPSE_SPACING: float = 110.0
+	var copses: Array[Vector2] = []
+	var copse_half: float = MeadowTerrain.SIZE * 0.5 - EDGE_MARGIN
+	var cells: int = int((copse_half * 2.0) / COPSE_SPACING)
+	for cell_z in cells:
+		for cell_x in cells:
+			# Two thirds of cells grow a copse — an unbroken grid would read as
+			# an orchard, which is the Overfit Swamp's joke, not this region's.
+			if _rng.randf() > 0.66:
+				continue
+			var site: Vector2 = Vector2(
+				-copse_half + (float(cell_x) + _rng.randf()) * COPSE_SPACING,
+				-copse_half + (float(cell_z) + _rng.randf()) * COPSE_SPACING
+			)
+			copses.append(site)
 	var trees: Node3D = Node3D.new()
 	trees.name = "Trees"
 	add_child(trees)

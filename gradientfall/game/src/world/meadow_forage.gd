@@ -17,8 +17,8 @@ extends Node3D
 ##
 ## GDD §10 visible surface: UNSEEN until a live Godot session lays eyes on it.
 
-const SLOT_COUNT: int = 140
-const MAP_HALF: float = 205.0        # inside the 480 m terrain, clear of the vistas
+const SLOT_COUNT: int = 620
+const MAP_HALF: float = 1120.0       # inside the 2.4 km terrain, clear of the vistas
 const TOWN_CLEAR: float = 34.0       # leave Bootstrap's site to the town builder
 const REGROW_MIN: float = 75.0
 const REGROW_MAX: float = 150.0
@@ -28,7 +28,7 @@ const SHORE_INNER: float = 0.95      # × pond radius — just past the deep wat
 const SHORE_OUTER: float = 1.4
 const LANDMARK_MIN: float = 5.0
 const LANDMARK_MAX: float = 17.0
-const LANDMARK_MAX_RANGE: float = 190.0  # skip the distant border-vista markers
+const LANDMARK_MAX_RANGE: float = 1100.0 # skip the distant border-vista markers
 const GROUND_OFFSET: float = 0.12
 const SEED_OFFSET: int = 977
 

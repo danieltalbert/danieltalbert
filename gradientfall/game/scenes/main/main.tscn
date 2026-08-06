@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://src/world/ambient_motes.gd" id="8_motes"]
 [ext_resource type="Script" path="res://src/world/celestial_layer.gd" id="9_celestial"]
 [ext_resource type="Script" path="res://src/world/meadow_landmarks.gd" id="10_landmarks"]
+[ext_resource type="Script" path="res://src/world/meadow_sites.gd" id="20_sites"]
 [ext_resource type="Script" path="res://src/companion/bit.gd" id="11_bit"]
 [ext_resource type="Script" path="res://src/town/bootstrap_town.gd" id="12_town"]
 
@@ -107,6 +108,9 @@ script = ExtResource("12_town")
 
 [node name="Landmarks" type="Node3D" parent="World"]
 script = ExtResource("10_landmarks")
+
+[node name="Sites" type="Node3D" parent="World"]
+script = ExtResource("20_sites")
 
 [node name="Player" parent="." instance=ExtResource("2_player")]
 

@@ -23,23 +23,15 @@ func build(terrain: Node) -> void:
 		"The Old Millpond. Something down there keeps count of the coins, they say — and I keep my distance. That is a LOT of water.",
 		"The mill! Lovely wheel. Absolutely dreadful swimming conditions, in my professional opinion.",
 	])
-	_add("seed_vault_ruins", "the Seed Vault ruins", -72.0, -70.0, 30.0, false, [
-		"The Seed Vault ruins. This is where they found you, Kern. The old machines still stir when you come near — don't ask me how I know. I just do.",
-		"Careful in the ruins. The Vault remembers things even you don't.",
-	])
-	_add("whispering_well", "the Whispering Well", 46.0, 24.0, 16.0, true, [
-		"Ooh — the Whispering Well! Toss in a Token, make a wish, and it rounds up if you ask nicely. I have tested this thoroughly.",
-	])
-	_add("boundary_stones", "the Old Boundary Stones", 58.0, -74.0, 26.0, false, [
-		"The Old Boundary Stones. They mark a line nobody can see anymore, and the farmers plow around them without asking why. I ask why constantly.",
-	])
-	_add("hivewise_apiary", "Hivewise Apiary", 70.0, -14.0, 22.0, false, [
-		"Hivewise Apiary. Every bee here has a route and sticks to it. Try to keep up — they will not slow down for you.",
-	])
-	_add("gradient_peaks_vista", "the Gradient Peaks", 0.0, -205.0, 88.0, false, [
+	# The Seed Vault ruins, Whispering Well, Boundary Stones and Hivewise Apiary
+	# used to be named from bare coordinates here, because nothing was built for
+	# them. MeadowSites now raises real props at those places and registers each
+	# one's BitLandmark on the prop itself, so their naming lines live there — a
+	# second anchor here would name them twice, from the wrong spot.
+	_add("gradient_peaks_vista", "the Gradient Peaks", 0.0, -1010.0, 150.0, false, [
 		"Look north — the Gradient Peaks. Every trail up there climbs toward the same cold summit. We'll go someday. Bundle up.",
 	])
-	_add("latent_forest_vista", "the Latent Forest", 200.0, 44.0, 88.0, false, [
+	_add("latent_forest_vista", "the Latent Forest", 1080.0, 44.0, 150.0, false, [
 		"That deep treeline to the east is the Latent Forest. Bigger inside than out, they say. Don't wander in without me — you'd never find the way back.",
 	])
 

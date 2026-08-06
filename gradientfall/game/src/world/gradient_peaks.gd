@@ -18,14 +18,21 @@ extends StaticBody3D
 const PEAKS_SEED: int = 20260720
 
 # Footprint. North is -Z; the range fills the band just past the meadow edge.
-const NEAR_Z: float = -240.0      # shared seam line with the meadow's north edge
-const FAR_Z: float = -724.0       # hand-off to BorderVistas' distant snow giants
-const WEST_X: float = -474.0
-const EAST_X: float = 474.0
-const RENDER_STEP: float = 2.0    # metres between drawn vertices — the finest
+const NEAR_Z: float = -1200.0     # shared seam line with the meadow's north edge
+const FAR_Z: float = -1684.0      # hand-off to BorderVistas' distant snow giants
+const WEST_X: float = -1440.0
+const EAST_X: float = 1440.0
+## The summits, spurs, gullies, pads and channels below were authored against the
+## original 480 m meadow, whose north edge sat at z = -240. The region has since
+## grown to 2.4 km and the seam moved north with it, so sample points are mapped
+## back into that authored frame instead of rewriting every coordinate by hand —
+## the landforms keep their proven shapes and the whole range simply moves.
+const AUTHORED_NEAR_Z: float = -240.0
+const Z_AUTHOR_SHIFT: float = NEAR_Z - AUTHORED_NEAR_Z
+const RENDER_STEP: float = 3.0    # metres between drawn vertices — the finest
                                   # authored feature is ~11 m, so this loses no
                                   # visible detail (the shader carries sub-2 m)
-const COLLIDE_STEP: float = 3.0   # metres between physics vertices (same height source)
+const COLLIDE_STEP: float = 4.5   # metres between physics vertices (same height source)
 
 const RANGE_BASE: float = 172.0   # interior valley-floor datum the front wall climbs to
 const FRONT_SPAN: float = 96.0    # metres of depth the seam→range wall occupies
@@ -62,10 +69,21 @@ var _summits: Array[Vector4] = [
 	Vector4(398.0, -612.0, 208.0, 408.0),   # east flank giant
 	Vector4(-74.0, -468.0, 152.0, 300.0),   # west gate crag (flanks the valley mouth)
 	Vector4(152.0, -452.0, 150.0, 316.0),   # east gate crag
+	# Flank summits. The range widened from 950 m to 2.9 km when the meadow grew;
+	# without these the authored massif would sit in the middle of a long, flat
+	# shoulder. They march outward and taper down, so the range reads as
+	# continuing past the region rather than stopping at a wall.
+	Vector4(-700.0, -600.0, 270.0, 452.0),
+	Vector4(-1000.0, -560.0, 290.0, 398.0),
+	Vector4(-1320.0, -620.0, 300.0, 344.0),
+	Vector4(720.0, -580.0, 265.0, 436.0),
+	Vector4(1020.0, -620.0, 285.0, 386.0),
+	Vector4(1330.0, -560.0, 300.0, 332.0),
 ]
 # 0 = broad compound crown, 1 = sharp needle. Governs the summit falloff exponent.
 var _summit_sharp: PackedFloat32Array = PackedFloat32Array(
-	[0.86, 0.7, 0.78, 0.58, 0.58, 0.46, 0.5]
+	[0.86, 0.7, 0.78, 0.58, 0.58, 0.46, 0.5,
+	0.72, 0.6, 0.52, 0.68, 0.58, 0.5]
 )
 
 # Spur ridges radiating off the summits (x0,z0 -> x1,z1) and the gullies that
@@ -158,7 +176,10 @@ func get_height(x: float, z: float) -> float:
 
 	# Summit envelope: each kernel lifts the floor toward its peak, smooth-max'd
 	# so overlapping summits meet in natural cols instead of hard creases.
-	var p: Vector2 = Vector2(x, z)
+	# `az` is this point's z in the authored frame (see Z_AUTHOR_SHIFT); depth
+	# terms above stay in world space because the shift cancels in a difference.
+	var az: float = z - Z_AUTHOR_SHIFT
+	var p: Vector2 = Vector2(x, az)
 	var relief: float = 0.0
 	for i in _summits.size():
 		var s: Vector4 = _summits[i]
@@ -174,7 +195,7 @@ func get_height(x: float, z: float) -> float:
 	var above: float = clampf((h - seam_h - 14.0) / 110.0, 0.0, 1.0)
 	above *= smoothstep(6.0, 30.0, NEAR_Z - z)
 	if above > 0.001:
-		var ridged: float = _ridged.get_noise_2d(x, z) * 0.5 + 0.5
+		var ridged: float = _ridged.get_noise_2d(x, az) * 0.5 + 0.5
 		h += (ridged - 0.4) * RIDGE_AMP * above
 		for i in _spurs.size():
 			var metric: Vector2 = _segment_metric(p, _spurs[i])
@@ -186,9 +207,9 @@ func get_height(x: float, z: float) -> float:
 			h -= cut * _gully_depth[i] * above * smoothstep(0.05, 0.5, gm.x)
 		# Erosion detail: avalanche chutes rake the raised faces, and metre-scale
 		# rubble keeps every slope from interpolating glass-smooth.
-		var chute: float = _chute.get_noise_2d(x, z) * 0.5 + 0.5
+		var chute: float = _chute.get_noise_2d(x, az) * 0.5 + 0.5
 		h -= chute * chute * 9.5 * above
-		h += _rubble.get_noise_2d(x, z) * 1.35 * above
+		h += _rubble.get_noise_2d(x, az) * 1.35 * above
 
 	# Channels are sampled once up front: their mask both carves the trails
 	# (below, with the last word) and tells the rooms where to stand aside.
@@ -214,7 +235,7 @@ func get_height(x: float, z: float) -> float:
 		w *= 1.0 - trail_mask
 		if w > 0.001:
 			var room_floor: float = pad.w \
-					+ _rubble.get_noise_2d(x * 1.3, z * 1.3) * 1.1 \
+					+ _rubble.get_noise_2d(x * 1.3, az * 1.3) * 1.1 \
 					+ pow(pd / pad.z, 2.0) * 3.0
 			h = lerpf(h, room_floor, w * _pad_strength[i])
 

@@ -4,6 +4,72 @@
 
 ---
 
+## 2026-07-26 (live session, map lane) — DATASEDGE MEADOWS AT REGION SCALE
+
+*Danny surveyed the whole region and asked the right question: "this is not
+scalably big enough — I can run it in a few minutes." He was right. The meadow
+was a 480 m prototype plot: **64 seconds** to cross. He asked for the region
+made complete in LENGTH and CONTENT first, quality second.*
+
+**DONE — the region is 25x bigger (eyes-verified, 29-shot survey)**
+- `meadow_terrain.gd`: **SIZE 480 m -> 2400 m**, STEP 2 -> 4 (601x601 verts,
+  1.9 s build). Crossing is now **~5.3 minutes** edge to edge on foot. This is
+  the WORLD_ATLAS "region core" scale.
+- New kilometre-scale noise band (`_region`, ~1.7 km wavelength, 34 m
+  amplitude) so 2.4 km reads as swells and vales, not one uniform field. The
+  north third now tilts up into the peaks' apron (65 m), the west falls 34 m to
+  the sea, and the south rolls up 16 m toward the Parameter City road.
+- Bootstrap's flat pad grew 38/75 m -> 86/165 m for a village, not a hamlet.
+- Borders moved out to match: **GradientPeaks** seam -240 -> -1200 and widened
+  to 2.9 km (six new flank summits so the range doesn't stop at a shoulder);
+  sea, Latent Forest wall, and southern downs all pushed past the new edge;
+  backdrop ghost ranges shifted behind the climbable massif.
+- The peaks' authored summits/spurs/pads were **not** retyped — sample points
+  map back into the original authored frame (`Z_AUTHOR_SHIFT`), so proven
+  landforms simply moved. Grid coarsened (render 3 m / collide 4.5 m) to hold
+  the build at 4.9 s now the range is 3x wider.
+- Tree copses were a hand-listed box inside +/-205 m, leaving 80% of the new map
+  treeless: now a per-area jittered scatter — **2545 trees across 289 copses**.
+  Forage scaled to the new extent (140 -> 620 spots).
+
+**DONE — every approved POI now exists in the world (`meadow_sites.gd`, new)**
+17 of the region's places existed only as reviewed JSON and Bit naming anchors;
+walking to "the Seed Vault ruins" found bare grass. **13 missing POIs plus the
+Shrine of First Light and the Thresher's arena are now built props**, spread
+across the full 2.4 km and registered as Bit landmarks on the prop itself:
+Seed Vault ruins (broken wall ring + violet throat glow), Shrine of First Light
+(Shrine 1), Whispering Well, Hivewise Apiary, Old Boundary Stones, Ascent Tally
+Knoll, Deepgreen Overlook, Goose Hoard, Sluicework, Florist's Lockbox,
+Tempering Pool (steam), Hill-Watcher's Camp, Sunken Granary, Petal-Broker's
+Wagon, Wayfinder's Nook, the Long Fallow, and the Thresher's cut-lane fallow.
+Each drops its approved `reward_items` as real pickups via ContentDB.
+Duplicate anchors retired from `meadow_landmarks.gd` so nothing is named twice.
+
+**DONE — tooling**
+- `src/dev/meadow_survey.gd` + `scenes/dev/meadow_survey.tscn` (new): instances
+  the REAL main scene and photographs the whole region — aerials from four
+  bearings, every site, borders, time-of-day. This is how "is the region done?"
+  gets answered from a contact sheet instead of lucky angles.
+
+**HONEST STATE — deliberately completeness-first, per Danny's instruction**
+- **Site geometry is blockout quality.** The Seed Vault ruins read as tan boxes,
+  not ruins. Everything is present and correctly placed; none of it has had the
+  craft pass the mountains got. This is the agreed order: everything in, then
+  quality, then Danny's design direction.
+- **Grass still renders only ~50 m around the camera**; past that the terrain is
+  bare brown soil, which at 2.4 km is a much larger share of every wide shot
+  than it was at 480 m. This is the grass lane's system — flagged, not touched.
+- Distant terrain washes out in fog on high aerials.
+- Boot cost is now ~8 s (terrain 1.9 + peaks 4.9). Acceptable; the real fix is
+  the WORLD_ATLAS streaming milestone, not more tuning here.
+- Not yet built: the region's 8 monsters as a roster, quest/journal wiring,
+  vendor stock, and the Thresher boss itself (arena only).
+
+**NEXT UP** — quality pass on the 17 sites (they earn the mountain treatment),
+then Danny's design direction on Bootstrap and the region layout.
+
+---
+
 ## 2026-07-29 (live session, milestone 7) — KNOWLEDGE CHARGE v1: SEEN, DRIVEN, FIXED
 
 *Danny's directive: a long, deliberate pass on Phase 1 milestone 7 — "I'd rather

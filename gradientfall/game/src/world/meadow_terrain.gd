@@ -11,12 +11,21 @@ extends StaticBody3D
 ## trimesh built from the same mesh so physics always matches what you see.
 
 const WORLD_SEED: int = 20260716
-const SIZE: float = 480.0            # meters, square, centered on origin
-const STEP: float = 2.0              # meters between mesh vertices
+## Region extent. 2.4 km square — a ~5.3-minute run edge to edge, ~7.5 minutes
+## corner to corner, versus the 64 seconds the original 480 m prototype took.
+## This is the WORLD_ATLAS "region core" scale; the atlas's streaming milestone
+## is what eventually carries it past a single mesh.
+const SIZE: float = 2400.0           # meters, square, centered on origin
+## 4 m between vertices keeps one mesh + one trimesh affordable at 2.4 km
+## (601 x 601 verts). The meadow's landforms are low-frequency, and the blade
+## carpet supplies everything finer, so the coarser grid costs no visible detail.
+const STEP: float = 4.0              # meters between mesh vertices
 
 const TOWN_CENTER: Vector2 = Vector2(0.0, 30.0)
-const TOWN_FLAT_INNER: float = 38.0
-const TOWN_FLAT_OUTER: float = 75.0
+## Bootstrap's pad grew with the region — the town spreads into a real village
+## footprint rather than the hamlet the 38 m pad allowed.
+const TOWN_FLAT_INNER: float = 86.0
+const TOWN_FLAT_OUTER: float = 165.0
 const POND_CENTER: Vector2 = Vector2(95.0, 10.0)
 const POND_RADIUS: float = 24.0
 const POND_DEPTH: float = 3.0
@@ -30,6 +39,9 @@ var height_texture: ImageTexture
 
 var _rolling: FastNoiseLite
 var _macro: FastNoiseLite
+## Kilometre-scale swells and vales — the band that keeps a 2.4 km meadow from
+## reading as one uniform field (wavelength ~1.7 km, so a few per region).
+var _region: FastNoiseLite
 var _detail: FastNoiseLite
 var _tint: FastNoiseLite
 
@@ -45,6 +57,11 @@ func _init() -> void:
 	_macro.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	_macro.frequency = 0.0016
 	_macro.fractal_octaves = 2
+	_region = FastNoiseLite.new()
+	_region.seed = WORLD_SEED + 7
+	_region.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
+	_region.frequency = 0.0006
+	_region.fractal_octaves = 2
 	_detail = FastNoiseLite.new()
 	_detail.seed = WORLD_SEED + 2
 	_detail.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
@@ -98,10 +115,17 @@ func _height_raw(x: float, z: float) -> float:
 	var h: float = _rolling.get_noise_2d(x, z) * 6.5
 	h += _macro.get_noise_2d(x, z) * 11.0
 	h += _detail.get_noise_2d(x, z) * 0.45
-	# Foothills climbing toward the Gradient Peaks vista (north = -z).
-	h += 22.0 * pow(smoothstep(110.0, 240.0, -z), 1.6)
+	# Kilometre-scale relief. At 2.4 km the old two noise bands (125 m and 625 m
+	# wavelengths) repeat into sameness, so a very low band lifts broad swells
+	# and sinks shallow vales — the ridge you crest to find the next valley.
+	h += _region.get_noise_2d(x, z) * 34.0
+	# Foothills climbing toward the Gradient Peaks vista (north = -z). The whole
+	# north third of the region now tilts upward into the range's apron.
+	h += 65.0 * pow(smoothstep(560.0, 1200.0, -z), 1.6)
 	# Long fall toward the Convolution Coast vista (west = -x).
-	h -= 9.0 * smoothstep(140.0, 240.0, -x)
+	h -= 34.0 * smoothstep(700.0, 1200.0, -x)
+	# The southern downs roll up gently toward the Parameter City road (south = +z).
+	h += 16.0 * smoothstep(620.0, 1200.0, z)
 	return h
 
 

@@ -15,6 +15,11 @@ const HORIZON_TREE_VARIANTS: int = 4
 const MOUNTAIN_SHADER_PATH: String = "res://assets/shaders/mountain_vista.gdshader"
 const TOON_SOFT_SHADER_PATH: String = "res://assets/shaders/toon_soft.gdshader"
 const CLIMBABLE_PEAKS := preload("res://src/world/gradient_peaks.gd")
+## Backdrop placement, relative to the layouts authored for the 480 m meadow.
+## Metres pushed north so the ghost ranges clear the climbable massif's far edge,
+## and the lateral spread that keeps them filling a horizon 3x wider than before.
+const BACKDROP_Z_SHIFT: float = -980.0
+const BACKDROP_X_SPREAD: float = 1.8
 
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _apron_noise: FastNoiseLite = FastNoiseLite.new()
@@ -108,7 +113,13 @@ func _add_mountain_rank(
 		mountain.material_override = _make_mountain_material(
 			rank, spec.w, i, peak_rng
 		)
-		mountain.position = Vector3(spec.x, base_y, spec.y)
+		# The two remaining ranks are pure backdrop and must stay BEHIND the
+		# climbable massif, which moved north (and grew wider) when the meadow
+		# expanded to 2.4 km. Their authored layout is shifted and spread to suit
+		# rather than retyped.
+		mountain.position = Vector3(
+			spec.x * BACKDROP_X_SPREAD, base_y, spec.y + BACKDROP_Z_SHIFT
+		)
 		mountain.rotation.y = peak_rng.randf_range(-0.32, 0.32)
 		mountain.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 		rank_node.add_child(mountain)
@@ -570,8 +581,8 @@ func _grow_latent_forest_wall() -> void:
 		forest_rng.seed = VISTA_SEED + 809 + variant * 113
 		for i in multimesh.instance_count:
 			var layer: int = (i * 3 + variant) % 4
-			var x: float = 430.0 + float(layer) * 58.0 + forest_rng.randf_range(-20.0, 24.0)
-			var z: float = forest_rng.randf_range(-650.0, 650.0)
+			var x: float = 1310.0 + float(layer) * 58.0 + forest_rng.randf_range(-20.0, 24.0)
+			var z: float = forest_rng.randf_range(-1500.0, 1500.0)
 			var height_scale: float = forest_rng.randf_range(0.88, 1.56)
 			if (i + variant * 7) % 29 == 0:
 				height_scale *= 1.42
@@ -738,7 +749,7 @@ func _add_colored_triangle(
 
 func _lay_convolution_sea() -> void:
 	var plane: PlaneMesh = PlaneMesh.new()
-	plane.size = Vector2(1500.0, 1700.0)
+	plane.size = Vector2(1900.0, 3400.0)
 	plane.subdivide_width = 72
 	plane.subdivide_depth = 72
 	var material: ShaderMaterial = ShaderMaterial.new()
@@ -752,7 +763,7 @@ func _lay_convolution_sea() -> void:
 	var sea: MeshInstance3D = MeshInstance3D.new()
 	sea.name = "ConvolutionSea"
 	sea.mesh = plane
-	sea.position = Vector3(-990.0, -13.5, 0.0)
+	sea.position = Vector3(-1950.0, -13.5, 0.0)
 	sea.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	add_child(sea)
 
@@ -781,9 +792,9 @@ func _roll_southern_downs() -> void:
 		hill_instance.mesh = hill
 		hill_instance.material_override = material
 		hill_instance.position = Vector3(
-			-780.0 + 145.0 * float(i) + _rng.randf_range(-38.0, 38.0),
+			-1500.0 + 280.0 * float(i) + _rng.randf_range(-60.0, 60.0),
 			-22.0,
-			760.0 + (85.0 if rear else 0.0) + _rng.randf_range(-35.0, 35.0)
+			1620.0 + (140.0 if rear else 0.0) + _rng.randf_range(-60.0, 60.0)
 		)
 		hill_instance.scale.z = _rng.randf_range(0.72, 1.25)
 		hill_instance.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
