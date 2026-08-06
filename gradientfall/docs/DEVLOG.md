@@ -4,6 +4,81 @@
 
 ---
 
+## 2026-07-27 (live session) — FIRST PERSON, WORLD-CLIP FIXES, BLENDER PROPS
+
+*Danny's list: stop Kern falling through the floor and seeing through the
+ground; make first person the default with conventional mouse look; and raise
+the hand-props (houses, wagon, well) to the quality bar the terrain already
+hits — with Blender, as previously discussed.*
+
+**DONE — first person is now the default view (`camera_rig.gd`)**
+- The arm collapses to zero length so the camera sits at eye height (1.62 m),
+  Kern's Visual is hidden so we never render from inside his own head, and the
+  pitch range opens to a full look up/down (+/-1.45 rad vs the orbit's -1.1/0.5).
+- Mouse look is conventional and uninverted: mouse up looks up, right looks
+  right. First person rides the head exactly (no follow smoothing — smoothing
+  reads as the world sliding while you walk); third person keeps the smoothing.
+- **V** (or right-stick click) toggles to the third-person orbit and back;
+  `toggle_view` registered in `input_setup.gd` alongside the existing bindings.
+- `set_first_person()` is public so dev rigs can force the orbit: `main.gd`'s
+  screenshot mode now does exactly that, so **review captures stay third-person**
+  while the game plays in first.
+
+**DONE — no more falling through the world (`player.gd`)**
+- Trimesh collision can be tunnelled at high fall speed, on steep faces, or at
+  the terrain/mountain seam, and once through, the player falls forever. Both
+  surfaces can answer "how high is the ground here?" analytically, so a guard
+  runs every physics frame: if Kern is more than 3 m below the analytic
+  surface, he is lifted back out and downward velocity is cleared. Deliberately
+  tolerant so legitimate below-ground play (the Perceptron Vault) never trips it.
+- Surfaces are resolved lazily by node path, so the controller still works in
+  the dev harnesses, where the guard simply never fires.
+
+**DONE — no more seeing through the ground**
+- Both ground shaders (`toon_soft`, `mountain_terrain`) are now `cull_disabled`.
+  Single-sided ground vanishes the moment a camera dips below a face, which is
+  exactly the "see through the world from a certain angle" failure.
+- The third-person spring arm's margin went 0.2 -> 0.45 m so the camera stops
+  short of surfaces instead of grazing their back faces, and the camera's near
+  clip is set explicitly (0.05).
+
+**DONE — Blender prop pipeline (`tools/make_props.py`, new)**
+Hand-props were box-and-cylinder assemblies in GDScript and looked it next to
+the terrain. This is a headless, reproducible Blender script (no .blend needed)
+that builds them as real meshes and exports .glb, following the same pattern as
+the existing `export_kern_base.py`:
+- **well** (16.8k tris) — three courses of wedge-cut masonry with staggered
+  joints and per-stone jitter, timber frame with braces, a shingled two-slope
+  roof, windlass, crank, rope and banded bucket.
+- **wagon** (12k tris) — planked bed, five swept tube hoops, a lofted canvas
+  tilt that sags between hoops, and wheels with hub, ten spokes and a
+  boolean-cut iron tyre.
+- **cottage** (26.4k tris) — bevelled walls with half-timbering, an oversailing
+  shingled roof with ridge cap, a coursed stone chimney, recessed windows with
+  frames/mullions/sills, a plank door and a stone plinth.
+- The craft that matters: bevelled edges on everything (the single biggest step
+  from "box" to "object"), radial/swept construction, subdivision on soft forms,
+  deterministic per-element jitter, and PBR materials exported in the glTF.
+- `meadow_sites.gd` loads the .glb for the well and wagon and wraps each mesh in
+  a trimesh static body. **A missing .glb is not an error** — the site keeps its
+  GDScript blockout, so a fresh clone still runs before anyone opens Blender.
+
+**HALF-FORMED / next**
+- **The cottage is built and exported but not yet wired in.** Bootstrap's houses
+  come from `town_building.gd`, which also drives window/lamp night crossfade;
+  swapping it to the .glb is its own careful change, not a drive-by.
+- Only the well and wagon are upgraded so far. Remaining blockouts: the Seed
+  Vault ruins, granary, apiary, camp, shrine, boundary stones, chest props.
+- Grass still renders ~50 m around the camera; the prop captures above sit in
+  bare-soil ground for that reason. Untouched — grass lane's system.
+- First person is verified by boot and by code, but the *feel* (head height,
+  sensitivity, FOV) wants Danny's hands on the keyboard.
+
+**NEXT UP** — wire the cottage into Bootstrap, then push the remaining site
+props through the same Blender pipeline.
+
+---
+
 ## 2026-07-26 (live session, map lane) — DATASEDGE MEADOWS AT REGION SCALE
 
 *Danny surveyed the whole region and asked the right question: "this is not

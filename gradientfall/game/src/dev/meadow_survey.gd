@@ -156,63 +156,15 @@ func _take(dir: String, shot: Dictionary) -> void:
 ## POI props, and these captures always describe the same geography.
 func _shots() -> Array[Dictionary]:
 	return [
-		# ---- aerial overviews of the full 2.4 km region ----
-		{"name": "01_aerial_south_north", "pos": Vector2(0.0, 1900.0), "abs_y": 780.0,
-			"aim": Vector2(0.0, -300.0), "aim_up": 120.0, "fov": 72.0},
-		{"name": "02_aerial_west_east", "pos": Vector2(-1900.0, 0.0), "abs_y": 740.0,
-			"aim": Vector2(200.0, 10.0), "aim_up": 90.0, "fov": 72.0},
-		{"name": "03_aerial_north_south", "pos": Vector2(-40.0, -1500.0), "abs_y": 800.0,
-			"aim": Vector2(0.0, 400.0), "aim_up": 60.0, "fov": 72.0},
-		{"name": "04_aerial_east_west", "pos": Vector2(1900.0, 60.0), "abs_y": 740.0,
-			"aim": Vector2(-160.0, 0.0), "aim_up": 90.0, "fov": 72.0},
-		{"name": "05_aerial_high_oblique", "pos": Vector2(1150.0, 1300.0), "abs_y": 900.0,
-			"aim": Vector2(-160.0, -200.0), "aim_up": 60.0, "fov": 76.0},
-
-		# ---- Bootstrap ----
-		{"name": "06_bootstrap_town_site", "pos": Vector2(-96.0, 150.0), "up": 4.0,
-			"aim": Vector2(0.0, 30.0), "aim_up": 3.0, "fov": 66.0},
-		{"name": "07_bootstrap_aerial", "pos": Vector2(-40.0, 190.0), "abs_y": 120.0,
-			"aim": Vector2(10.0, 20.0), "aim_up": 4.0, "fov": 70.0},
-
-		# ---- the newly raised points of interest ----
-		{"name": "08_seed_vault_ruins", "pos": Vector2(-284.0, -222.0), "up": 3.0,
-			"aim": Vector2(-320.0, -260.0), "aim_up": 1.5, "fov": 66.0},
-		{"name": "09_shrine_first_light", "pos": Vector2(-404.0, -118.0), "up": 3.0,
-			"aim": Vector2(-436.0, -150.0), "aim_up": 3.0, "fov": 64.0},
-		{"name": "10_whispering_well", "pos": Vector2(202.0, 82.0), "up": 2.2,
-			"aim": Vector2(212.0, 62.0), "aim_up": 1.5},
-		{"name": "11_hivewise_apiary", "pos": Vector2(310.0, -98.0), "up": 2.6,
-			"aim": Vector2(332.0, -120.0), "aim_up": 1.0, "fov": 66.0},
-		{"name": "12_boundary_stones", "pos": Vector2(124.0, -408.0), "up": 2.6,
-			"aim": Vector2(150.0, -430.0), "aim_up": 1.5},
-		{"name": "13_ascent_tally_knoll", "pos": Vector2(-66.0, -740.0), "up": 2.6,
-			"aim": Vector2(-90.0, -764.0), "aim_up": 2.0},
-		{"name": "14_sluicework", "pos": Vector2(-158.0, 262.0), "up": 3.0,
-			"aim": Vector2(-182.0, 286.0), "aim_up": 0.5, "fov": 68.0},
-		{"name": "15_tempering_pool", "pos": Vector2(240.0, 760.0), "up": 2.6,
-			"aim": Vector2(262.0, 782.0), "aim_up": 0.3},
-		{"name": "16_hillwatchers_camp", "pos": Vector2(-498.0, -498.0), "up": 2.6,
-			"aim": Vector2(-520.0, -520.0), "aim_up": 1.0},
-		{"name": "17_sunken_granary", "pos": Vector2(-738.0, 400.0), "up": 3.0,
-			"aim": Vector2(-762.0, 424.0), "aim_up": 1.0},
-		{"name": "18_petal_brokers_wagon", "pos": Vector2(-858.0, -100.0), "up": 2.6,
-			"aim": Vector2(-880.0, -122.0), "aim_up": 1.2},
-		{"name": "19_long_fallow", "pos": Vector2(596.0, 490.0), "up": 3.2,
-			"aim": Vector2(624.0, 520.0), "aim_up": 0.8, "fov": 68.0},
-		{"name": "20_thresher_fallow", "pos": Vector2(724.0, -524.0), "up": 3.4,
-			"aim": Vector2(760.0, -560.0), "aim_up": 0.8, "fov": 70.0},
-		{"name": "21_wayfinders_nook", "pos": Vector2(-122.0, 360.0), "up": 2.0,
-			"aim": Vector2(-140.0, 380.0), "aim_up": 1.0},
-		{"name": "22_deepgreen_overlook", "pos": Vector2(1022.0, 100.0), "up": 2.6,
-			"aim": Vector2(1046.0, 120.0), "aim_up": 1.2, "fov": 66.0},
-
-		# ---- the long views that prove the new scale ----
-		{"name": "23_border_north_peaks", "pos": Vector2(-20.0, -300.0), "up": 4.0,
-			"aim": Vector2(20.0, -1520.0), "aim_up": 320.0, "fov": 68.0},
-		{"name": "24_border_west_sea", "pos": Vector2(-900.0, 10.0), "up": 4.0,
-			"aim": Vector2(-1900.0, 0.0), "aim_up": 6.0, "fov": 66.0},
-		{"name": "25_long_view_south", "pos": Vector2(0.0, -600.0), "up": 6.0,
-			"aim": Vector2(0.0, 900.0), "aim_up": 20.0, "fov": 72.0},
+		# Close looks at the Blender-authored props replacing the box blockouts.
+		{"name": "01_well_close", "pos": Vector2(206.0, 68.0), "up": 1.7,
+			"aim": Vector2(212.0, 62.0), "aim_up": 1.4, "fov": 55.0},
+		{"name": "02_well_wide", "pos": Vector2(199.0, 74.0), "up": 2.4,
+			"aim": Vector2(212.0, 62.0), "aim_up": 1.2, "fov": 62.0},
+		{"name": "03_wagon_close", "pos": Vector2(-872.0, -113.0), "up": 1.8,
+			"aim": Vector2(-880.0, -122.0), "aim_up": 1.4, "fov": 58.0},
+		{"name": "04_wagon_wide", "pos": Vector2(-866.0, -108.0), "up": 2.6,
+			"aim": Vector2(-880.0, -122.0), "aim_up": 1.3, "fov": 66.0},
 	]
 
 

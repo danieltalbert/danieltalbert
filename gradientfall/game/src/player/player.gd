@@ -26,6 +26,16 @@ const SQUASH_MIN_AIR_TIME: float = 0.2  # no squash for curb-sized drops
 const KNOCKBACK_DECAY: float = 7.0
 const DOWNED_TIME: float = 1.4          # come-apart → reform beat
 const REFORM_IFRAMES: float = 1.6
+## Metres Kern may be below the analytic ground before the guard hauls him out.
+## Trimesh collision can be tunnelled through at high fall speed, on a steep
+## slope, or where two surfaces meet (the terrain/mountain seam); when that
+## happens the player falls forever with no way back. The terrain's own
+## get_height() is the ground truth, so we can always find the surface again.
+## The threshold is loose enough that legitimately being under an overhang or
+## inside the Perceptron Vault never trips it.
+const FALL_THROUGH_TOLERANCE: float = 3.0
+## Metres above the recovered surface Kern is placed when the guard fires.
+const RECOVERY_CLEARANCE: float = 1.2
 
 var _coyote_left: float = 0.0
 var _jump_buffer_left: float = 0.0
@@ -34,6 +44,10 @@ var _was_on_floor: bool = true
 var _scale_tween: Tween
 var _knockback: Vector3 = Vector3.ZERO
 var _downed: bool = false
+## Resolved once, lazily: the two surfaces that know their own analytic height.
+var _terrain: MeadowTerrain
+var _peaks: GradientPeaks
+var _surfaces_resolved: bool = false
 
 @onready var _visual: Node3D = $Visual
 @onready var _rig: CameraRig = $CameraRig
@@ -81,8 +95,56 @@ func _physics_process(delta: float) -> void:
 	_handle_move(delta)
 	_apply_knockback(delta)
 	move_and_slide()
+	_guard_against_falling_through()
 	_handle_landing()
 	_was_on_floor = is_on_floor()
+
+
+## Safety net against tunnelling through the world.
+##
+## Collision here is a trimesh generated from the terrain and the mountain
+## heightfields; a fast fall, a steep face, or the seam where the two surfaces
+## meet can let a capsule slip through, after which the player falls out of the
+## world with no recovery. Both surfaces can answer "how high is the ground at
+## (x, z)?" analytically, so we ask, and if Kern is meaningfully below that
+## answer we lift him back out and kill the downward velocity.
+##
+## Deliberately tolerant (FALL_THROUGH_TOLERANCE): this must never fight
+## legitimate below-surface play such as the Perceptron Vault's sunken floor.
+func _guard_against_falling_through() -> void:
+	if not _surfaces_resolved:
+		_resolve_surfaces()
+	var surface_y: float = _surface_height(global_position.x, global_position.z)
+	if is_inf(surface_y) or global_position.y >= surface_y - FALL_THROUGH_TOLERANCE:
+		return
+	global_position.y = surface_y + RECOVERY_CLEARANCE
+	velocity.y = 0.0
+	push_warning("Player: recovered from a fall through the world at (%.1f, %.1f)." % [
+		global_position.x, global_position.z,
+	])
+
+
+## Caches the terrain and mountain surfaces. Looked up by node path rather than
+## injected so the controller keeps working in scenes that have neither (the
+## dev harnesses), where the guard simply never fires.
+func _resolve_surfaces() -> void:
+	_surfaces_resolved = true
+	var world: Node = get_parent().get_node_or_null("World")
+	if world == null:
+		return
+	_terrain = world.get_node_or_null("Terrain") as MeadowTerrain
+	_peaks = world.get_node_or_null("Vistas/ClimbablePeaks") as GradientPeaks
+
+
+## Analytic ground height, or INF where nothing authoritative covers this point
+## (outside the region, where the guard must stay out of the way).
+func _surface_height(x: float, z: float) -> float:
+	if _peaks != null and _peaks.in_bounds(x, z):
+		return _peaks.get_height(x, z)
+	if _terrain != null and absf(x) <= MeadowTerrain.SIZE * 0.5 \
+			and absf(z) <= MeadowTerrain.SIZE * 0.5:
+		return _terrain.get_height(x, z)
+	return INF
 
 
 func _apply_knockback(delta: float) -> void:

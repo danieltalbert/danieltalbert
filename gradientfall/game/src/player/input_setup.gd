@@ -66,6 +66,10 @@ static func ensure() -> void:
 	# Back/Select already opens the pack, so sharing it would toggle both UIs.
 	_key(&"compendium", KEY_J)
 	_pad_button(&"compendium", JOY_BUTTON_START)
+	# Camera view toggle. V is the long-standing convention for switching
+	# first/third person; the right stick's click is the pad equivalent.
+	_key(&"toggle_view", KEY_V)
+	_pad_button(&"toggle_view", JOY_BUTTON_RIGHT_STICK)
 
 
 static func _action(action: StringName) -> void:

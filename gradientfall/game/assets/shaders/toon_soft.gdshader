@@ -1,5 +1,8 @@
 shader_type spatial;
-render_mode diffuse_lambert_wrap, specular_schlick_ggx;
+// cull_disabled: the meadow ground uses this shader. Seen from below — a
+// camera clipped into a slope — a back-face-culled surface disappears and
+// you see through the terrain. Drawing both faces prevents that.
+render_mode diffuse_lambert_wrap, specular_schlick_ggx, cull_disabled;
 // SOFT variant of toon.gdshader (Danny's realism decree): identical uniforms
 // and features — vertex-color albedo, fresnel rim, sky fill, world noise —
 // but with soft wrapped diffuse instead of hard cel banding. Terrain, rocks,

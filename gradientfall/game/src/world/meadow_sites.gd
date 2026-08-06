@@ -58,6 +58,14 @@ const IRON: Color = Color(0.22, 0.23, 0.25)
 const CANVAS: Color = Color(0.72, 0.68, 0.56)
 const VAULT_VIOLET: Color = Color(0.55, 0.33, 0.78)
 
+## Blender-authored props, keyed by the name `tools/make_props.py` exports.
+## These replace the code-built box assemblies for objects the player walks up
+## to: bevelled edges, radial masonry, spoked wheels and shingled roofs are
+## worth authoring in a modeller, not stacking out of primitives in GDScript.
+## A missing file is not an error — the site simply keeps its blockout, so the
+## game still runs from a fresh clone before anyone has run Blender.
+const PROP_MODEL_DIR: String = "res://assets/models/props/"
+
 var _terrain: MeadowTerrain
 var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
@@ -143,6 +151,45 @@ func _rubble(parent: Node3D, part_name: String, radius: float, pos: Vector3,
 	)
 	mi.rotation.y = _rng.randf_range(0.0, TAU)
 	return mi
+
+
+## Instances a Blender-authored prop under `root`, returning true if it loaded.
+## Callers use the return value to decide whether to also build the GDScript
+## blockout, so the world is never empty if the .glb has not been generated.
+func _load_prop(root: Node3D, model_name: String, yaw: float = 0.0,
+		prop_scale: float = 1.0) -> bool:
+	var path: String = PROP_MODEL_DIR + model_name + ".glb"
+	if not ResourceLoader.exists(path):
+		return false
+	var scene: PackedScene = load(path) as PackedScene
+	if scene == null:
+		return false
+	var prop: Node3D = scene.instantiate() as Node3D
+	if prop == null:
+		return false
+	prop.name = "Model"
+	prop.rotation.y = yaw
+	prop.scale = Vector3.ONE * prop_scale
+	root.add_child(prop)
+	_add_prop_collision(root, prop)
+	return true
+
+
+## Props are exported as plain meshes, so they arrive without physics. Rather
+## than hand-authoring a shape per prop, this wraps each mesh in a static
+## trimesh body — accurate, and correct for objects that never move.
+func _add_prop_collision(root: Node3D, prop: Node3D) -> void:
+	var body: StaticBody3D = StaticBody3D.new()
+	body.name = "ModelCollision"
+	root.add_child(body)
+	for child in prop.find_children("*", "MeshInstance3D", true, false):
+		var mesh_instance: MeshInstance3D = child as MeshInstance3D
+		if mesh_instance == null or mesh_instance.mesh == null:
+			continue
+		var shape: CollisionShape3D = CollisionShape3D.new()
+		shape.shape = mesh_instance.mesh.create_trimesh_shape()
+		shape.transform = prop.transform * mesh_instance.transform
+		body.add_child(shape)
 
 
 ## Drops the POI's approved reward items on the ground as real pickups, so a
@@ -237,6 +284,11 @@ func _build_whispering_well() -> void:
 	var root: Node3D = _site("whispering_well", "the Whispering Well", 18.0, [
 		"Ooh — the Whispering Well! Toss in a Token, make a wish, and it rounds up if you ask nicely. I have tested this thoroughly.",
 	], true)
+	# The Blender well carries wedge-cut masonry, a shingled roof and a spoked
+	# windlass; the box ring below is only the fallback when it is absent.
+	if _load_prop(root, "well", 0.35):
+		_drop_rewards(root, "poi_whispering_well")
+		return
 	for i in 12:
 		var angle: float = TAU * float(i) / 12.0
 		_solid(root, "Ring_%d" % i, Vector3(0.62, 0.95, 0.42),
@@ -513,6 +565,10 @@ func _build_petal_brokers_wagon() -> void:
 	var root: Node3D = _site("petal_brokers_wagon", "the Petal-Broker's Wagon", 20.0, [
 		"The Petal-Broker! She pays triple for a bloom that refuses to classify. I have opinions about which of us that describes.",
 	])
+	# The Blender wagon has a swept canvas tilt and real spoked wheels.
+	if _load_prop(root, "wagon", -0.6):
+		_drop_rewards(root, "poi_petal_brokers_wagon")
+		return
 	_solid(root, "WagonBed", Vector3(3.6, 1.1, 2.0), Vector3(0.0, 1.05, 0.0), Color(0.2, 0.42, 0.26))
 	# Canvas tilt: five hoops with a cover over them.
 	for i in 5:

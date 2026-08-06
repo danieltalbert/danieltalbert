@@ -169,6 +169,11 @@ func _capture_screens(dir: String) -> void:
 	# milestone 12, the Perceptron Vault inside and out, which is sealed and
 	# lit only by its own runes and so cannot be judged from the field.
 	var rig: Node3D = _player.get_node("CameraRig")
+	# The game now PLAYS in first person, but visual review needs to see the
+	# world (and Kern) from outside, so captures always run the orbit camera.
+	var review_rig: CameraRig = _player.get_node_or_null("CameraRig") as CameraRig
+	if review_rig != null:
+		review_rig.set_first_person(false)
 	# Keep the frame clean: Kern's body, Bit, and the floating landmark/bark
 	# labels otherwise sit right on the lens and block the world we're judging.
 	var kern_visual: Node3D = _player.get_node("Visual") as Node3D

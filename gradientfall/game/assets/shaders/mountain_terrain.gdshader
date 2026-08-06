@@ -1,5 +1,8 @@
 shader_type spatial;
-render_mode diffuse_lambert_wrap, specular_schlick_ggx, cull_back;
+// cull_disabled: single-sided ground vanishes when the camera dips below a
+// face, letting you see through the world. Back faces cost a little overdraw
+// and remove that failure entirely.
+render_mode diffuse_lambert_wrap, specular_schlick_ggx, cull_disabled;
 
 // Climbable Gradient Peaks surface — a material the player stands on, so it
 // must hold up at arm's length, not just on the horizon. The mesh bakes a
