@@ -105,6 +105,10 @@ func _on_body_entered(body: Node) -> void:
 
 func _pop() -> void:
 	_spent = true
-	monitoring = false
+	# Deferred: `_pop`/`_collect` run from inside `_on_body_entered`, and
+	# Godot refuses a live `monitoring` write during the physics callback
+	# flush. The `_spent`/`_taken` guard above already rejects a second
+	# hit in the same frame, so the one-frame delay costs nothing.
+	set_deferred(&"monitoring", false)
 	DamageShards.burst(get_tree().current_scene, global_position, _color, 8, 3.5, 1.2, 0.8)
 	queue_free()

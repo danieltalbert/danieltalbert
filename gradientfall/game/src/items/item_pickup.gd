@@ -84,7 +84,11 @@ func _on_body_entered(body: Node) -> void:
 
 func _collect() -> void:
 	_taken = true
-	monitoring = false
+	# Deferred: `_pop`/`_collect` run from inside `_on_body_entered`, and
+	# Godot refuses a live `monitoring` write during the physics callback
+	# flush. The `_spent`/`_taken` guard above already rejects a second
+	# hit in the same frame, so the one-frame delay costs nothing.
+	set_deferred(&"monitoring", false)
 	GameState.add_item(item_id, 1)  # emits EventBus.item_acquired → HUD + Bit
 	DamageShards.burst(
 		get_tree().current_scene, global_position + Vector3(0.0, REST_HEIGHT, 0.0),
