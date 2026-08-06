@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">Neural Quest</title>
+  <desc id="desc">A pixel-art Godot adventure for learning machine learning.</desc>
+  <rect width="1280" height="640" fill="#11162e"/>
+  <rect x="42" y="42" width="1196" height="556" fill="#192044" stroke="#7fe3ff" stroke-width="4"/>
+  <g opacity=".65"><rect x="86" y="94" width="14" height="14" fill="#8fe08a"/><rect x="112" y="94" width="14" height="14" fill="#f0c060"/><rect x="138" y="94" width="14" height="14" fill="#b57ee0"/></g>
+  <text x="88" y="225" font-family="Consolas,Courier New,monospace" font-size="78" font-weight="700" fill="#ffffff">NEURAL QUEST</text>
+  <text x="92" y="282" font-family="Consolas,Courier New,monospace" font-size="26" fill="#7fe3ff">LEARN MACHINE LEARNING. SAVE THE WORLD.</text>
+  <g transform="translate(90 362)">
+    <rect width="255" height="114" fill="#252f60" stroke="#8fe08a" stroke-width="3"/>
+    <text x="24" y="39" font-family="Consolas,Courier New,monospace" font-size="18" fill="#8fe08a">WORLDS</text>
+    <text x="24" y="83" font-family="Consolas,Courier New,monospace" font-size="38" font-weight="700" fill="#ffffff">20</text>
+  </g>
+  <g transform="translate(371 362)">
+    <rect width="255" height="114" fill="#252f60" stroke="#f0c060" stroke-width="3"/>
+    <text x="24" y="39" font-family="Consolas,Courier New,monospace" font-size="18" fill="#f0c060">INTERACTIVE LABS</text>
+    <text x="24" y="83" font-family="Consolas,Courier New,monospace" font-size="38" font-weight="700" fill="#ffffff">20</text>
+  </g>
+  <g transform="translate(652 362)">
+    <rect width="255" height="114" fill="#252f60" stroke="#b57ee0" stroke-width="3"/>
+    <text x="24" y="39" font-family="Consolas,Courier New,monospace" font-size="18" fill="#b57ee0">DATA SHARDS</text>
+    <text x="24" y="83" font-family="Consolas,Courier New,monospace" font-size="38" font-weight="700" fill="#ffffff">60</text>
+  </g>
+  <g transform="translate(1015 145)" fill="none" stroke="#7fe3ff" stroke-width="7">
+    <circle cx="70" cy="70" r="52"/><path d="M70 18V0M70 140v-18M18 70H0M140 70h-18M33 33L19 19M107 107l14 14M107 33l14-14M33 107l-14 14"/>
+    <circle cx="70" cy="70" r="12" fill="#f0c060" stroke="none"/>
+  </g>
+  <text x="90" y="548" font-family="Consolas,Courier New,monospace" font-size="20" fill="#c7d1ff">GODOT 4.7 · GDSCRIPT · PIXEL ART · CONTENT VALIDATION · v0.4.0</text>
+</svg>
