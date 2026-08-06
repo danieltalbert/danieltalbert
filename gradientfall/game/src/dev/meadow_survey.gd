@@ -156,15 +156,16 @@ func _take(dir: String, shot: Dictionary) -> void:
 ## POI props, and these captures always describe the same geography.
 func _shots() -> Array[Dictionary]:
 	return [
-		# Close looks at the Blender-authored props replacing the box blockouts.
-		{"name": "01_well_close", "pos": Vector2(206.0, 68.0), "up": 1.7,
-			"aim": Vector2(212.0, 62.0), "aim_up": 1.4, "fov": 55.0},
-		{"name": "02_well_wide", "pos": Vector2(199.0, 74.0), "up": 2.4,
-			"aim": Vector2(212.0, 62.0), "aim_up": 1.2, "fov": 62.0},
-		{"name": "03_wagon_close", "pos": Vector2(-872.0, -113.0), "up": 1.8,
-			"aim": Vector2(-880.0, -122.0), "aim_up": 1.4, "fov": 58.0},
-		{"name": "04_wagon_wide", "pos": Vector2(-866.0, -108.0), "up": 2.6,
-			"aim": Vector2(-880.0, -122.0), "aim_up": 1.3, "fov": 66.0},
+		{"name": "01_town_square", "pos": Vector2(-2.0, 12.0), "up": 2.4,
+			"aim": Vector2(-14.0, 22.0), "aim_up": 3.0, "fov": 66.0},
+		{"name": "02_town_cottages", "pos": Vector2(-34.0, 8.0), "up": 2.6,
+			"aim": Vector2(-26.0, 16.0), "aim_up": 3.0, "fov": 62.0},
+		{"name": "03_cottage_close", "pos": Vector2(-20.0, 14.0), "up": 2.0,
+			"aim": Vector2(-26.0, 16.0), "aim_up": 2.6, "fov": 56.0},
+		{"name": "04_town_aerial", "pos": Vector2(-30.0, 70.0), "abs_y": 62.0,
+			"aim": Vector2(0.0, 22.0), "aim_up": 4.0, "fov": 68.0},
+		{"name": "05_house_east", "pos": Vector2(30.0, 40.0), "up": 2.4,
+			"aim": Vector2(24.0, 35.0), "aim_up": 3.0, "fov": 60.0},
 	]
 
 

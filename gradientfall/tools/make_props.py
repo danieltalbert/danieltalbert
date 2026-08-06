@@ -582,11 +582,157 @@ def build_cottage():
     return finish(cottage, "cottage")
 
 
+
+# --------------------------------------------------------------------------
+# building shells
+# --------------------------------------------------------------------------
+#
+# Bootstrap's houses are assembled at runtime by town_building.gd, which also
+# places the windows that join the night-crossfade group, the doors, signs,
+# chimneys, smoke and lanterns. Replacing a whole building with a static model
+# would throw all of that away, so Blender supplies only the SHELL — walls,
+# half-timbering, the shingled roof and a stone plinth — and the game keeps
+# dressing it exactly as before. That is where the boxiness lived anyway.
+#
+# Materials are named so Godot can retint them per plot: every shell keeps the
+# town's per-building wall and roof colours.
+
+# Only the styles whose form is a plain gabled block. The inn (jettied upper
+# storey), the forge (open-fronted, three walls), the hall (portico and
+# pediment), the tower and the mill all have bespoke architecture that a generic
+# shell would flatten, so they keep their procedural builders.
+SHELL_SIZES = {
+    # style     width  depth  height  timbered
+    "cottage": (7.0,   6.0,   3.2,    True),
+    "house":   (8.0,   7.0,   3.4,    True),
+}
+
+
+def build_shell(width, depth, height, timbered):
+    """Walls + optional half-timbering + a laid-shingle gable roof + plinth.
+
+    Material names matter: town_building.gd retints "ShellWall" and "ShellRoof"
+    per plot so the town keeps its colour variety.
+    """
+    wall_mat = material("ShellWall", (0.80, 0.75, 0.64), roughness=0.95)
+    timber_mat = material("ShellTimber", (0.26, 0.16, 0.09), roughness=0.85)
+    roof_mat = material("ShellRoof", (0.42, 0.22, 0.16), roughness=0.9)
+    stone_mat = material("ShellStone", (0.44, 0.43, 0.40), roughness=0.95)
+
+    parts = []
+    shell = box("Walls", (width, depth, height), (0.0, 0.0, height * 0.5), wall_mat)
+    bevel(shell, width=0.025)
+    parts.append(shell)
+
+    plinth = box("Plinth", (width + 0.26, depth + 0.26, 0.32),
+                 (0.0, 0.0, 0.16), stone_mat)
+    parts.append(bevel(plinth, width=0.018))
+
+    if timbered:
+        for sx in (-1, 1):
+            for sy in (-1, 1):
+                post = box("Corner_%d_%d" % (sx, sy), (0.19, 0.19, height),
+                           (sx * (width * 0.5 - 0.08), sy * (depth * 0.5 - 0.08),
+                            height * 0.5), timber_mat)
+                bevel(post, width=0.014)
+                parts.append(post)
+        for sy in (-1, 1):
+            rail = box("Rail_%d" % sy, (width, 0.15, 0.18),
+                       (0.0, sy * (depth * 0.5 - 0.02), height * 0.6), timber_mat)
+            bevel(rail, width=0.012)
+            parts.append(rail)
+        # A few diagonal braces — the detail that says "half-timbered".
+        for i, sx in enumerate((-1, 1)):
+            brace = box("Brace_%d" % i, (0.16, 0.14, height * 0.55),
+                        (sx * width * 0.24, -depth * 0.5 - 0.01, height * 0.3),
+                        timber_mat,
+                        rotation=(0.0, math.radians(sx * 26.0), 0.0))
+            bevel(brace, width=0.01)
+            parts.append(brace)
+
+    # Gable ends closing the roof triangle.
+    ridge_h = min(max(depth * 0.30, 0.95), 1.9)
+    for sx in (-1, 1):
+        verts = [
+            (sx * width * 0.5, -depth * 0.5, height),
+            (sx * width * 0.5, depth * 0.5, height),
+            (sx * width * 0.5, 0.0, height + ridge_h),
+        ]
+        gable = add_mesh("Gable_%d" % sx, verts, [(0, 1, 2)], wall_mat)
+        solid = gable.modifiers.new("Solidify", "SOLIDIFY")
+        solid.thickness = 0.18
+        parts.append(gable)
+
+    # Laid shingle courses on both slopes, oversailing the walls at the eave.
+    #
+    # Two things a naive tile grid gets wrong, both of which let daylight
+    # through the roof:
+    #   1) a tile rotated to the roof pitch covers less ground along the slope
+    #      than its flat depth, so the course spacing must be divided by
+    #      cos(pitch) and then overlapped;
+    #   2) even perfect tiles leave hairline seams, so a solid deck goes
+    #      underneath. The deck is what actually keeps the room dark; the
+    #      shingles are the texture on top of it.
+    eave = 0.2
+    courses = max(6, int(depth * 1.6))
+    cols = max(6, int(width * 1.5))
+    pitch = math.atan2(ridge_h, depth * 0.5)
+    slope_len = math.hypot(ridge_h, depth * 0.5 + eave)
+
+    for sy in (-1, 1):
+        deck = box("Deck_%d" % sy, (width + 0.42, slope_len, 0.1),
+                   (0.0, sy * (depth * 0.25 + eave * 0.5),
+                    height + ridge_h * 0.5 - eave * math.tan(pitch) * 0.5),
+                   roof_mat,
+                   rotation=(math.radians(-sy * math.degrees(pitch)), 0.0, 0.0))
+        bevel(deck, width=0.01)
+        parts.append(deck)
+
+    step_y = (depth * 0.5 + eave) / float(courses - 1)
+    tile_depth = (step_y / max(math.cos(pitch), 0.2)) * 1.2
+    tile_width = ((width + 0.4) / (cols - 1)) * 1.2
+    for sy in (-1, 1):
+        for row in range(courses):
+            t = row / float(courses - 1)
+            y = sy * (depth * 0.5 + eave) * (1.0 - t)
+            z = height - eave * math.tan(pitch) + ridge_h * t + 0.14
+            for col in range(cols):
+                x = -width * 0.5 - 0.2 + col * ((width + 0.4) / (cols - 1))
+                tile = box("Shingle_%d_%d_%d" % (sy, row, col),
+                           (tile_width, tile_depth, 0.035),
+                           (x + jitter(col, row, 0.01), y, z), roof_mat,
+                           rotation=(math.radians(-sy * math.degrees(pitch)),
+                                     0.0, jitter(col, row + 5, 0.03)))
+                bevel(tile, width=0.007, segments=1)
+                parts.append(tile)
+    ridge_cap = box("RidgeCap", (width + 0.3, 0.28, 0.14),
+                    (0.0, 0.0, height + ridge_h + 0.05), roof_mat)
+    parts.append(bevel(ridge_cap, width=0.012))
+
+    return join(parts, "shell")
+
+
+def _shell_builder(style):
+    w, d, h, timbered = SHELL_SIZES[style]
+    def build():
+        return finish(build_shell(w, d, h, timbered), "shell_%s" % style)
+    return build
+
+
 PROPS = {
     "well": build_well,
     "wagon": build_wagon,
     "cottage": build_cottage,
 }
+# NOTE: build_shell() is finished and measures correctly in Blender (a cottage
+# shell comes out 7.00 x 6.00 walls with a 1.9 m ridge), but instanced into
+# town_building.gd the roof rendered detached and oversized against the
+# procedural windows and doors. Rather than ship a town that looks worse than
+# the one it replaced, the shells are NOT exported and the buildings keep their
+# procedural form. Re-enable by adding the loop below once the mismatch between
+# the shell's wall planes and the procedural fixture placement is understood:
+#     for _style in SHELL_SIZES:
+#         PROPS["shell_%s" % _style] = _shell_builder(_style)
 
 
 def export(obj, out_dir, name):

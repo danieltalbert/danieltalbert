@@ -4,6 +4,51 @@
 
 ---
 
+## 2026-07-27 (live session, cont.) — BUILDING SHELLS ATTEMPTED AND REVERTED
+
+**ATTEMPTED — Blender shells for Bootstrap's houses**
+The plan was sound and the design is worth keeping for the next attempt:
+Blender supplies only the *shell* (walls, half-timbering, laid-shingle roof,
+stone plinth — the boxy part), while `town_building.gd` keeps placing the
+windows that join the night-crossfade group, plus doors, signs, chimneys,
+smoke and lanterns. Materials were named `ShellWall`/`ShellRoof` so each plot
+could be retinted and the town keep its colour variety. Shells covered
+cottage + house — 8 of Bootstrap's 12 buildings; the inn (jettied upper
+storey), forge (open front), hall (portico), tower and mill keep their bespoke
+procedural forms, which a generic shell would have flattened.
+
+**REVERTED — it rendered worse than what it replaced**
+Instanced in the town, the shell read as a floating wall box under an
+oversized, detached roof, misaligned with the procedurally-placed windows and
+doors. Two real bugs were found and fixed along the way and are worth keeping
+in the builder:
+- **Shingle gaps you could see sky through.** A tile rotated to the roof pitch
+  covers less ground along the slope than its flat depth, so course spacing
+  must be divided by `cos(pitch)` and then overlapped. A solid deck now goes
+  under the shingles as well — the deck keeps the room dark, the shingles are
+  texture on top.
+- **Roof proportions**: a ridge at 0.42x the footprint towered over a 3.2 m
+  cottage wall.
+The shell measures correctly in Blender (cottage: 7.00 x 6.00 walls, 1.9 m
+ridge, base on z=0), so the fault is in how the shell's wall planes line up
+with where `town_building.gd` expects to hang fixtures — that is the thing to
+understand before trying again. `build_shell()` is kept in `tools/make_props.py`,
+documented, with the export loop commented out; the town is back on its
+procedural buildings and looks as it did.
+
+Per the prime directive: shipping a regression to claim a milestone would have
+been the wrong trade. The town is unchanged rather than worse.
+
+**STILL STANDING from earlier today** — first-person default view, the
+fall-through-the-world guard, the double-sided ground fix, and the Blender well
+and wagon are all committed, verified and unaffected by this revert.
+
+**NEXT UP** — diagnose the shell/fixture mismatch (most likely candidate: the
+shell's wall faces vs the `d * 0.5` plane the procedural windows and doors are
+placed on), then re-enable. After that, the remaining site props.
+
+---
+
 ## 2026-07-27 (live session) — FIRST PERSON, WORLD-CLIP FIXES, BLENDER PROPS
 
 *Danny's list: stop Kern falling through the floor and seeing through the
